@@ -1,0 +1,6 @@
+MAIN{
+IF(var>var)
+{
+INT ve;
+};
+}
