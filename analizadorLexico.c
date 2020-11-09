@@ -2,7 +2,7 @@
 #include<string.h>
 #include<ctype.h>
 #include <stdlib.h>
-//#include "analizadorSintactico.tab.h"
+
 
 #include "y.tab.h"
 

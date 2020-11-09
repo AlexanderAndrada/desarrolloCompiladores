@@ -248,6 +248,15 @@ void escribirTablaSimbolos(){
 	close(arch);
 }
 
+/* Funcion que responde cuando no existe la variable*/
+
+void validarExistenciaVariable(int status, char const *variable){
+	if(status == -1){
+		printf("\nERROR: Falta declarar la variable %s\n", variable);
+		exit(1);
+	}
+}
+
 /*
 Descripcion:
 			Funcion para buscar una variable o constante dentro de la tabla de simbolos.
@@ -260,7 +269,6 @@ int buscarPosicionTablaSimbolos(char const *cadena){
     int i,x;
     char auxiliar[80]={0};
     int contadorNombreAuxiliar=0;
-
 
     for(i=0; i<cantidadDeSimbolos; i++){
         
@@ -286,25 +294,25 @@ int buscarPosicionTablaSimbolos(char const *cadena){
             return i;
         }
     }
-    
+
 	return -1;
     
 }
 
+
 /*
 Descripcion:
-			Funcion para agregar una variable o constante dentro de la tabla 
-			de simbolos
+			Funcion para agregar el nombre a una variable, previamente 
+			debe estar el tipo declarado
 
 Parametros:
 			* Nombre: contiene la variable o constante a introducir a la 
 			  tabla de simbolos.
-			* Token: se ingresa el numero de token que corresponde, esto sirve
-			  para detectar y escribir el tipo del primer parametro.  
 */
 
-void agregarVariableATablaDeSimbolos(char* nombre, int token){
+int agregarNombreTablaDeSimbolos(char* nombre){
 
+	int posicion;
 	//Se consulta si esta llena la tabla de simbolos
 	if(cantidadDeSimbolos >= maxTabla - 1){
 		printf("Sin espacio en tabla de simbolos.\n");
@@ -316,66 +324,28 @@ void agregarVariableATablaDeSimbolos(char* nombre, int token){
     ese nombre. Sino, agrega la variable o constante.
 */
 
-	if(buscarPosicionTablaSimbolos(nombre) == -1){
+	posicion = buscarPosicionTablaSimbolos(nombre);
+
+	if(posicion == -1){
 
 		cantidadDeSimbolos++;
-		//printf("Cantidad de simbolos: %d", cantidadDeSimbolos);
 
-		//se empieza a ingresar los datos en la tabla de simbolos
-		switch (token)
-		{
-		case IDENTIFICADOR:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-			strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "IDENTIFICADOR");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;
+		strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
+		strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
 
-		case CONSTANTE:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-			strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "CONSTANTE");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;
-
-		case REAL:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-			strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "REAL");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;
-
-		default:
-			printf("Error en tipo de variable");
-			break;
-		}
 	}
+	else{
+		printf("La variable ya existe");
+		exit(1);
+	}
+	return cantidadDeSimbolos - 1;
 }
 
+/* Declare TIPO */
 
+void agregarTipoTablaDeSimbolos(int posicionTabla, int token){
 
-
-
-
-
-
-
-
-
-/*
-Descripcion:
-			Funcion para agregar una variable o constante dentro de la tabla 
-			de simbolos
-
-Parametros:
-			* Nombre: contiene la variable o constante a introducir a la 
-			  tabla de simbolos.
-			* Token: se ingresa el numero de token que corresponde, esto sirve
-			  para detectar y escribir el tipo del primer parametro.  
-*/
-
-void declaracionVariableATablaDeSimbolos(char* nombre, int token){
-
+	int posicion;
 	//Se consulta si esta llena la tabla de simbolos
 	if(cantidadDeSimbolos >= maxTabla - 1){
 		printf("Sin espacio en tabla de simbolos.\n");
@@ -383,54 +353,44 @@ void declaracionVariableATablaDeSimbolos(char* nombre, int token){
 		exit(2);
 	}
 
-/*  La funcion buscar devuelve -1 si no existe otro registro con
-    ese nombre. Sino, agrega la variable o constante.
-*/
-
-	if(buscarPosicionTablaSimbolos(nombre) == -1){
-
-		cantidadDeSimbolos++;
-		//printf("Cantidad de simbolos: %d", cantidadDeSimbolos);
-
-		//se empieza a ingresar los datos en la tabla de simbolos
-		switch (token)
-		{
-		case IDENTIFICADOR:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-			strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "IDENTIFICADOR");
+	switch (token)
+	{
+		case INT:
+			strcpy(tablaSimbolos[posicionTabla].tipo, "INT");
 			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case CONSTANTE:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-			strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "CONSTANTE");
+			strcpy(tablaSimbolos[posicionTabla].tipo, "CONSTANTE");
 			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case REAL:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-			strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "REAL");
+			strcpy(tablaSimbolos[posicionTabla].tipo, "REAL");
+			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
+			break;
+
+		case DOUBLE:
+			strcpy(tablaSimbolos[posicionTabla].tipo, "DOUBLE");
 			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case FLOAT:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-			strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "FLOAT");
+			strcpy(tablaSimbolos[posicionTabla].tipo, "FLOAT");
 			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;	
+
+		case STRING:
+			strcpy(tablaSimbolos[posicionTabla].tipo, "STRING");
+			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
+			break;		
 
 		default:
 			printf("Error en tipo de variable");
 			break;
-		}
 	}
+
 }
-
-
 
 
 

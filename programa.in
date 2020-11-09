@@ -1,6 +1,3 @@
 MAIN{
-IF(var>var)
-{
-INT ve;
-};
+2+2;;
 }

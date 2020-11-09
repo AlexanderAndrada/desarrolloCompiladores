@@ -21,6 +21,9 @@ int indiceAsignacionEspecial;
 int indiceAsigEspSuma;
 int indiceAsignacion;
 
+int numeroTipo;
+int posicionTablaSimbolos;
+
 
 int ultimoTerceto;
 
@@ -128,7 +131,6 @@ sentenciaintermediaif:
 asignacion:
 	IDENTIFICADOR ASIG expresion {
 		printf("Var: %s Asignacion ok\n",$1);
-		agregarVariableATablaDeSimbolos($1, IDENTIFICADOR);
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
 		indiceAsignacion = crear_terceto(NOOP, NOOP, indiceIdentificador);
 		crear_terceto(ASIG, indiceIdentificador,indiceExpresion);
@@ -137,7 +139,6 @@ asignacion:
 
 asignacionespecial:
 	IDENTIFICADOR asignadorespecial {
-		agregarVariableATablaDeSimbolos($1, IDENTIFICADOR);
 		indiceAsignacion = buscarPosicionTablaSimbolos($1);
 		printf("asigesp es: %d\n", ASIGESPMAS );
 		indiceAsignacion = crear_terceto(NOOP,NOOP,indiceAsignacion);
@@ -156,23 +157,45 @@ asignadorespecial:
 	;
 
 declaretion:
-	DECLARE tipo identificadorintermedio {printf("Primer Declaretion ok");}
-/*|declaretion PUNTOYCOMA tipo identificadorintermedio {printf("aca xd");}*/
+	DECLARE tipo identificadorintermedio {
+		printf("Primer Declaretion ok \n");
+		posicionTablaSimbolos = agregarTipoTablaDeSimbolos(posicionTablaSimbolos, numeroTipo);
+		}
+/*|declaretion PUNTOYCOMA tipo identificadorintermedio {printf("preguntar si va esta linea");}*/
 	;
 
 tipo: 
-	FLOAT {printf("Variable de tipo float\n");}
-	|INT {printf("Variable de tipo entero leido\n");}
-	|STRING {printf("Variable de tipo string leido\n");}
-	|BOOLEAN {printf("Variable de tipo boolean leido\n");}
-	|CHAR {printf("Variable de tipo char leido\n");}
-	|DOUBLE {printf("Variable de tipo double leido\n");}
+	FLOAT {
+		printf("Variable de tipo float \n");
+		numeroTipo = FLOAT;
+		}
+	|INT {
+		printf("Variable de tipo entero leido\n");
+		numeroTipo = INT;
+		}
+	|STRING {
+		printf("Variable de tipo string leido\n");
+		numeroTipo = STRING;
+		}
+	|BOOLEAN {
+		printf("Variable de tipo boolean leido\n");
+		numeroTipo = BOOLEAN;
+		}
+	|CHAR {
+		printf("Variable de tipo char leido\n");
+		numeroTipo = CHAR;
+		}
+	|DOUBLE {
+		printf("Variable de tipo double leido\n");
+		numeroTipo = DOUBLE;
+		}
 ;
 
 identificadorintermedio:
 	IDENTIFICADOR {
-		printf("IdentificadorIntermedio: %s ",$1);
+		printf("IdentificadorIntermedio: %s\n",$1);
 		indiceIdentificadorIntermedio = crear_terceto(NOOP, NOOP, $1);
+		posicionTablaSimbolos = agregarNombreTablaDeSimbolos($1);
 		}
 	|identificadorintermedio ',' IDENTIFICADOR 
 	;
@@ -212,16 +235,16 @@ comparadores:
 
 factor:
     IDENTIFICADOR {
-		printf("var: %s ",$1);
-		agregarVariableATablaDeSimbolos($1, IDENTIFICADOR);
+		printf("Entra a factor y luego a IDENTIFICADOR: %s\n",$1);
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
+		validarExistenciaVariable(indiceIdentificador,$1);
 		indiceFactor = crear_terceto(NOOP, NOOP, indiceIdentificador);
 
 		}
     |CONSTANTE {
 		printf("La constante es: %s\n",$1);
-		agregarVariableATablaDeSimbolos($1, CONSTANTE);
 		indiceConstante = buscarPosicionTablaSimbolos($1);
+		printf("El valor de la constante es: %d\n", indiceConstante);
 		indiceFactor = crear_terceto(NOOP, NOOP, indiceConstante);
 		printf("\nEl indiceFactor es: %d\n", indiceFactor);
 		}
