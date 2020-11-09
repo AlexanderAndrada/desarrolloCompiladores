@@ -551,7 +551,7 @@ extern FILE *yyin;
     void f21(){
         if(contadorSombrero==0)
             contadorSombrero++;
-        comentarios[strlen(comentarios)]=caracter;
+            else comentarios[strlen(comentarios)]=caracter;
     };
 
     //Strings
@@ -724,7 +724,10 @@ extern FILE *yyin;
         if(letra==')') return 11;
         if(letra=='[') return 12;
         if(letra==']') return 13;
-		if(letra=='^') return 14;
+		if(letra=='^')
+                if(contadorSombrero==1) contadorSombrero++;
+                return 14;
+        };
 		if(letra=='\"') {
                 if(contadorComillas==1) contadorComillas++;
                 return 15;
