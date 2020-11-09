@@ -20,6 +20,8 @@ int indiceIdentificadorIntermedio;
 int indiceAsignacionEspecial;
 int indiceAsigEspSuma;
 int indiceAsignacion;
+int indiceReal;
+int indiceString;
 
 int numeroTipo;
 int posicionTablaSimbolos;
@@ -242,15 +244,21 @@ factor:
 
 		}
     |CONSTANTE {
-		printf("La constante es: %s\n",$1);
+		agregarConstanteTablaDeSimbolos($1,CONSTANTE);
 		indiceConstante = buscarPosicionTablaSimbolos($1);
-		printf("El valor de la constante es: %d\n", indiceConstante);
 		indiceFactor = crear_terceto(NOOP, NOOP, indiceConstante);
-		printf("\nEl indiceFactor es: %d\n", indiceFactor);
 		}
-	|REAL {printf("El real es: %\n ",$1);}
+	|REAL {
+		agregarConstanteTablaDeSimbolos($1,REAL);
+		indiceReal = buscarPosicionTablaSimbolos($1);
+		indiceFactor = crear_terceto(NOOP, NOOP, indiceReal);
+		}
 	|IDENTIFICADOR ABRIRCORCHETE CONSTANTE CERRARCORCHETE {printf("vector %s con %s espacios",$1,$3);}
-	|STRING {printf("string: %s ",$1);}
+	|STRING {
+		agregarConstanteTablaDeSimbolos($1,CONSTANTE);
+		indiceString = buscarPosicionTablaSimbolos($1);
+		indiceFactor = crear_terceto(NOOP, NOOP, indiceString);
+		}
     ;
 
 %%

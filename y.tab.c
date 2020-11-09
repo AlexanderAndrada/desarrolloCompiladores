@@ -90,6 +90,8 @@ int indiceIdentificadorIntermedio;
 int indiceAsignacionEspecial;
 int indiceAsigEspSuma;
 int indiceAsignacion;
+int indiceReal;
+int indiceString;
 
 int numeroTipo;
 int posicionTablaSimbolos;
@@ -100,7 +102,7 @@ int ultimoTerceto;
 
 
 /* Line 189 of yacc.c  */
-#line 104 "y.tab.c"
+#line 106 "y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -221,7 +223,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 32 "analizadorSintactico.y"
+#line 34 "analizadorSintactico.y"
 
 	char var[20];
 	int valor;
@@ -229,7 +231,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 233 "y.tab.c"
+#line 235 "y.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -241,7 +243,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 245 "y.tab.c"
+#line 247 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -549,15 +551,15 @@ static const yytype_int8 yyrhs[] =
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,    56,    56,    60,    61,    65,    66,    67,    68,    69,
-      70,    71,    72,    76,    77,    81,    85,    89,    90,    91,
-      95,    99,   103,   104,   108,   112,   113,   114,   118,   122,
-     123,   127,   128,   132,   141,   153,   154,   155,   156,   160,
-     168,   172,   176,   180,   184,   188,   195,   200,   204,   205,
-     209,   216,   217,   221,   228,   229,   230,   231,   232,   233,
-     237,   244,   251,   252,   253
+       0,    58,    58,    62,    63,    67,    68,    69,    70,    71,
+      72,    73,    74,    78,    79,    83,    87,    91,    92,    93,
+      97,   101,   105,   106,   110,   114,   115,   116,   120,   124,
+     125,   129,   130,   134,   143,   155,   156,   157,   158,   162,
+     170,   174,   178,   182,   186,   190,   197,   202,   206,   207,
+     211,   218,   219,   223,   230,   231,   232,   233,   234,   235,
+     239,   246,   251,   256,   257
 };
 #endif
 
@@ -1542,126 +1544,126 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 56 "analizadorSintactico.y"
+#line 58 "analizadorSintactico.y"
     {printf("Main OK\n");guardarArchivoTercetos();}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 60 "analizadorSintactico.y"
+#line 62 "analizadorSintactico.y"
     {printf("Sentencia ok\n"); escribirTablaSimbolos();}
     break;
 
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 61 "analizadorSintactico.y"
+#line 63 "analizadorSintactico.y"
     {escribirTablaSimbolos();}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 65 "analizadorSintactico.y"
+#line 67 "analizadorSintactico.y"
     {printf("While ok\n");}
     break;
 
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 66 "analizadorSintactico.y"
+#line 68 "analizadorSintactico.y"
     {printf("If ok\n");}
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 67 "analizadorSintactico.y"
+#line 69 "analizadorSintactico.y"
     {printf("Declaracion de variable ok\n");}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 68 "analizadorSintactico.y"
+#line 70 "analizadorSintactico.y"
     {printf("Expresion ok\n");}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 69 "analizadorSintactico.y"
+#line 71 "analizadorSintactico.y"
     {printf("Asignacion ok\n");}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 70 "analizadorSintactico.y"
+#line 72 "analizadorSintactico.y"
     {printf("Asignacion especial ok\n");}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 89 "analizadorSintactico.y"
+#line 91 "analizadorSintactico.y"
     {printf("Sentencia comparacion WHILE ok\n");}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 95 "analizadorSintactico.y"
+#line 97 "analizadorSintactico.y"
     {printf("Condicion WHILE ok\n");}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 108 "analizadorSintactico.y"
+#line 110 "analizadorSintactico.y"
     {printf("Sentencia if ok\n");}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 112 "analizadorSintactico.y"
+#line 114 "analizadorSintactico.y"
     {printf("Sentencia comparacion IF ok\n");}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 113 "analizadorSintactico.y"
+#line 115 "analizadorSintactico.y"
     {printf("Sentencia AND comparacion IF ok\n");}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 114 "analizadorSintactico.y"
+#line 116 "analizadorSintactico.y"
     {printf("Sentencia OR comparacion IF ok\n");}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 118 "analizadorSintactico.y"
+#line 120 "analizadorSintactico.y"
     {printf("Condicion IF ok\n");}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 123 "analizadorSintactico.y"
+#line 125 "analizadorSintactico.y"
     {printf("Cuerpo en If sin ELSE ok\n");}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 132 "analizadorSintactico.y"
+#line 134 "analizadorSintactico.y"
     {
 		printf("Var: %s Asignacion ok\n",(yyvsp[(1) - (3)].var));
 		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (3)].var));
@@ -1673,7 +1675,7 @@ yyreduce:
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 141 "analizadorSintactico.y"
+#line 143 "analizadorSintactico.y"
     {
 		indiceAsignacion = buscarPosicionTablaSimbolos((yyvsp[(1) - (2)].var));
 		printf("asigesp es: %d\n", ASIGESPMAS );
@@ -1688,35 +1690,35 @@ yyreduce:
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 153 "analizadorSintactico.y"
+#line 155 "analizadorSintactico.y"
     {indiceAsignacionEspecial=SUMA;}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 154 "analizadorSintactico.y"
+#line 156 "analizadorSintactico.y"
     {indiceAsignacionEspecial=RESTA;}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 155 "analizadorSintactico.y"
+#line 157 "analizadorSintactico.y"
     {indiceAsignacionEspecial=MULTIPLICACION;}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 156 "analizadorSintactico.y"
+#line 158 "analizadorSintactico.y"
     {indiceAsignacionEspecial=DIVISION;}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 160 "analizadorSintactico.y"
+#line 162 "analizadorSintactico.y"
     {
 		printf("Primer Declaretion ok \n");
 		posicionTablaSimbolos = agregarTipoTablaDeSimbolos(posicionTablaSimbolos, numeroTipo);
@@ -1726,7 +1728,7 @@ yyreduce:
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 168 "analizadorSintactico.y"
+#line 170 "analizadorSintactico.y"
     {
 		printf("Variable de tipo float \n");
 		numeroTipo = FLOAT;
@@ -1736,7 +1738,7 @@ yyreduce:
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 172 "analizadorSintactico.y"
+#line 174 "analizadorSintactico.y"
     {
 		printf("Variable de tipo entero leido\n");
 		numeroTipo = INT;
@@ -1746,7 +1748,7 @@ yyreduce:
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 176 "analizadorSintactico.y"
+#line 178 "analizadorSintactico.y"
     {
 		printf("Variable de tipo string leido\n");
 		numeroTipo = STRING;
@@ -1756,7 +1758,7 @@ yyreduce:
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 180 "analizadorSintactico.y"
+#line 182 "analizadorSintactico.y"
     {
 		printf("Variable de tipo boolean leido\n");
 		numeroTipo = BOOLEAN;
@@ -1766,7 +1768,7 @@ yyreduce:
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 184 "analizadorSintactico.y"
+#line 186 "analizadorSintactico.y"
     {
 		printf("Variable de tipo char leido\n");
 		numeroTipo = CHAR;
@@ -1776,7 +1778,7 @@ yyreduce:
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 188 "analizadorSintactico.y"
+#line 190 "analizadorSintactico.y"
     {
 		printf("Variable de tipo double leido\n");
 		numeroTipo = DOUBLE;
@@ -1786,7 +1788,7 @@ yyreduce:
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 195 "analizadorSintactico.y"
+#line 197 "analizadorSintactico.y"
     {
 		printf("IdentificadorIntermedio: %s\n",(yyvsp[(1) - (1)].var));
 		indiceIdentificadorIntermedio = crear_terceto(NOOP, NOOP, (yyvsp[(1) - (1)].var));
@@ -1797,14 +1799,14 @@ yyreduce:
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 204 "analizadorSintactico.y"
+#line 206 "analizadorSintactico.y"
     {printf("llega a expresion");indiceExpresion = indiceTermino;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 205 "analizadorSintactico.y"
+#line 207 "analizadorSintactico.y"
     {
 			printf("Resta OK\n");
 			indiceExpresion=crear_terceto(RESTA, indiceExpresion,indiceTermino);
@@ -1814,7 +1816,7 @@ yyreduce:
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 209 "analizadorSintactico.y"
+#line 211 "analizadorSintactico.y"
     {
 			   printf("Suma OK\n");
 			   indiceExpresion=crear_terceto(SUMA, indiceExpresion,indiceTermino);
@@ -1824,14 +1826,14 @@ yyreduce:
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 216 "analizadorSintactico.y"
+#line 218 "analizadorSintactico.y"
     {indiceTermino = indiceFactor;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 217 "analizadorSintactico.y"
+#line 219 "analizadorSintactico.y"
     {
 			   printf("Multiplicacion OK\n");
 			   indiceTermino=crear_terceto(MULTIPLICACION, indiceFactor,indiceTermino);
@@ -1841,7 +1843,7 @@ yyreduce:
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 221 "analizadorSintactico.y"
+#line 223 "analizadorSintactico.y"
     {
 			  printf("Division OK\n");
 			  indiceTermino=crear_terceto(DIVISION, indiceFactor,indiceTermino);
@@ -1851,7 +1853,7 @@ yyreduce:
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 237 "analizadorSintactico.y"
+#line 239 "analizadorSintactico.y"
     {
 		printf("Entra a factor y luego a IDENTIFICADOR: %s\n",(yyvsp[(1) - (1)].var));
 		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
@@ -1864,13 +1866,11 @@ yyreduce:
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 244 "analizadorSintactico.y"
+#line 246 "analizadorSintactico.y"
     {
-		printf("La constante es: %s\n",(yyvsp[(1) - (1)].var));
+		agregarConstanteTablaDeSimbolos((yyvsp[(1) - (1)].var),CONSTANTE);
 		indiceConstante = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
-		printf("El valor de la constante es: %d\n", indiceConstante);
 		indiceFactor = crear_terceto(NOOP, NOOP, indiceConstante);
-		printf("\nEl indiceFactor es: %d\n", indiceFactor);
 		}
     break;
 
@@ -1878,27 +1878,35 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 251 "analizadorSintactico.y"
-    {printf("El real es: %\n ",(yyvsp[(1) - (1)].var));}
+    {
+		agregarConstanteTablaDeSimbolos((yyvsp[(1) - (1)].var),REAL);
+		indiceReal = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
+		indiceFactor = crear_terceto(NOOP, NOOP, indiceReal);
+		}
     break;
 
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 252 "analizadorSintactico.y"
+#line 256 "analizadorSintactico.y"
     {printf("vector %s con %s espacios",(yyvsp[(1) - (4)].var),(yyvsp[(3) - (4)].var));}
     break;
 
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 253 "analizadorSintactico.y"
-    {printf("string: %s ",(yyvsp[(1) - (1)].var));}
+#line 257 "analizadorSintactico.y"
+    {
+		agregarConstanteTablaDeSimbolos((yyvsp[(1) - (1)].var),CONSTANTE);
+		indiceString = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
+		indiceFactor = crear_terceto(NOOP, NOOP, indiceString);
+		}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1902 "y.tab.c"
+#line 1910 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2110,7 +2118,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 256 "analizadorSintactico.y"
+#line 264 "analizadorSintactico.y"
 
 
 int main(int argc,char *argv[])
