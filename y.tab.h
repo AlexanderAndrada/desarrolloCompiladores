@@ -44,42 +44,43 @@
      REAL = 260,
      MAIN = 261,
      COMENTARIO = 262,
-     SUMA = 263,
-     RESTA = 264,
-     MULTIPLICACION = 265,
-     DIVISION = 266,
-     ASIG = 267,
-     MAYOR = 268,
-     MENOR = 269,
-     MAYORIGUAL = 270,
-     MENORIGUAL = 271,
-     IGUAL = 272,
-     DISTINTO = 273,
-     PUNTOYCOMA = 274,
-     ABRIRPARENTESIS = 275,
-     CERRARPARENTESIS = 276,
-     ABRIRLLAVE = 277,
-     CERRARLLAVE = 278,
-     ABRIRCORCHETE = 279,
-     CERRARCORCHETE = 280,
-     IF = 281,
-     ELSE = 282,
-     WHILE = 283,
-     PUT = 284,
-     GET = 285,
-     AND = 286,
-     OR = 287,
-     DECLARE = 288,
-     INT = 289,
-     FLOAT = 290,
-     DOUBLE = 291,
-     CHAR = 292,
-     BOOLEAN = 293,
-     ASIGESPMAS = 294,
-     ASIGESPMENOS = 295,
-     ASIGESPMULTIPLICACION = 296,
-     ASIGESPDIVISION = 297,
-     STRING = 298
+     CONCAT = 263,
+     SUMA = 264,
+     RESTA = 265,
+     MULTIPLICACION = 266,
+     DIVISION = 267,
+     ASIG = 268,
+     MAYOR = 269,
+     MENOR = 270,
+     MAYORIGUAL = 271,
+     MENORIGUAL = 272,
+     IGUAL = 273,
+     DISTINTO = 274,
+     PUNTOYCOMA = 275,
+     ABRIRPARENTESIS = 276,
+     CERRARPARENTESIS = 277,
+     ABRIRLLAVE = 278,
+     CERRARLLAVE = 279,
+     ABRIRCORCHETE = 280,
+     CERRARCORCHETE = 281,
+     IF = 282,
+     ELSE = 283,
+     WHILE = 284,
+     PUT = 285,
+     GET = 286,
+     AND = 287,
+     OR = 288,
+     DECLARE = 289,
+     INT = 290,
+     FLOAT = 291,
+     DOUBLE = 292,
+     CHAR = 293,
+     BOOLEAN = 294,
+     ASIGESPMAS = 295,
+     ASIGESPMENOS = 296,
+     ASIGESPMULTIPLICACION = 297,
+     ASIGESPDIVISION = 298,
+     STRING = 299
    };
 #endif
 /* Tokens.  */
@@ -88,42 +89,43 @@
 #define REAL 260
 #define MAIN 261
 #define COMENTARIO 262
-#define SUMA 263
-#define RESTA 264
-#define MULTIPLICACION 265
-#define DIVISION 266
-#define ASIG 267
-#define MAYOR 268
-#define MENOR 269
-#define MAYORIGUAL 270
-#define MENORIGUAL 271
-#define IGUAL 272
-#define DISTINTO 273
-#define PUNTOYCOMA 274
-#define ABRIRPARENTESIS 275
-#define CERRARPARENTESIS 276
-#define ABRIRLLAVE 277
-#define CERRARLLAVE 278
-#define ABRIRCORCHETE 279
-#define CERRARCORCHETE 280
-#define IF 281
-#define ELSE 282
-#define WHILE 283
-#define PUT 284
-#define GET 285
-#define AND 286
-#define OR 287
-#define DECLARE 288
-#define INT 289
-#define FLOAT 290
-#define DOUBLE 291
-#define CHAR 292
-#define BOOLEAN 293
-#define ASIGESPMAS 294
-#define ASIGESPMENOS 295
-#define ASIGESPMULTIPLICACION 296
-#define ASIGESPDIVISION 297
-#define STRING 298
+#define CONCAT 263
+#define SUMA 264
+#define RESTA 265
+#define MULTIPLICACION 266
+#define DIVISION 267
+#define ASIG 268
+#define MAYOR 269
+#define MENOR 270
+#define MAYORIGUAL 271
+#define MENORIGUAL 272
+#define IGUAL 273
+#define DISTINTO 274
+#define PUNTOYCOMA 275
+#define ABRIRPARENTESIS 276
+#define CERRARPARENTESIS 277
+#define ABRIRLLAVE 278
+#define CERRARLLAVE 279
+#define ABRIRCORCHETE 280
+#define CERRARCORCHETE 281
+#define IF 282
+#define ELSE 283
+#define WHILE 284
+#define PUT 285
+#define GET 286
+#define AND 287
+#define OR 288
+#define DECLARE 289
+#define INT 290
+#define FLOAT 291
+#define DOUBLE 292
+#define CHAR 293
+#define BOOLEAN 294
+#define ASIGESPMAS 295
+#define ASIGESPMENOS 296
+#define ASIGESPMULTIPLICACION 297
+#define ASIGESPDIVISION 298
+#define STRING 299
 
 
 
@@ -133,7 +135,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 34 "analizadorSintactico.y"
+#line 29 "analizadorSintactico.y"
 
 	char var[20];
 	int valor;
@@ -141,7 +143,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 145 "y.tab.h"
+#line 147 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
