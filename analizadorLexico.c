@@ -372,7 +372,7 @@ extern FILE *yyin;
 	    }
 
 	    if(strlen(comentarios)>0){
-            tkn.token=0;
+            tkn.token=COMENTARIO;
             tkn.valor=-1;
             return tkn;
 	    }
@@ -655,6 +655,7 @@ extern FILE *yyin;
 
 	int devolverEstado(char letra){
 	    if(contadorComillas==1) return 22;
+	    if(contadorSombrero==1) return 21;
         if(isalpha(letra)) return 1;
 		if(isdigit(letra)){
                 if (banderaNumero==0)
@@ -761,7 +762,7 @@ extern FILE *yyin;
 	//Tabla
 	void(*proceso[37][28])()={
     //    0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27
-/*0*/     f1, f2,f43, f5, f6, f7, f8, f9,f15,f16,f17,f18,f21,f22,f21,f22,f23,f24,f25,f29,f30,f33, f0, f0,f44,f43, f0,f34,
+/*0*/     f1, f2,f43, f5, f6, f7, f8, f9,f15,f16,f17,f18,f19,f20,f21,f22,f23,f24,f25,f29,f30,f33, f0, f0,f44,f43, f0,f34,
 /*1*/     f1, f1,f43,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42, f0, f0,f41,f43, f0,f42,
 /*2*/    f43, f2, f3,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42, f0, f0,f41,f43, f0,f42,
 /*3*/    f43, f4,f43,f43,f43,f43,f43,f43,f43,f43,f43,f43,f43,f43,f43,f43,f43,f43,f43,f42,f42,f42, f0, f0,f41,f43, f0,f42,
