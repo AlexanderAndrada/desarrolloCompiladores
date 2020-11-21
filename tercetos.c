@@ -647,12 +647,14 @@ int agregarNombreTablaDeSimbolos(int posicionEscritura, char* nombre){
 		system("Pause");
 		exit(2);
 	}
+	
+	
 
 	posicion = buscarPosicionTablaSimbolos(nombre);
 
 	if(posicion == -1){
 
-		cantidadDeSimbolos++;
+		//cantidadDeSimbolos++;
 
 		strcpy(tablaSimbolos[posicionEscritura].nombre, "_");
 		strcat(tablaSimbolos[posicionEscritura].nombre, nombre);
@@ -726,6 +728,7 @@ int agregarTipoTablaDeSimbolos(int token){
 			printf("Error en tipo de variable");
 			break;
 	}
+	
 	return cantidadDeSimbolos -1;
 }
 
