@@ -1,84 +1,64 @@
-/*
-Seccion de include
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "tercetos.h"
 #include "y.tab.h"
-
-/*
-Declaracion de variables
-*/
-
+//#include "analizadorLexico.y"
 int ultimoTerceto;
 int maxTercetos = 50;
 int maxTabla = 50;
 int cantidadDeSimbolos=0;
 FILE *archivoSimbolos;
 
-/*
-Estructura de la tabla de tercetos
-*/
-
-struct terceto
-{
+struct terceto{
 	int operador;
 	int op1;
 	int op2;
 }listaTercetos[50]={0};
 
-/*
-Estructura de la tabla de simbolos
-*/
-
-struct tablaSimbolos
-{
-    char nombre[20];
-    char tipo[20];
-    char valor[20];
-    int longitud;
-} tablaSimbolos[50]={0};
+  struct tablaSimbolos
+  {
+      char nombre[20];
+      char tipo[20];
+      char valor[20];
+      int longitud;
+  } tablaSimbolos[50]={0};
 
 
-/*
-Descripcion:
-			Funcion que lee el archivo de tabla de simbolos.
-
-Parametros:
-			* No posee
-*/
-
-void lecturaArchivo(){
-    char lineaSimbolo[80]={0};
-    char indiceLineaSimbolo=0;
-    char caracter;
-    int contadorNombre=0;
-    char nombre[20]={0};
-    char tipo[20]={0};
-    char valor[20]={0};
-    char cadenaSeparada[20]={0};
-    int i;
-    int borrar;
-    int x,y,z,c;
-    int indiceCopiar=0 ;
-	int contadorDeSimbolos=0;
+    void lecturaArchivo(){
+        char lineaSimbolo[80]={0};
+        char indiceLineaSimbolo=0;
+        char caracter;
+        int contadorNombre=0;
+        char nombre[20]={0};
+        char tipo[20]={0};
+        char valor[20]={0};
+        char cadenaSeparada[20]={0};
+        int i;
+        int borrar;
+        int x,y,z,c;
+        int indiceCopiar=0 ;
+		int contadorDeSimbolos=0;
 
 
-	archivoSimbolos = fopen("tablaSimboloss.txt","r");
+		archivoSimbolos = fopen("tablaSimboloss.txt","r");
 
-	if (archivoSimbolos == NULL)
-    {
-        printf("\nError de apertura del archivo. \n\n");
-    }else{
+		if (archivoSimbolos == NULL)
+        {
+            printf("\nError de apertura del archivo. \n\n");
+        }else{
+		//	printf("Es distinto de null");
+		}
+
+
 
         while((caracter = fgetc(archivoSimbolos)) != EOF){
 
-        	if(caracter!='\n'){            
-				lineaSimbolo[indiceLineaSimbolo]=caracter;
-            	indiceLineaSimbolo++;          
-			}
-        	else{
+            if(caracter!='\n'){
+                lineaSimbolo[indiceLineaSimbolo]=caracter;
+                indiceLineaSimbolo++;
+            }
+            else{
+               // contadorDeSimbolos++;
 
                 for(x=0; x < 20; x++){
                     if(strlen(nombre)<19){
@@ -88,11 +68,12 @@ void lecturaArchivo(){
 
                 indiceCopiar=0;
 
+
                  for(y=20; y < 40; y++){
-                    if(strlen(tipo)<19){
-                        tipo[indiceCopiar]=lineaSimbolo[y];
-                        indiceCopiar++;
-                    }
+                        if(strlen(tipo)<19){
+                            tipo[indiceCopiar]=lineaSimbolo[y];
+                            indiceCopiar++;
+                        }
                 }
 
 
@@ -143,32 +124,38 @@ void lecturaArchivo(){
                 cadenaSeparada[borrar]='\0';
 
             }
-       	}
-    	}
-	}
+            }
+
+        }
+
+    }
+
+
+int buscar_terceto(int var, int tope){
+    int i=0;
+    int b=0;
+    while (i<tope&&b==0){
+        if(listaTercetos[i].op2==var)
+            b=1;
+        else i++;
+    }
+    if(b==1)
+        return i;
+    else{
+        printf("Error: La variable no fue inicializada\n");
+		system("Pause");
+		exit(3);
+    }
 }
 
-/*
-Descripcion:
-			Funcion que agrega un terceto a la lista de tercetos (struct de tipo terceto)
-
-Casos: 
-	* (+,1,1)  se realiza una operacion, como la suma de dos operandos. Para el primero ingresar 
-	  el numero de token
-	* (NOOP, NOOP, a) se realiza una carga de una variable o constante. Para eso se ingresa el 
-	  indice donde se encuentra en la tabla de simbolos o terceto.
-
-Parametros:
-			* Operador
-			* Operando 1
-			* Operando 2
-*/
-
+/** Agrega un terceto a la lista de tercetos. Si se quiere guardar solo una constante o variable, mandar NOOP en
+el campo de operador y op2. Para los operadores pasar el token literal, para los operandos pasar la posicion en
+tablaSimbolos de simbolos o el indice de otro terceto. */
 int crear_terceto(int operador, int op1, int op2){
 
-	//printf("\nEl operador es: %d\n", operador);
-	//printf("\nEl op1 es: %d\n", op1);
-	//printf("\nEl op2 es: %d\n", op2);
+	printf("\nEl operador es: %d\n", operador);
+	printf("\nEl op1 es: %d\n", op1);
+	printf("\nEl op2 es: %d\n", op2);
 
 
 	ultimoTerceto++;
@@ -184,314 +171,170 @@ int crear_terceto(int operador, int op1, int op2){
 	return ultimoTerceto -1;
 }
 
-/*
-Descripcion:
-			Funcion para escribir la tabla de simbolos en un archivo.
 
-Parametros: 
-			* No posee
-*/
+	void escribirTablaSimbolos(){
+	    int i,x, indiceRegistro,posCero=0, posVeinte=20, posCuarentena=40, posSesenta=60;
+	    char registroTabla[80]={0};
+	    char longitudChar[20]={0};
 
-void escribirTablaSimbolos(){
-	int i,x, indiceRegistro,posCero=0, posVeinte=20, posCuarentena=40, posSesenta=60;
-	char registroTabla[80]={0};
-	char longitudChar[20]={0};
+        FILE* arch = fopen("tablaSimbolos.txt", "w+");
 
-    FILE* arch = fopen("tablaSimbolos.txt", "w+");
-
-	for(i=0; i<cantidadDeSimbolos; i++){
+	    for(i=0; i<cantidadDeSimbolos; i++){
 
 	    for(x=0; x<80;x++){
             registroTabla[x]=' ';
 	    }
 	    registroTabla[79] = '\0';
 
-        for(indiceRegistro=0; indiceRegistro<strlen(tablaSimbolos[i].nombre); indiceRegistro++){
+           for(indiceRegistro=0; indiceRegistro<strlen(tablaSimbolos[i].nombre); indiceRegistro++){
 
-            registroTabla[posCero]= tablaSimbolos[i].nombre[indiceRegistro];
-            posCero++;
-        }
+                registroTabla[posCero]= tablaSimbolos[i].nombre[indiceRegistro];
+                posCero++;
+           }
 
-        for(indiceRegistro=0; indiceRegistro<strlen(tablaSimbolos[i].tipo); indiceRegistro++){
+           for(indiceRegistro=0; indiceRegistro<strlen(tablaSimbolos[i].tipo); indiceRegistro++){
 
-            registroTabla[posVeinte]= tablaSimbolos[i].tipo[indiceRegistro];
-            posVeinte++;
-        }
+                registroTabla[posVeinte]= tablaSimbolos[i].tipo[indiceRegistro];
+                posVeinte++;
+           }
 
-        for(indiceRegistro=0; indiceRegistro<strlen(tablaSimbolos[i].valor); indiceRegistro++){
+           for(indiceRegistro=0; indiceRegistro<strlen(tablaSimbolos[i].valor); indiceRegistro++){
 
-            registroTabla[posCuarentena]= tablaSimbolos[i].valor[indiceRegistro];
-            posCuarentena++;
-        }
+                registroTabla[posCuarentena]= tablaSimbolos[i].valor[indiceRegistro];
+                posCuarentena++;
+           }
 
-        sprintf(longitudChar, "%d", tablaSimbolos[i].longitud);
+           sprintf(longitudChar, "%d", tablaSimbolos[i].longitud);
 
-        if(strcmp(longitudChar, "0")==0){
-            registroTabla[posSesenta]= ' ';
-        }else{
-            for(indiceRegistro=0; indiceRegistro<strlen(longitudChar); indiceRegistro++){
+           if(strcmp(longitudChar, "0")==0){
+                registroTabla[posSesenta]= ' ';
+           }
+           else{
+                for(indiceRegistro=0; indiceRegistro<strlen(longitudChar); indiceRegistro++){
 
-                registroTabla[posSesenta]= longitudChar[indiceRegistro];
-                posSesenta++;
-            }
-        }
+                    registroTabla[posSesenta]= longitudChar[indiceRegistro];
+                    posSesenta++;
+               }
+           }
 
-        fprintf(arch, registroTabla);
-        fprintf(arch, "\n");
+           fprintf(arch, registroTabla);
+           fprintf(arch, "\n");
 
-        posCero=0;
-        posVeinte=20;
-        posCuarentena=40;
-        posSesenta=60;
+
+           posCero=0;
+           posVeinte=20;
+           posCuarentena=40;
+           posSesenta=60;
+	    }
+        close(arch);
 	}
-	close(arch);
-}
 
-/*
-Descripcion:
-			Funcion que responde ante la existencia o inexistencia de una 
-			variable o constante.
+// Funcion para buscar una variable dentro de la tabla
+// de simbolos
 
-Parametros: 
-			* Cadena: numero que indica si existe la variable en la tabla de simbolos
-			* Variable: el nombre de la variable
-*/
+   int buscarPosicionTablaSimbolos(char const *cadena){
+        int i,x;
+        char auxiliar[80]={0};
+        int contadorNombreAuxiliar=0;
 
-void validarExistenciaVariable(int status, char const *variable){
-	if(status == -1){
-		printf("\nERROR: Falta declarar la variable %s\n", variable);
-		exit(1);
-	}
-}
 
-/*
-Descripcion:
-			Funcion para buscar una variable o constante dentro de la tabla de simbolos.
+         for(i=0; i<cantidadDeSimbolos; i++){
+             char auxiliar[80]={0};
+             char nombreAuxiliar[80]={0};
 
-Parametros: 
-			* Cadena: es una cadena de char, la cual es una variable o constante
-*/
+             strcat(auxiliar, "_");
+             strcat(auxiliar, cadena);
 
-int buscarPosicionTablaSimbolos(char const *cadena){
-    int i,x;
-    char auxiliar[80]={0};
-    int contadorNombreAuxiliar=0;
+             for(x=0; x< strlen(tablaSimbolos[i].nombre);x++){
 
-    for(i=0; i<cantidadDeSimbolos; i++){
-        
-		char auxiliar[80]={0};
-        char nombreAuxiliar[80]={0};
+                if(tablaSimbolos[i].nombre[x] != ' '){
+                    nombreAuxiliar[contadorNombreAuxiliar] = tablaSimbolos[i].nombre[x];
+                    contadorNombreAuxiliar++;
+                }
+             }
+             contadorNombreAuxiliar=0;
 
-        strcat(auxiliar, "_");
-        strcat(auxiliar, cadena);
-
-        for(x=0; x< strlen(tablaSimbolos[i].nombre);x++){
-
-            if(tablaSimbolos[i].nombre[x] != ' '){
-                
-				nombreAuxiliar[contadorNombreAuxiliar] = tablaSimbolos[i].nombre[x];
-				contadorNombreAuxiliar++;
-
-            }
-        }
-        
-		contadorNombreAuxiliar=0;
-
-        if(strcmp(auxiliar, nombreAuxiliar)==0){
-            return i;
-        }
+             if(strcmp(auxiliar, nombreAuxiliar)==0){
+                 return i;
+             }
+         }
+        return -1;
     }
 
-	return -1;
-    
+//Agregar una variable a la tabla de simbolos
+
+void agregarVariableATablaDeSimbolos(char* nombre, int token){
+
+ //Se consulta si esta llena la tabla de simbolos
+ if(cantidadDeSimbolos >= maxTabla - 1){
+	 printf("Sin espacio en tabla de simbolos.\n");
+	 system("Pause");
+	 exit(2);
+ }
+
+ // La funcion buscar devuelve -1 si no existe otro registor con
+ // ese nombre
+ if(buscarPosicionTablaSimbolos(nombre) == -1){
+	 //Agregar a tabla
+	 cantidadDeSimbolos++;
+		printf("Cantidad de simbolos: %d", cantidadDeSimbolos);
+
+	 //se empieza a ingresar los datos en la tabla de simbolos
+	 switch (token)
+	 {
+	 case IDENTIFICADOR:
+		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
+		  strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
+		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "IDENTIFICADOR");
+		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
+		 break;
+
+	case CONSTANTE:
+		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
+		  strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
+		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "CONSTANTE");
+		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
+		 break;
+
+	case REAL:
+		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
+		  strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
+		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "REAL");
+		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
+		 break;
+
+	 default:
+	 	printf("Error en tipo de variable");
+		 break;
+	 }
+
+ }
+}
+
+int invertirComparador (int comp){
+    switch(comp){
+    case MAYOR:
+        return MENORIGUAL;
+    case MENOR:
+        return MAYORIGUAL;
+    case MAYORIGUAL:
+        return MENOR;
+    case MENORIGUAL:
+        return MAYOR;
+    case IGUAL:
+        return DISTINTO;
+    case DISTINTO:
+        return IGUAL;
+    }
 }
 
 
-/*
-Descripcion:
-			Funcion para agregar una constante,  en la tabla de 
-			simbolos
-
-Parametros:
-			* Nombre: contiene la constante a introducir a la 
-			  tabla de simbolos.
-			* Token: numero de token para identificar el tipo  
-*/
-
-agregarConstanteTablaDeSimbolos(char* const nombre, int token){
-
-	int posicion;
-	//Se consulta si esta llena la tabla de simbolos
-	if(cantidadDeSimbolos >= maxTabla - 1){
-		printf("Sin espacio en tabla de simbolos.\n");
-		system("Pause");
-		exit(2);
-	}
-
-	posicion = buscarPosicionTablaSimbolos(nombre);
-
-	if(posicion == -1){
-
-		cantidadDeSimbolos++;
-
-		strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-		strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-
-	switch (token)
-	{
-		case INT:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "INT");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;
-
-		case CONSTANTE:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "CONSTANTE");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;
-
-		case REAL:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "REAL");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;
-
-		case DOUBLE:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "DOUBLE");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;
-
-		case FLOAT:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "FLOAT");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;	
-
-		case STRING:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "STRING");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;		
-
-		default:
-			printf("Error en tipo de variable");
-			break;
-	}
-
-	}
-	else{
-		printf("La variable ya existe");
-		exit(1);
-	}
-}
-
-/*
-Descripcion:
-			Funcion para agregar el nombre a una variable, previamente 
-			debe estar el tipo declarado
-
-Parametros:
-			* Nombre: contiene la variable o constante a introducir a la 
-			  tabla de simbolos.
-*/
-
-int agregarNombreTablaDeSimbolos(char* nombre){
-
-	int posicion;
-	//Se consulta si esta llena la tabla de simbolos
-	if(cantidadDeSimbolos >= maxTabla - 1){
-		printf("Sin espacio en tabla de simbolos.\n");
-		system("Pause");
-		exit(2);
-	}
-
-	posicion = buscarPosicionTablaSimbolos(nombre);
-
-	if(posicion == -1){
-
-		cantidadDeSimbolos++;
-
-		strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-		strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-
-	}
-	else{
-		printf("La variable ya existe");
-		exit(1);
-	}
-	return cantidadDeSimbolos - 1;
-}
-
-/*
-Descripcion:
-			Funcion que agrega el tipo a la variable en la tabla de simbolos
-
-Parametros: 
-			* Cadena: numero de posicion en la tabla donde agregar el tipo
-			* Token: numero que identifica el tipo
-*/
-
-void agregarTipoTablaDeSimbolos(int posicionTabla, int token){
-
-	int posicion;
-	//Se consulta si esta llena la tabla de simbolos
-	if(cantidadDeSimbolos >= maxTabla - 1){
-		printf("Sin espacio en tabla de simbolos.\n");
-		system("Pause");
-		exit(2);
-	}
-
-	switch (token)
-	{
-		case INT:
-			strcpy(tablaSimbolos[posicionTabla].tipo, "INT");
-			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;
-
-		case CONSTANTE:
-			strcpy(tablaSimbolos[posicionTabla].tipo, "CONSTANTE");
-			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;
-
-		case REAL:
-			strcpy(tablaSimbolos[posicionTabla].tipo, "REAL");
-			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;
-
-		case DOUBLE:
-			strcpy(tablaSimbolos[posicionTabla].tipo, "DOUBLE");
-			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;
-
-		case FLOAT:
-			strcpy(tablaSimbolos[posicionTabla].tipo, "FLOAT");
-			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;	
-
-		case STRING:
-			strcpy(tablaSimbolos[posicionTabla].tipo, "STRING");
-			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;		
-
-		default:
-			printf("Error en tipo de variable");
-			break;
-	}
-
-}
-
-/*
-Descripcion:
-	Modifica el terceto con el indice indicado en la posicion indicada la posicion debe ser 
-	OP1, OP2 u OPERADOR.
-	Si el terceto no existe, aborta la compilacion.
-
-Parametros:
-			* Operando 1
-			* Operando 2
-			* Operador	
-*/
+/** Modifica el terceto con el indice indicado en la posicion indicada. El indice debe ser sin el OFFSET
+y la posicion debe ser OP1, OP2 u OPERADOR. Si el terceto no existe, aborta la compilacion. */
 
 void modificarTerceto(int indice, int posicion, int valor){
-
 	if(indice > ultimoTerceto -1){
-		printf("Indice a modificar fuera de rango, funcion modificarTerceto");
+		printf("Ups, algo fallo. Intente modificar un terceto que no existe. Mala mia.");
 		system ("Pause");
 		exit (4);
 	}
@@ -508,17 +351,7 @@ void modificarTerceto(int indice, int posicion, int valor){
 	}
 }
 
-/* 
-Descripcion:
-			Guarda en un archivo la lista de tercetos
-
-Parametros:
-			* Sin parametros
-
-Formato de escritura:
-			* [i] (operador, [op1], [op2])
-			* [i] ( _ , _ , op2)						 
-*/
+/* Guarda los tercetos generados en un archivo */
 
 void guardarArchivoTercetos(){
 	int o=0;
@@ -535,20 +368,27 @@ void guardarArchivoTercetos(){
 
 	int i;
 
-
-	// Empieza el bucle de la lista de tercetos
 	for( i = 0; i < ultimoTerceto; i++){
-
-		// Escribe la posicion de cada terceto.
+		//La forma es [i] (operador, op1, op2)
+		//Escribo indice
 		fprintf(arch, "[%d] ( ", i);
 
-		//Primer parametro del terceto, el cual es el operador
+		//escribo operador
 		switch(listaTercetos[i].operador){
 		case NOOP:
 			fprintf(arch, "_");
 			break;
 		case ASIGESPMAS:
 			fprintf(arch, "+=");
+			break;
+        case ASIGESPMENOS:
+			fprintf(arch, "-=");
+            break;
+        case ASIGESPMULTIPLICACION:
+			fprintf(arch, "*=");
+            break;
+        case ASIGESPDIVISION:
+			fprintf(arch, "/=");
 			break;
 		case BLOQ:
 			fprintf(arch, "sentencia");
@@ -562,11 +402,23 @@ void guardarArchivoTercetos(){
 		case IF:
 			fprintf(arch, "if");
 			break;
-		case ELSE:
+		case TRUE:
+			fprintf(arch, "cuerpoIf");
+			break;
+        case ELSE:
 			fprintf(arch, "cuerpoElse");
 			break;
+        case ENDIF:
+			fprintf(arch, "endIF");
+			break;
 		case WHILE:
-			fprintf(arch, "while");
+			fprintf(arch, "comparacionWhile");
+			break;
+        case ENDWHILE:
+			fprintf(arch, "finWhile");
+			break;
+        case ENDSENTENCE:
+			fprintf(arch, "finSentencia");
 			break;
 		case ASIG:
 			fprintf(arch, "=");
@@ -589,6 +441,9 @@ void guardarArchivoTercetos(){
 		case OR:
 			fprintf(arch, "o");
 			break;
+//		case NOT:
+//			fprintf(arch, "no");
+//			break;
 		case MENOR:
 			fprintf(arch, "<");
 			break;
@@ -628,11 +483,14 @@ void guardarArchivoTercetos(){
 		case BLE: //branch lower equal
 			fprintf(arch, "BLE");
 			break;
-		case BLT: //branch lower equal
+		case BLT: //branch lower than
 			fprintf(arch, "BLT");
 			break;
 		case JMP: //jump to operand
 			fprintf(arch, "JMP");
+			break;
+        case JNA: //jump not above
+			fprintf(arch, "JNA");
 			break;
 		case INL:
 			fprintf(arch, "INL");
@@ -644,13 +502,13 @@ void guardarArchivoTercetos(){
 			fprintf(arch, "IOK");
 			break;
 		default:
-			fprintf(arch, "Error al escribir el operador");
+			fprintf(arch, "algo esta mal");
 			break;
 		}
 
 		fprintf(arch, " , ");
 
-		//Segundo parametro del terceto, el cual es el op1
+		//Escribo op1, el SEGUNDO PARAMETRO
 		int op = listaTercetos[i].op1;
 
 		if(op == NOOP)
@@ -666,6 +524,8 @@ void guardarArchivoTercetos(){
 				}
 			}
 			indiceLimpioSimbolo=0;
+			//fprintf(arch, "%s", &(tablaSimbolos[op].nombre) );
+			//fprintf(arch, "%s", nombreCopiar );
 			fprintf(arch, "[%d]", op );
 		}
 		else //Es el indice de otro terceto
@@ -673,8 +533,8 @@ void guardarArchivoTercetos(){
 
 		fprintf(arch, " , ");
 
+		//Escribo op2 TERCER PARAMETRO
 
-		//Tercer parametro del terceto, el cual es el op2
 		op = listaTercetos[i].op2;
 		if(op == NOOP)
 			fprintf(arch, "_");
