@@ -80,7 +80,12 @@
      ASIGESPMENOS = 296,
      ASIGESPMULTIPLICACION = 297,
      ASIGESPDIVISION = 298,
-     STRING = 299
+     STRING = 299,
+     JNA = 300,
+     ENDIF = 301,
+     TRUE = 302,
+     ENDSENTENCE = 303,
+     ENDWHILE = 304
    };
 #endif
 /* Tokens.  */
@@ -126,6 +131,11 @@
 #define ASIGESPMULTIPLICACION 297
 #define ASIGESPDIVISION 298
 #define STRING 299
+#define JNA 300
+#define ENDIF 301
+#define TRUE 302
+#define ENDSENTENCE 303
+#define ENDWHILE 304
 
 
 
@@ -135,7 +145,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 29 "analizadorSintactico.y"
+#line 50 "analizadorSintactico.y"
 
 	char var[20];
 	int valor;
@@ -143,7 +153,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 147 "y.tab.h"
+#line 157 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
