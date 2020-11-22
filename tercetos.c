@@ -4,8 +4,8 @@
 #include "y.tab.h"
 //#include "analizadorLexico.y"
 int ultimoTerceto;
-int maxTercetos = 50;
-int maxTabla = 50;
+int maxTercetos = 100;
+int maxTabla = 100;
 int cantidadDeSimbolos=0;
 FILE *archivoSimbolos;
 
@@ -13,7 +13,7 @@ struct terceto{
 	int operador;
 	int op1;
 	int op2;
-}listaTercetos[50]={0};
+}listaTercetos[100]={0};
 
   struct tablaSimbolos
   {
@@ -21,7 +21,7 @@ struct terceto{
       char tipo[20];
       char valor[20];
       int longitud;
-  } tablaSimbolos[50]={0};
+  } tablaSimbolos[100]={0};
 
 
     void lecturaArchivo(){

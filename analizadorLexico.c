@@ -15,15 +15,6 @@ extern FILE *yyin;
       int valor;
   };
 
-  struct tablaSimbolos
-  {
-      char nombre[20];
-      char tipo[20];
-      char valor[20];
-      int longitud;
-      char tuplaTotal[80];
-  } tabla[50]={0};
-
 	char identificador[20]={0};
 	char constante[20]={0};
 	char string[20]={0};
@@ -42,7 +33,7 @@ extern FILE *yyin;
 	int terminar=0;
 	int contadorSombrero=0;
 	int contadorComillas=0;
-	int contadorRegistroTabla=0;
+
 	int contadorSimbolos=0;
 	int retroceder=0;
 	int segundavuelta=0;
@@ -183,14 +174,6 @@ extern FILE *yyin;
 
             strcpy(yylval.var,constante);
             tkn.valor=-1;
-
-            strcpy(tabla[contadorRegistroTabla].nombre, "_");
-            strcat(tabla[contadorRegistroTabla].nombre, constante);
-            strcpy(tabla[contadorRegistroTabla].tipo,"CONSTANTE");
-            strcpy(tabla[contadorRegistroTabla].valor,constante);
-            tabla[contadorRegistroTabla].longitud=0;
-            contadorRegistroTabla++;
-
             return tkn;
 	    }
 
@@ -199,13 +182,6 @@ extern FILE *yyin;
 
             strcpy(yylval.var,reales);
             tkn.valor=-1;
-
-            strcpy(tabla[contadorRegistroTabla].nombre, "_");
-            strcat(tabla[contadorRegistroTabla].nombre, reales);
-            strcpy(tabla[contadorRegistroTabla].tipo,"REAL");
-            strcpy(tabla[contadorRegistroTabla].valor,reales);
-            tabla[contadorRegistroTabla].longitud=0;
-            contadorRegistroTabla++;
 
             return tkn;
 	    }
@@ -361,13 +337,6 @@ extern FILE *yyin;
             strcpy(yylval.var,string);
             tkn.valor=-1;
 
-            strcpy(tabla[contadorRegistroTabla].nombre, "_");
-            strcat(tabla[contadorRegistroTabla].nombre, string);
-            strcpy(tabla[contadorRegistroTabla].tipo,"STRING");
-            strcpy(tabla[contadorRegistroTabla].valor,string);
-            tabla[contadorRegistroTabla].longitud=strlen(string);
-            contadorRegistroTabla++;
-
             return tkn;
 	    }
 
@@ -383,20 +352,12 @@ extern FILE *yyin;
             b=0;
             strcpy(bufferIdentificador,"_");
             strcat(bufferIdentificador, identificador);
-            for(i=0;i<contadorRegistroTabla;i++){
-                    if(strcmp(bufferIdentificador,tabla[i].nombre)==0)
-                        b=1;
-            }
+
             strcpy(yylval.var,identificador);
             tkn.token=IDENTIFICADOR;
             tkn.valor=-1;
 
             if(b==0){
-                strcpy(tabla[contadorRegistroTabla].nombre, "_");
-                strcat(tabla[contadorRegistroTabla].nombre, identificador);
-                strcpy(tabla[contadorRegistroTabla].tipo,"IDENTIFICADOR");
-                tabla[contadorRegistroTabla].longitud=0;
-                contadorRegistroTabla++;
                 for (i=0;i<20;i++)
                     bufferIdentificador[i]='\0';
             }
