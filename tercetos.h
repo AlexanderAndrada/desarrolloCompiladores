@@ -6,7 +6,8 @@
 
 #define OFFSET TAMANIO_TABLA
 #define maximoTercetos 512
-
+//#define maxTercetos 100
+//#define maxTabla 100
 /* Operadores extra para usar con los tokens */
 #define NOOP -1 /* Sin operador */
 #define BLOQ 7  /* Operador que indica el orden de las sentencias */

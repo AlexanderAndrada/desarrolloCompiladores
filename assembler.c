@@ -1,10 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "assembler.h"
-#include "../y.tab.h"
+#include "y.tab.h"
 #include "tercetos.h"
 
-void generarAssembler(){
+int ultimo_terceto;
+int fin_tabla;
+
+struct terceto{
+	int operador;
+	int op1;
+	int op2;
+};
+
+  struct tablaSimbolos
+  {
+      char nombre[20];
+      char tipo[20];
+	  int tipoToken;
+      char valor[20];
+      int longitud;
+  };
+
+struct terceto *lista_terceto;
+struct tablaSimbolos *tabla_simbolo;
+
+void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct tablaSimbolos *tablaSimbolo, int finTabla)
+{
+	lista_terceto = listaTerceto;
+	tabla_simbolo = tablaSimbolo;
+	
+	ultimo_terceto = ultimoTerceto;
+	fin_tabla = finTabla;
+
   FILE* arch = fopen("Final.asm", "w");
   if(!arch){
 		printf("No pude crear el archivo final.txt\n");
@@ -46,9 +74,9 @@ void generarAssembler(){
         escribirSalto(arch, "JMP", lista_terceto[i].op1);
         break;
 
-      case THEN:
-        escribirEtiqueta(arch, "then", i);
-        break;
+   //   case THEN:
+     //   escribirEtiqueta(arch, "then", i);
+       // break;
       case ELSE:
         escribirEtiqueta(arch, "else", i);
         break;
@@ -63,31 +91,31 @@ void generarAssembler(){
         escribirEtiqueta(arch, "endwhile", i);
         break;
 
-	case INLIST_TRUE:
-		escribirEtiqueta(arch, "inlistTrue", i);
-		break;
-	case INLIST_CMP:
-		escribirEtiqueta(arch, "inlistCMP", i);
-		break;
+	//case INLIST_TRUE:
+	//	escribirEtiqueta(arch, "inlistTrue", i);
+	//	break;
+	//case INLIST_CMP:
+	//	escribirEtiqueta(arch, "inlistCMP", i);
+	//	break;
 
-      case MAS:
+      case SUMA:
 		suma(arch,i);
         break;
-      case MENOS:
-		resta(arch,i);
-        break;
-      case POR:
+     // case RESTA:
+		//resta(arch,i);
+        //break;
+      case MULTIPLICACION:
 		multiplicacion(arch,i);
         break;
-      case DIVIDIDO:
+      case DIVISION:
 		division(arch,i);
         break;
 
-      case READ: read (arch,i);
-        break;
-      case WRITE:
-	  	write(arch, i);
-        break;
+      //case READ: read (arch,i);
+      //  break;
+      //case WRITE:
+	  	//write(arch, i);
+      //  break;
     }
   }
 
@@ -116,15 +144,15 @@ void generarTabla(FILE *arch){
 
     for(int i=0; i<=fin_tabla; i++){
         fprintf(arch, "%s ", tabla_simbolo[i].nombre);
-        switch(tabla_simbolo[i].tipo_dato){
-        case CteInt:
-            fprintf(arch, "dd %d\n", tabla_simbolo[i].valor_i);
+        switch(tabla_simbolo[i].tipoToken){
+        case INT:
+            fprintf(arch, "dd %d\n", tabla_simbolo[i].valor);
             break;
-        case CteFloat:
-            fprintf(arch, "dd %f\n", tabla_simbolo[i].valor_f);
+        case FLOAT:
+            fprintf(arch, "dd %f\n", tabla_simbolo[i].valor);
             break;
-        case CteString:
-            fprintf(arch, "db \"%s\", '$'\n", tabla_simbolo[i].valor_s);
+        case STRING:
+            fprintf(arch, "db \"%s\", '$'\n", tabla_simbolo[i].valor);
             break;
         default: //Es una variable int, float o puntero a string
             fprintf(arch, "dd ?\n");
@@ -135,7 +163,7 @@ void generarTabla(FILE *arch){
 }
 
 void escribirEtiqueta(FILE* arch, char* etiqueta, int n){
-    fprintf(arch, "%s%d:\n", etiqueta, n+OFFSET);
+    fprintf(arch, "%s%d:\n", etiqueta, n);
 }
 
 void escribirSalto(FILE* arch, char* salto, int tercetoDestino){
@@ -148,10 +176,10 @@ void escribirSalto(FILE* arch, char* salto, int tercetoDestino){
         exit(10);
     }
 
-    switch( lista_terceto[tercetoDestino - OFFSET].operador ){
-    case THEN:
-        fprintf(arch, "then");
-        break;
+    switch( lista_terceto[tercetoDestino].operador ){
+    //case THEN:
+      //  fprintf(arch, "then");
+        //break;
     case ELSE:
         fprintf(arch, "else");
         break;
@@ -164,11 +192,11 @@ void escribirSalto(FILE* arch, char* salto, int tercetoDestino){
     case ENDWHILE:
         fprintf(arch, "endwhile");
 		break;
-	case INLIST_TRUE:
-        fprintf(arch, "inlistTrue");
-		break;
-	case INLIST_CMP:
-        fprintf(arch, "inlistCMP");
+	//case INLIST_TRUE:
+      //  fprintf(arch, "inlistTrue");
+		//break;
+//	case INLIST_CMP:
+  //      fprintf(arch, "inlistCMP");
     }
 
     fprintf(arch, "%d\n", tercetoDestino);
@@ -179,24 +207,24 @@ void asignacion(FILE* arch, int ind){
 	int origen = lista_terceto[ind].op2;
 
 	//Ver tipo de dato
-	switch(tabla_simbolo[destino].tipo_dato){
-	case Int:
+	switch(tabla_simbolo[destino].tipoToken){
+	case INT:
 		// Si es un int de tabla de simbolos, primero hay que traerlo de memoria a st(0)
 		// Sino es el resultado de una expresion anterior y ya esta en st(0)
-		if(origen < OFFSET) //Es un int en tabla de simbolos
+//		if(origen < OFFSET) //Es un int en tabla de simbolos
 			fprintf(arch, "FILD %s\n", tabla_simbolo[origen].nombre);
-		else //El valor ya esta en el copro, puede que haga falta redondear
-			fprintf(arch, "FSTCW CWprevio ;Guardo Control Word del copro\nOR CWprevio, 0400h ;Preparo Control Word seteando RC con redondeo hacia abajo\nFLDCW CWprevio ;Cargo nueva Control Word\n");
+//		else //El valor ya esta en el copro, puede que haga falta redondear
+//			fprintf(arch, "FSTCW CWprevio ;Guardo Control Word del copro\nOR CWprevio, 0400h ;Preparo Control Word seteando RC con redondeo hacia abajo\nFLDCW CWprevio ;Cargo nueva Control Word\n");
 		fprintf(arch, "FISTP %s", tabla_simbolo[destino].nombre);
 		break;
-	case Float:
+	case FLOAT:
 		// Si es un float de tabla de simbolos, primero hay que traerlo de memoria a st(0)
 		// Sino es el resultado de una expresion anterior y ya esta en st(0)
-		if(origen < OFFSET) //Es un float en tabla de simbolos
+	//	if(origen < OFFSET) //Es un float en tabla de simbolos
 			fprintf(arch, "FLD %s\n", tabla_simbolo[origen].nombre);
 		fprintf(arch, "FSTP %s", tabla_simbolo[destino].nombre);
 		break;
-	case String:
+	case STRING:
 		//destino y origen son entradas a tabla de simbolos
 		//Cargo direccion del origen y pongo esa direccion en la variable en memoria. La variable sera puntero a string.
 		fprintf(arch, "LEA EAX, %s\nMOV %s, EAX", tabla_simbolo[origen].nombre, tabla_simbolo[destino].nombre);
@@ -217,6 +245,7 @@ void suma(FILE* arch, int ind){
 	fprintf(arch, "FADD\n");
 }
 /** Levanta, revisa si hay dos operadores: Si hay uno, calcula el negativo. Si hay dos, resta y deja en pila*/
+/*
 void resta(FILE* arch, int ind){
 	if(lista_terceto[ind].op2==NOOP){
 		int aux;
@@ -246,7 +275,9 @@ void resta(FILE* arch, int ind){
 		levantarEnPila(arch, ind);
 		fprintf(arch, "FSUB\n");
 	}
-}
+}*/
+
+
 /** Levanta, multiplica, y deja en pila */
 void multiplicacion(FILE* arch, int ind){
 	levantarEnPila(arch, ind);
@@ -264,37 +295,38 @@ void levantarEnPila(FILE* arch, const int ind){
 	int elemDer = lista_terceto[ind].op2;
 	int izqLevantado = 0;
 	/* Si el elemento no está en pila lo levanta */
-	if(elemIzq < OFFSET){
-		switch(tabla_simbolo[elemIzq].tipo_dato){
-		case Int:
+//	if(elemIzq < OFFSET){
+		switch(tabla_simbolo[elemIzq].tipoToken){
+		case INT:
 			//FILD n; Donde n es el numero integer en memoria
 			fprintf(arch, "FILD %s\n", tabla_simbolo[elemIzq].nombre);
 			break;
-		case Float:
+		case FLOAT:
 			//FLD n; Donde n es el numero float en memoria
 			fprintf(arch, "FLD %s\n", tabla_simbolo[elemIzq].nombre);
 			break;
-		case CteInt:
+		//case CteInt:
 			//FILD n;Donde n es el numero integer en tabla
-			fprintf(arch, "FILD %s\n", tabla_simbolo[elemIzq].nombre);
+		//	fprintf(arch, "FILD %s\n", tabla_simbolo[elemIzq].nombre);
 			break;
-		case CteFloat:
+		//case CteFloat:
 			//FLD n;Donde n es el numero float en tabla
-			fprintf(arch, "FLD %s\n", tabla_simbolo[elemIzq].nombre);
-			break;
+		//	fprintf(arch, "FLD %s\n", tabla_simbolo[elemIzq].nombre);
+		//	break;
 		}
 		izqLevantado=1;
-	}
-	if(elemDer < OFFSET){
-		switch(tabla_simbolo[elemDer].tipo_dato){
-		case Int:
+//	}
+//	if(elemDer < OFFSET){
+		switch(tabla_simbolo[elemDer].tipoToken){
+		case INT:
 			//FILD n; Donde n es el numero integer en memoria
 			fprintf(arch, "FILD %s\n", tabla_simbolo[elemDer].nombre);
 			break;
-		case Float:
+		case FLOAT:
 			//FLD n; Donde n es el numero float en memoria
 			fprintf(arch, "FLD %s\n", tabla_simbolo[elemDer].nombre);
 			break;
+	/*
 		case CteInt:
 			//FILD n;Donde n es el numero integer en tabla
 			fprintf(arch, "FILD %s\n", tabla_simbolo[elemDer].nombre);
@@ -304,48 +336,50 @@ void levantarEnPila(FILE* arch, const int ind){
 			fprintf(arch, "FLD %s\n", tabla_simbolo[elemDer].nombre);
 			break;
 		}
-		izqLevantado=0;
+		*/
+		//izqLevantado=0;
 	}
-	if(izqLevantado){
-		fprintf(arch, "FXCH\n");
-	}
+	//if(izqLevantado){
+	//	fprintf(arch, "FXCH\n");
+	//}
 }
 
-void write(FILE* arch, int terceto){
+void write(FILE* arch, int terceto) {
 	int ind = lista_terceto[terceto].op1; //Indice de entrada a tabla de simbolos del mensaje a mostrar
-	switch(tabla_simbolo[ind].tipo_dato){
-	case Int:
+	switch(tabla_simbolo[ind].tipoToken){
+	case INT:
 		fprintf(arch, "DisplayInteger %s\n", tabla_simbolo[ind].nombre);
 		fprintf(arch, "displayString NEW_LINE\n");
 		break;
-	case Float:
+	case FLOAT:
 		fprintf(arch, "DisplayFloat %s,2\n", tabla_simbolo[ind].nombre);
 		fprintf(arch, "displayString NEW_LINE\n");
 		break;
-	case String:
+	case STRING:
 		fprintf(arch, "MOV EBX, %s\ndisplayString [EBX]\n", tabla_simbolo[ind].nombre);
 		fprintf(arch, "displayString NEW_LINE\n");
 		break;
+		/*
 	case CteString:
 		fprintf(arch, "displayString %s\n", tabla_simbolo[ind].nombre);
 		fprintf(arch, "displayString NEW_LINE\n");
-		break;
+		break;*/
 	}
 	fprintf(arch, "\n");
 }
 
 void read(FILE* arch, int terceto){
 	int ind = lista_terceto[terceto].op1;
-	switch(tabla_simbolo[ind].tipo_dato){
-	case Int:
+	switch(tabla_simbolo[ind].tipoToken){
+	case INT:
 		fprintf(arch, "getInteger %s\n", tabla_simbolo[ind].nombre);
 
 		break;
-	case Float:
+	case FLOAT:
 		fprintf(arch, "getFloat %s\n", tabla_simbolo[ind].nombre);
 
 		break;
-	case String:
+	case STRING:
 		fprintf(arch, "getString %s\n", tabla_simbolo[ind].nombre);
 
 	}

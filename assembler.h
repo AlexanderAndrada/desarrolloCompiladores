@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "tercetos.h"
+//#include "tercetos.c"
 
 void generarAssembler();
 void escribirInicio(FILE* arch);
@@ -21,11 +22,5 @@ void division(FILE* arch, int terceto);
 void levantarEnPila(FILE* arch, const int ind);
 void write(FILE* arch, int ind);
 void read(FILE* arch, int ind);
-
-//Variables externas
-extern simbolo tabla_simbolo[TAMANIO_TABLA];
-extern int fin_tabla;
-extern terceto lista_terceto[MAX_TERCETOS];
-extern int ultimo_terceto;
 
 #endif

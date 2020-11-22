@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "tercetos.h"
 #include "y.tab.h"
+
 //#include "analizadorLexico.y"
 int ultimoTerceto;
 int maxTercetos = 100;
@@ -21,6 +22,7 @@ struct terceto{
       char tipo[20];
       char valor[20];
       int longitud;
+	  int tipoToken;
   } tablaSimbolos[100]={0};
 
 
@@ -588,32 +590,38 @@ agregarConstanteTablaDeSimbolos(char* const nombre, int token){
 	{
 		case INT:
 			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "INT");
+			tablaSimbolos[cantidadDeSimbolos - 1].tipoToken = token;
 			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case CONSTANTE:
 			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "CONSTANTE");
 			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
+			tablaSimbolos[cantidadDeSimbolos - 1].tipoToken = token;
 			break;
 
 		case REAL:
 			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "REAL");
 			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
+			tablaSimbolos[cantidadDeSimbolos - 1].tipoToken = token;
 			break;
 
 		case DOUBLE:
 			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "DOUBLE");
 			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
+			tablaSimbolos[cantidadDeSimbolos - 1].tipoToken = token;
 			break;
 
 		case FLOAT:
 			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "FLOAT");
 			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
+			tablaSimbolos[cantidadDeSimbolos - 1].tipoToken = token;
 			break;	
 
 		case STRING:
 			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "STRING");
 			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
+			tablaSimbolos[cantidadDeSimbolos - 1].tipoToken = token;
 			break;		
 
 		default:
@@ -748,4 +756,20 @@ void validarExistenciaVariable(int status, char const *variable){
 		exit(1);
 	}
 	return status;
-}		
+}
+
+int devolverUltimoTerceto(){
+	return ultimoTerceto;
+}
+
+int devolverUltimoSimboloTabla(){
+	return cantidadDeSimbolos;
+}
+
+struct terceto *devolverTercetos(){
+	return listaTercetos;
+}
+
+struct tablaSimbolos *devolverTablaSimbolos(){
+	return tablaSimbolos;
+}

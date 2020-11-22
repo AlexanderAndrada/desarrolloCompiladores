@@ -73,7 +73,13 @@ int ultimoTerceto;
 
 %%
 programa:
-	MAIN ABRIRLLAVE declaracion sentencias CERRARLLAVE {printf("Main OK\n");escribirTablaSimbolos();guardarArchivoTercetos();}
+	MAIN ABRIRLLAVE declaracion sentencias CERRARLLAVE {
+		printf("Main OK\n");
+		escribirTablaSimbolos();
+		guardarArchivoTercetos();
+
+		generarAssembler(devolverTercetos(),devolverUltimoTerceto(),devolverTablaSimbolos(),devolverUltimoSimboloTabla());
+		}
 	;
 
 declaracion:
