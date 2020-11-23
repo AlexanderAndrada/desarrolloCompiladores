@@ -1,1434 +1,1668 @@
 Terminals unused in grammar
 
    COMENTARIO
-   CONCAT
+   JNA
+   ENDIF
+   TRUE
+   ENDSENTENCE
+   ENDWHILE
 
 
-Grammar
+Gramática
 
     0 $accept: programa $end
 
-    1 programa: MAIN ABRIRLLAVE sentencias CERRARLLAVE
+    1 programa: MAIN ABRIRLLAVE declaracion sentencias CERRARLLAVE
 
-    2 sentencias: sentencia PUNTOYCOMA
-    3           | sentencias sentencia PUNTOYCOMA
+    2 declaracion: DECLARE sentenciadeclaracion PUNTOYCOMA
 
-    4 sentencia: WHILE sentenciawhile
-    5          | IF sentenciaif
-    6          | DECLARE declaretion PUNTOYCOMA
-    7          | expresion
-    8          | asignacion
-    9          | asignacionespecial
-   10          | PUT sentenciaparentesis
-   11          | GET factorparentesis
+    3 sentenciadeclaracion: tipo identificadorintermedio
+    4                     | sentenciadeclaracion tipo identificadorintermedio
 
-   12 sentenciaparentesis: factorparentesis
-   13                    | ABRIRPARENTESIS STRING CERRARPARENTESIS
+    5 tipo: FLOAT
+    6     | INT
+    7     | STRING
+    8     | BOOLEAN
+    9     | CHAR
+   10     | DOUBLE
 
-   14 factorparentesis: ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS
+   11 identificadorintermedio: IDENTIFICADOR
+   12                        | identificadorintermedio IDENTIFICADOR
 
-   15 sentenciawhile: ABRIRPARENTESIS sentenciacomparacionwhile CERRARPARENTESIS sentenciainicialwhile
+   13 sentencias: sentencia PUNTOYCOMA
+   14           | sentencias sentencia PUNTOYCOMA
 
-   16 sentenciacomparacionwhile: expresioncomparacionwhile
-   17                          | expresioncomparacionwhile AND expresioncomparacionwhile
-   18                          | expresioncomparacionwhile OR expresioncomparacionwhile
+   15 sentencia: WHILE sentenciawhile
+   16          | IF sentenciaif
+   17          | expresion
+   18          | asignacion
+   19          | asignacionespecial
+   20          | PUT sentenciaparentesis
+   21          | GET factorparentesis
 
-   19 expresioncomparacionwhile: expresion comparadores expresion
+   22 sentenciaparentesis: factorparentesis
+   23                    | ABRIRPARENTESIS STRING CERRARPARENTESIS
 
-   20 sentenciainicialwhile: ABRIRLLAVE sentenciaintermediawhile CERRARLLAVE
+   24 factorparentesis: ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS
 
-   21 sentenciaintermediawhile: sentencia
-   22                         | sentenciaintermediawhile PUNTOYCOMA sentencia
+   25 $@1: /* vacío */
 
-   23 sentenciaif: ABRIRPARENTESIS sentenciacomparacionif CERRARPARENTESIS sentenciainicialif
+   26 sentenciawhile: ABRIRPARENTESIS $@1 sentenciacomparacionwhile CERRARPARENTESIS sentenciainicialwhile
 
-   24 sentenciacomparacionif: expresioncomparacionif
-   25                       | expresioncomparacionif AND expresioncomparacionif
-   26                       | expresioncomparacionif OR expresioncomparacionif
+   27 sentenciacomparacionwhile: expresioncomparacionwhile
 
-   27 expresioncomparacionif: expresion comparadores expresion
+   28 $@2: /* vacío */
 
-   28 sentenciainicialif: ABRIRLLAVE sentenciaintermediaif CERRARLLAVE ELSE ABRIRLLAVE sentenciaintermediaif CERRARLLAVE
-   29                   | ABRIRLLAVE sentenciaintermediaif CERRARLLAVE
+   29 sentenciacomparacionwhile: expresioncomparacionwhile $@2 AND expresioncomparacionwhile
 
-   30 sentenciaintermediaif: sentencia
-   31                      | sentenciaintermediaif PUNTOYCOMA sentencia
+   30 $@3: /* vacío */
 
-   32 asignacion: IDENTIFICADOR ASIG expresion
+   31 sentenciacomparacionwhile: expresioncomparacionwhile $@3 OR expresioncomparacionwhile
 
-   33 asignacionespecial: IDENTIFICADOR asignadorespecial
+   32 expresioncomparacionwhile: expresion2 comparadores expresion
 
-   34 asignadorespecial: ASIGESPMAS expresion
-   35                  | ASIGESPMENOS expresion
-   36                  | ASIGESPMULTIPLICACION expresion
-   37                  | ASIGESPDIVISION expresion
+   33 sentenciainicialwhile: ABRIRLLAVE sentenciaintermediawhile CERRARLLAVE
 
-   38 declaretion: tipo identificadorintermedio
-   39            | declaretion PUNTOYCOMA tipo identificadorintermedio
+   34 sentenciaintermediawhile: sentencia PUNTOYCOMA
+   35                         | sentenciaintermediawhile PUNTOYCOMA sentencia PUNTOYCOMA
 
-   40 tipo: FLOAT
-   41     | INT
-   42     | STRING
-   43     | BOOLEAN
-   44     | CHAR
-   45     | DOUBLE
+   36 $@4: /* vacío */
 
-   46 identificadorintermedio: IDENTIFICADOR
-   47                        | identificadorintermedio ',' IDENTIFICADOR
+   37 $@5: /* vacío */
 
-   48 expresion: termino
-   49          | expresion RESTA termino
-   50          | expresion SUMA termino
+   38 sentenciaif: ABRIRPARENTESIS $@4 sentenciacomparacionif CERRARPARENTESIS $@5 sentenciainicialif
 
-   51 termino: factor
-   52        | termino MULTIPLICACION factor
-   53        | termino DIVISION factor
+   39 sentenciacomparacionif: expresioncomparacionif
 
-   54 comparadores: MAYOR
-   55             | MENOR
-   56             | MAYORIGUAL
-   57             | MENORIGUAL
-   58             | IGUAL
-   59             | DISTINTO
+   40 $@6: /* vacío */
 
-   60 factor: IDENTIFICADOR
-   61       | CONSTANTE
-   62       | REAL
-   63       | IDENTIFICADOR ABRIRCORCHETE CONSTANTE CERRARCORCHETE
-   64       | STRING
+   41 sentenciacomparacionif: expresioncomparacionif $@6 AND expresioncomparacionif
+
+   42 $@7: /* vacío */
+
+   43 sentenciacomparacionif: expresioncomparacionif $@7 OR expresioncomparacionif
+
+   44 expresioncomparacionif: expresion2 comparadores expresion
+
+   45 $@8: /* vacío */
+
+   46 sentenciainicialif: ABRIRLLAVE sentenciaintermediaif CERRARLLAVE $@8 sentenciaelse
+   47                   | ABRIRLLAVE sentenciaintermediaif CERRARLLAVE
+
+   48 sentenciaintermediaif: sentencia PUNTOYCOMA
+   49                      | sentenciaintermediaif PUNTOYCOMA sentencia PUNTOYCOMA
+
+   50 $@9: /* vacío */
+
+   51 sentenciaelse: ELSE ABRIRLLAVE $@9 sentenciaintermediaif CERRARLLAVE
+
+   52 asignacion: IDENTIFICADOR ASIG expresion
+   53           | IDENTIFICADOR ASIG expresionstrings
+
+   54 asignacionespecial: IDENTIFICADOR asignadorespecial
+
+   55 asignadorespecial: ASIGESPMAS expresion
+   56                  | ASIGESPMENOS expresion
+   57                  | ASIGESPMULTIPLICACION expresion
+   58                  | ASIGESPDIVISION expresion
+
+   59 expresionstrings: STRING CONCAT STRING
+   60                 | expresionstrings CONCAT STRING
+
+   61 expresion2: expresion
+
+   62 expresion: termino
+   63          | expresion RESTA termino
+   64          | expresion SUMA termino
+
+   65 termino: factor
+   66        | termino MULTIPLICACION factor
+   67        | termino DIVISION factor
+
+   68 comparadores: MAYOR
+   69             | MENOR
+   70             | MENORIGUAL
+   71             | MAYORIGUAL
+   72             | IGUAL
+   73             | DISTINTO
+
+   74 factor: IDENTIFICADOR
+   75       | CONSTANTE
+   76       | REAL
+   77       | IDENTIFICADOR ABRIRCORCHETE CONSTANTE CERRARCORCHETE
+   78       | STRING
 
 
-Terminals, with rules where they appear
+Terminales con las reglas donde aparecen
 
 $end (0) 0
-',' (44) 47
 error (256)
-IDENTIFICADOR (258) 14 32 33 46 47 60 63
-CONSTANTE (259) 61 63
-REAL (260) 62
+IDENTIFICADOR (258) 11 12 24 52 53 54 74 77
+CONSTANTE (259) 75 77
+REAL (260) 76
 MAIN (261) 1
 COMENTARIO (262)
-CONCAT (263)
-SUMA (264) 50
-RESTA (265) 49
-MULTIPLICACION (266) 52
-DIVISION (267) 53
-ASIG (268) 32
-MAYOR (269) 54
-MENOR (270) 55
-MAYORIGUAL (271) 56
-MENORIGUAL (272) 57
-IGUAL (273) 58
-DISTINTO (274) 59
-PUNTOYCOMA (275) 2 3 6 22 31 39
-ABRIRPARENTESIS (276) 13 14 15 23
-CERRARPARENTESIS (277) 13 14 15 23
-ABRIRLLAVE (278) 1 20 28 29
-CERRARLLAVE (279) 1 20 28 29
-ABRIRCORCHETE (280) 63
-CERRARCORCHETE (281) 63
-IF (282) 5
-ELSE (283) 28
-WHILE (284) 4
-PUT (285) 10
-GET (286) 11
-AND (287) 17 25
-OR (288) 18 26
-DECLARE (289) 6
-INT (290) 41
-FLOAT (291) 40
-DOUBLE (292) 45
-CHAR (293) 44
-BOOLEAN (294) 43
-ASIGESPMAS (295) 34
-ASIGESPMENOS (296) 35
-ASIGESPMULTIPLICACION (297) 36
-ASIGESPDIVISION (298) 37
-STRING (299) 13 42 64
+CONCAT (263) 59 60
+SUMA (264) 64
+RESTA (265) 63
+MULTIPLICACION (266) 66
+DIVISION (267) 67
+ASIG (268) 52 53
+MAYOR (269) 68
+MENOR (270) 69
+MAYORIGUAL (271) 71
+MENORIGUAL (272) 70
+IGUAL (273) 72
+DISTINTO (274) 73
+PUNTOYCOMA (275) 2 13 14 34 35 48 49
+ABRIRPARENTESIS (276) 23 24 26 38
+CERRARPARENTESIS (277) 23 24 26 38
+ABRIRLLAVE (278) 1 33 46 47 51
+CERRARLLAVE (279) 1 33 46 47 51
+ABRIRCORCHETE (280) 77
+CERRARCORCHETE (281) 77
+IF (282) 16
+ELSE (283) 51
+WHILE (284) 15
+PUT (285) 20
+GET (286) 21
+AND (287) 29 41
+OR (288) 31 43
+DECLARE (289) 2
+INT (290) 6
+FLOAT (291) 5
+DOUBLE (292) 10
+CHAR (293) 9
+BOOLEAN (294) 8
+ASIGESPMAS (295) 55
+ASIGESPMENOS (296) 56
+ASIGESPMULTIPLICACION (297) 57
+ASIGESPDIVISION (298) 58
+STRING (299) 7 23 59 60 78
+JNA (300)
+ENDIF (301)
+TRUE (302)
+ENDSENTENCE (303)
+ENDWHILE (304)
 
 
-Nonterminals, with rules where they appear
+No terminales con las reglas donde aparecen
 
-$accept (46)
-    on left: 0
-programa (47)
-    on left: 1, on right: 0
-sentencias (48)
-    on left: 2 3, on right: 1 3
-sentencia (49)
-    on left: 4 5 6 7 8 9 10 11, on right: 2 3 21 22 30 31
-sentenciaparentesis (50)
-    on left: 12 13, on right: 10
-factorparentesis (51)
-    on left: 14, on right: 11 12
-sentenciawhile (52)
-    on left: 15, on right: 4
-sentenciacomparacionwhile (53)
-    on left: 16 17 18, on right: 15
-expresioncomparacionwhile (54)
-    on left: 19, on right: 16 17 18
-sentenciainicialwhile (55)
-    on left: 20, on right: 15
-sentenciaintermediawhile (56)
-    on left: 21 22, on right: 20 22
-sentenciaif (57)
-    on left: 23, on right: 5
-sentenciacomparacionif (58)
-    on left: 24 25 26, on right: 23
-expresioncomparacionif (59)
-    on left: 27, on right: 24 25 26
-sentenciainicialif (60)
-    on left: 28 29, on right: 23
-sentenciaintermediaif (61)
-    on left: 30 31, on right: 28 29 31
-asignacion (62)
-    on left: 32, on right: 8
-asignacionespecial (63)
-    on left: 33, on right: 9
-asignadorespecial (64)
-    on left: 34 35 36 37, on right: 33
-declaretion (65)
-    on left: 38 39, on right: 6 39
-tipo (66)
-    on left: 40 41 42 43 44 45, on right: 38 39
-identificadorintermedio (67)
-    on left: 46 47, on right: 38 39 47
-expresion (68)
-    on left: 48 49 50, on right: 7 19 27 32 34 35 36 37 49 50
-termino (69)
-    on left: 51 52 53, on right: 48 49 50 52 53
-comparadores (70)
-    on left: 54 55 56 57 58 59, on right: 19 27
-factor (71)
-    on left: 60 61 62 63 64, on right: 51 52 53
+$accept (50)
+    en la izquierda: 0
+programa (51)
+    en la izquierda: 1, en la derecha: 0
+declaracion (52)
+    en la izquierda: 2, en la derecha: 1
+sentenciadeclaracion (53)
+    en la izquierda: 3 4, en la derecha: 2 4
+tipo (54)
+    en la izquierda: 5 6 7 8 9 10, en la derecha: 3 4
+identificadorintermedio (55)
+    en la izquierda: 11 12, en la derecha: 3 4 12
+sentencias (56)
+    en la izquierda: 13 14, en la derecha: 1 14
+sentencia (57)
+    en la izquierda: 15 16 17 18 19 20 21, en la derecha: 13 14 34
+    35 48 49
+sentenciaparentesis (58)
+    en la izquierda: 22 23, en la derecha: 20
+factorparentesis (59)
+    en la izquierda: 24, en la derecha: 21 22
+sentenciawhile (60)
+    en la izquierda: 26, en la derecha: 15
+$@1 (61)
+    en la izquierda: 25, en la derecha: 26
+sentenciacomparacionwhile (62)
+    en la izquierda: 27 29 31, en la derecha: 26
+$@2 (63)
+    en la izquierda: 28, en la derecha: 29
+$@3 (64)
+    en la izquierda: 30, en la derecha: 31
+expresioncomparacionwhile (65)
+    en la izquierda: 32, en la derecha: 27 29 31
+sentenciainicialwhile (66)
+    en la izquierda: 33, en la derecha: 26
+sentenciaintermediawhile (67)
+    en la izquierda: 34 35, en la derecha: 33 35
+sentenciaif (68)
+    en la izquierda: 38, en la derecha: 16
+$@4 (69)
+    en la izquierda: 36, en la derecha: 38
+$@5 (70)
+    en la izquierda: 37, en la derecha: 38
+sentenciacomparacionif (71)
+    en la izquierda: 39 41 43, en la derecha: 38
+$@6 (72)
+    en la izquierda: 40, en la derecha: 41
+$@7 (73)
+    en la izquierda: 42, en la derecha: 43
+expresioncomparacionif (74)
+    en la izquierda: 44, en la derecha: 39 41 43
+sentenciainicialif (75)
+    en la izquierda: 46 47, en la derecha: 38
+$@8 (76)
+    en la izquierda: 45, en la derecha: 46
+sentenciaintermediaif (77)
+    en la izquierda: 48 49, en la derecha: 46 47 49 51
+sentenciaelse (78)
+    en la izquierda: 51, en la derecha: 46
+$@9 (79)
+    en la izquierda: 50, en la derecha: 51
+asignacion (80)
+    en la izquierda: 52 53, en la derecha: 18
+asignacionespecial (81)
+    en la izquierda: 54, en la derecha: 19
+asignadorespecial (82)
+    en la izquierda: 55 56 57 58, en la derecha: 54
+expresionstrings (83)
+    en la izquierda: 59 60, en la derecha: 53 60
+expresion2 (84)
+    en la izquierda: 61, en la derecha: 32 44
+expresion (85)
+    en la izquierda: 62 63 64, en la derecha: 17 32 44 52 55 56 57
+    58 61 63 64
+termino (86)
+    en la izquierda: 65 66 67, en la derecha: 62 63 64 66 67
+comparadores (87)
+    en la izquierda: 68 69 70 71 72 73, en la derecha: 32 44
+factor (88)
+    en la izquierda: 74 75 76 77 78, en la derecha: 65 66 67
 
 
-state 0
+estado 0
 
     0 $accept: . programa $end
 
-    MAIN  shift, and go to state 1
+    MAIN  desplazar e ir al estado 1
 
-    programa  go to state 2
-
-
-state 1
-
-    1 programa: MAIN . ABRIRLLAVE sentencias CERRARLLAVE
-
-    ABRIRLLAVE  shift, and go to state 3
+    programa  ir al estado 2
 
 
-state 2
+estado 1
+
+    1 programa: MAIN . ABRIRLLAVE declaracion sentencias CERRARLLAVE
+
+    ABRIRLLAVE  desplazar e ir al estado 3
+
+
+estado 2
 
     0 $accept: programa . $end
 
-    $end  shift, and go to state 4
+    $end  desplazar e ir al estado 4
 
 
-state 3
+estado 3
 
-    1 programa: MAIN ABRIRLLAVE . sentencias CERRARLLAVE
+    1 programa: MAIN ABRIRLLAVE . declaracion sentencias CERRARLLAVE
 
-    IDENTIFICADOR  shift, and go to state 5
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    IF             shift, and go to state 8
-    WHILE          shift, and go to state 9
-    PUT            shift, and go to state 10
-    GET            shift, and go to state 11
-    DECLARE        shift, and go to state 12
-    STRING         shift, and go to state 13
+    DECLARE  desplazar e ir al estado 5
 
-    sentencias          go to state 14
-    sentencia           go to state 15
-    asignacion          go to state 16
-    asignacionespecial  go to state 17
-    expresion           go to state 18
-    termino             go to state 19
-    factor              go to state 20
+    declaracion  ir al estado 6
 
 
-state 4
+estado 4
 
     0 $accept: programa $end .
 
-    $default  accept
+    $default  aceptar
 
 
-state 5
+estado 5
 
-   32 asignacion: IDENTIFICADOR . ASIG expresion
-   33 asignacionespecial: IDENTIFICADOR . asignadorespecial
-   60 factor: IDENTIFICADOR .
-   63       | IDENTIFICADOR . ABRIRCORCHETE CONSTANTE CERRARCORCHETE
+    2 declaracion: DECLARE . sentenciadeclaracion PUNTOYCOMA
 
-    ASIG                   shift, and go to state 21
-    ABRIRCORCHETE          shift, and go to state 22
-    ASIGESPMAS             shift, and go to state 23
-    ASIGESPMENOS           shift, and go to state 24
-    ASIGESPMULTIPLICACION  shift, and go to state 25
-    ASIGESPDIVISION        shift, and go to state 26
+    INT      desplazar e ir al estado 7
+    FLOAT    desplazar e ir al estado 8
+    DOUBLE   desplazar e ir al estado 9
+    CHAR     desplazar e ir al estado 10
+    BOOLEAN  desplazar e ir al estado 11
+    STRING   desplazar e ir al estado 12
 
-    $default  reduce using rule 60 (factor)
+    sentenciadeclaracion  ir al estado 13
+    tipo                  ir al estado 14
 
-    asignadorespecial  go to state 27
 
+estado 6
 
-state 6
+    1 programa: MAIN ABRIRLLAVE declaracion . sentencias CERRARLLAVE
 
-   61 factor: CONSTANTE .
+    IDENTIFICADOR  desplazar e ir al estado 15
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    IF             desplazar e ir al estado 18
+    WHILE          desplazar e ir al estado 19
+    PUT            desplazar e ir al estado 20
+    GET            desplazar e ir al estado 21
+    STRING         desplazar e ir al estado 22
 
-    $default  reduce using rule 61 (factor)
+    sentencias          ir al estado 23
+    sentencia           ir al estado 24
+    asignacion          ir al estado 25
+    asignacionespecial  ir al estado 26
+    expresion           ir al estado 27
+    termino             ir al estado 28
+    factor              ir al estado 29
 
 
-state 7
+estado 7
 
-   62 factor: REAL .
+    6 tipo: INT .
 
-    $default  reduce using rule 62 (factor)
+    $default  reduce usando la regla 6 (tipo)
 
 
-state 8
+estado 8
 
-    5 sentencia: IF . sentenciaif
+    5 tipo: FLOAT .
 
-    ABRIRPARENTESIS  shift, and go to state 28
+    $default  reduce usando la regla 5 (tipo)
 
-    sentenciaif  go to state 29
 
+estado 9
 
-state 9
+   10 tipo: DOUBLE .
 
-    4 sentencia: WHILE . sentenciawhile
+    $default  reduce usando la regla 10 (tipo)
 
-    ABRIRPARENTESIS  shift, and go to state 30
 
-    sentenciawhile  go to state 31
+estado 10
 
+    9 tipo: CHAR .
 
-state 10
+    $default  reduce usando la regla 9 (tipo)
 
-   10 sentencia: PUT . sentenciaparentesis
 
-    ABRIRPARENTESIS  shift, and go to state 32
+estado 11
 
-    sentenciaparentesis  go to state 33
-    factorparentesis     go to state 34
+    8 tipo: BOOLEAN .
 
+    $default  reduce usando la regla 8 (tipo)
 
-state 11
 
-   11 sentencia: GET . factorparentesis
+estado 12
 
-    ABRIRPARENTESIS  shift, and go to state 35
+    7 tipo: STRING .
 
-    factorparentesis  go to state 36
+    $default  reduce usando la regla 7 (tipo)
 
 
-state 12
+estado 13
 
-    6 sentencia: DECLARE . declaretion PUNTOYCOMA
+    2 declaracion: DECLARE sentenciadeclaracion . PUNTOYCOMA
+    4 sentenciadeclaracion: sentenciadeclaracion . tipo identificadorintermedio
 
-    INT      shift, and go to state 37
-    FLOAT    shift, and go to state 38
-    DOUBLE   shift, and go to state 39
-    CHAR     shift, and go to state 40
-    BOOLEAN  shift, and go to state 41
-    STRING   shift, and go to state 42
+    PUNTOYCOMA  desplazar e ir al estado 30
+    INT         desplazar e ir al estado 7
+    FLOAT       desplazar e ir al estado 8
+    DOUBLE      desplazar e ir al estado 9
+    CHAR        desplazar e ir al estado 10
+    BOOLEAN     desplazar e ir al estado 11
+    STRING      desplazar e ir al estado 12
 
-    declaretion  go to state 43
-    tipo         go to state 44
+    tipo  ir al estado 31
 
 
-state 13
+estado 14
 
-   64 factor: STRING .
+    3 sentenciadeclaracion: tipo . identificadorintermedio
 
-    $default  reduce using rule 64 (factor)
+    IDENTIFICADOR  desplazar e ir al estado 32
 
+    identificadorintermedio  ir al estado 33
 
-state 14
 
-    1 programa: MAIN ABRIRLLAVE sentencias . CERRARLLAVE
-    3 sentencias: sentencias . sentencia PUNTOYCOMA
+estado 15
 
-    IDENTIFICADOR  shift, and go to state 5
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    CERRARLLAVE    shift, and go to state 45
-    IF             shift, and go to state 8
-    WHILE          shift, and go to state 9
-    PUT            shift, and go to state 10
-    GET            shift, and go to state 11
-    DECLARE        shift, and go to state 12
-    STRING         shift, and go to state 13
+   52 asignacion: IDENTIFICADOR . ASIG expresion
+   53           | IDENTIFICADOR . ASIG expresionstrings
+   54 asignacionespecial: IDENTIFICADOR . asignadorespecial
+   74 factor: IDENTIFICADOR .
+   77       | IDENTIFICADOR . ABRIRCORCHETE CONSTANTE CERRARCORCHETE
 
-    sentencia           go to state 46
-    asignacion          go to state 16
-    asignacionespecial  go to state 17
-    expresion           go to state 18
-    termino             go to state 19
-    factor              go to state 20
+    ASIG                   desplazar e ir al estado 34
+    ABRIRCORCHETE          desplazar e ir al estado 35
+    ASIGESPMAS             desplazar e ir al estado 36
+    ASIGESPMENOS           desplazar e ir al estado 37
+    ASIGESPMULTIPLICACION  desplazar e ir al estado 38
+    ASIGESPDIVISION        desplazar e ir al estado 39
 
+    $default  reduce usando la regla 74 (factor)
 
-state 15
+    asignadorespecial  ir al estado 40
 
-    2 sentencias: sentencia . PUNTOYCOMA
 
-    PUNTOYCOMA  shift, and go to state 47
+estado 16
 
+   75 factor: CONSTANTE .
 
-state 16
+    $default  reduce usando la regla 75 (factor)
 
-    8 sentencia: asignacion .
 
-    $default  reduce using rule 8 (sentencia)
+estado 17
 
+   76 factor: REAL .
 
-state 17
+    $default  reduce usando la regla 76 (factor)
 
-    9 sentencia: asignacionespecial .
 
-    $default  reduce using rule 9 (sentencia)
+estado 18
 
+   16 sentencia: IF . sentenciaif
 
-state 18
+    ABRIRPARENTESIS  desplazar e ir al estado 41
 
-    7 sentencia: expresion .
-   49 expresion: expresion . RESTA termino
-   50          | expresion . SUMA termino
+    sentenciaif  ir al estado 42
 
-    SUMA   shift, and go to state 48
-    RESTA  shift, and go to state 49
 
-    $default  reduce using rule 7 (sentencia)
+estado 19
 
+   15 sentencia: WHILE . sentenciawhile
 
-state 19
+    ABRIRPARENTESIS  desplazar e ir al estado 43
 
-   48 expresion: termino .
-   52 termino: termino . MULTIPLICACION factor
-   53        | termino . DIVISION factor
+    sentenciawhile  ir al estado 44
 
-    MULTIPLICACION  shift, and go to state 50
-    DIVISION        shift, and go to state 51
 
-    $default  reduce using rule 48 (expresion)
+estado 20
 
+   20 sentencia: PUT . sentenciaparentesis
 
-state 20
+    ABRIRPARENTESIS  desplazar e ir al estado 45
 
-   51 termino: factor .
+    sentenciaparentesis  ir al estado 46
+    factorparentesis     ir al estado 47
 
-    $default  reduce using rule 51 (termino)
 
+estado 21
 
-state 21
+   21 sentencia: GET . factorparentesis
 
-   32 asignacion: IDENTIFICADOR ASIG . expresion
+    ABRIRPARENTESIS  desplazar e ir al estado 48
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+    factorparentesis  ir al estado 49
 
-    expresion  go to state 53
-    termino    go to state 19
-    factor     go to state 20
 
+estado 22
 
-state 22
+   78 factor: STRING .
 
-   63 factor: IDENTIFICADOR ABRIRCORCHETE . CONSTANTE CERRARCORCHETE
+    $default  reduce usando la regla 78 (factor)
 
-    CONSTANTE  shift, and go to state 54
 
+estado 23
 
-state 23
+    1 programa: MAIN ABRIRLLAVE declaracion sentencias . CERRARLLAVE
+   14 sentencias: sentencias . sentencia PUNTOYCOMA
 
-   34 asignadorespecial: ASIGESPMAS . expresion
+    IDENTIFICADOR  desplazar e ir al estado 15
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    CERRARLLAVE    desplazar e ir al estado 50
+    IF             desplazar e ir al estado 18
+    WHILE          desplazar e ir al estado 19
+    PUT            desplazar e ir al estado 20
+    GET            desplazar e ir al estado 21
+    STRING         desplazar e ir al estado 22
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+    sentencia           ir al estado 51
+    asignacion          ir al estado 25
+    asignacionespecial  ir al estado 26
+    expresion           ir al estado 27
+    termino             ir al estado 28
+    factor              ir al estado 29
 
-    expresion  go to state 55
-    termino    go to state 19
-    factor     go to state 20
 
+estado 24
 
-state 24
+   13 sentencias: sentencia . PUNTOYCOMA
 
-   35 asignadorespecial: ASIGESPMENOS . expresion
+    PUNTOYCOMA  desplazar e ir al estado 52
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
 
-    expresion  go to state 56
-    termino    go to state 19
-    factor     go to state 20
+estado 25
 
+   18 sentencia: asignacion .
 
-state 25
+    $default  reduce usando la regla 18 (sentencia)
 
-   36 asignadorespecial: ASIGESPMULTIPLICACION . expresion
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+estado 26
 
-    expresion  go to state 57
-    termino    go to state 19
-    factor     go to state 20
+   19 sentencia: asignacionespecial .
 
+    $default  reduce usando la regla 19 (sentencia)
 
-state 26
 
-   37 asignadorespecial: ASIGESPDIVISION . expresion
+estado 27
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+   17 sentencia: expresion .
+   63 expresion: expresion . RESTA termino
+   64          | expresion . SUMA termino
 
-    expresion  go to state 58
-    termino    go to state 19
-    factor     go to state 20
+    SUMA   desplazar e ir al estado 53
+    RESTA  desplazar e ir al estado 54
 
+    $default  reduce usando la regla 17 (sentencia)
 
-state 27
 
-   33 asignacionespecial: IDENTIFICADOR asignadorespecial .
+estado 28
 
-    $default  reduce using rule 33 (asignacionespecial)
+   62 expresion: termino .
+   66 termino: termino . MULTIPLICACION factor
+   67        | termino . DIVISION factor
 
+    MULTIPLICACION  desplazar e ir al estado 55
+    DIVISION        desplazar e ir al estado 56
 
-state 28
+    $default  reduce usando la regla 62 (expresion)
 
-   23 sentenciaif: ABRIRPARENTESIS . sentenciacomparacionif CERRARPARENTESIS sentenciainicialif
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+estado 29
 
-    sentenciacomparacionif  go to state 59
-    expresioncomparacionif  go to state 60
-    expresion               go to state 61
-    termino                 go to state 19
-    factor                  go to state 20
+   65 termino: factor .
 
+    $default  reduce usando la regla 65 (termino)
 
-state 29
 
-    5 sentencia: IF sentenciaif .
+estado 30
 
-    $default  reduce using rule 5 (sentencia)
+    2 declaracion: DECLARE sentenciadeclaracion PUNTOYCOMA .
 
+    $default  reduce usando la regla 2 (declaracion)
 
-state 30
 
-   15 sentenciawhile: ABRIRPARENTESIS . sentenciacomparacionwhile CERRARPARENTESIS sentenciainicialwhile
+estado 31
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+    4 sentenciadeclaracion: sentenciadeclaracion tipo . identificadorintermedio
 
-    sentenciacomparacionwhile  go to state 62
-    expresioncomparacionwhile  go to state 63
-    expresion                  go to state 64
-    termino                    go to state 19
-    factor                     go to state 20
+    IDENTIFICADOR  desplazar e ir al estado 32
 
+    identificadorintermedio  ir al estado 57
 
-state 31
 
-    4 sentencia: WHILE sentenciawhile .
+estado 32
 
-    $default  reduce using rule 4 (sentencia)
+   11 identificadorintermedio: IDENTIFICADOR .
 
+    $default  reduce usando la regla 11 (identificadorintermedio)
 
-state 32
 
-   13 sentenciaparentesis: ABRIRPARENTESIS . STRING CERRARPARENTESIS
-   14 factorparentesis: ABRIRPARENTESIS . IDENTIFICADOR CERRARPARENTESIS
+estado 33
 
-    IDENTIFICADOR  shift, and go to state 65
-    STRING         shift, and go to state 66
+    3 sentenciadeclaracion: tipo identificadorintermedio .
+   12 identificadorintermedio: identificadorintermedio . IDENTIFICADOR
 
+    IDENTIFICADOR  desplazar e ir al estado 58
 
-state 33
+    $default  reduce usando la regla 3 (sentenciadeclaracion)
 
-   10 sentencia: PUT sentenciaparentesis .
 
-    $default  reduce using rule 10 (sentencia)
+estado 34
 
+   52 asignacion: IDENTIFICADOR ASIG . expresion
+   53           | IDENTIFICADOR ASIG . expresionstrings
 
-state 34
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 60
 
-   12 sentenciaparentesis: factorparentesis .
+    expresionstrings  ir al estado 61
+    expresion         ir al estado 62
+    termino           ir al estado 28
+    factor            ir al estado 29
 
-    $default  reduce using rule 12 (sentenciaparentesis)
 
+estado 35
 
-state 35
+   77 factor: IDENTIFICADOR ABRIRCORCHETE . CONSTANTE CERRARCORCHETE
 
-   14 factorparentesis: ABRIRPARENTESIS . IDENTIFICADOR CERRARPARENTESIS
+    CONSTANTE  desplazar e ir al estado 63
 
-    IDENTIFICADOR  shift, and go to state 65
 
+estado 36
 
-state 36
+   55 asignadorespecial: ASIGESPMAS . expresion
 
-   11 sentencia: GET factorparentesis .
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
-    $default  reduce using rule 11 (sentencia)
+    expresion  ir al estado 64
+    termino    ir al estado 28
+    factor     ir al estado 29
 
 
-state 37
+estado 37
 
-   41 tipo: INT .
+   56 asignadorespecial: ASIGESPMENOS . expresion
 
-    $default  reduce using rule 41 (tipo)
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
+    expresion  ir al estado 65
+    termino    ir al estado 28
+    factor     ir al estado 29
 
-state 38
 
-   40 tipo: FLOAT .
+estado 38
 
-    $default  reduce using rule 40 (tipo)
+   57 asignadorespecial: ASIGESPMULTIPLICACION . expresion
 
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
-state 39
+    expresion  ir al estado 66
+    termino    ir al estado 28
+    factor     ir al estado 29
 
-   45 tipo: DOUBLE .
 
-    $default  reduce using rule 45 (tipo)
+estado 39
 
+   58 asignadorespecial: ASIGESPDIVISION . expresion
 
-state 40
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
-   44 tipo: CHAR .
+    expresion  ir al estado 67
+    termino    ir al estado 28
+    factor     ir al estado 29
 
-    $default  reduce using rule 44 (tipo)
 
+estado 40
 
-state 41
+   54 asignacionespecial: IDENTIFICADOR asignadorespecial .
 
-   43 tipo: BOOLEAN .
+    $default  reduce usando la regla 54 (asignacionespecial)
 
-    $default  reduce using rule 43 (tipo)
 
+estado 41
 
-state 42
+   38 sentenciaif: ABRIRPARENTESIS . $@4 sentenciacomparacionif CERRARPARENTESIS $@5 sentenciainicialif
 
-   42 tipo: STRING .
+    $default  reduce usando la regla 36 ($@4)
 
-    $default  reduce using rule 42 (tipo)
+    $@4  ir al estado 68
 
 
-state 43
+estado 42
 
-    6 sentencia: DECLARE declaretion . PUNTOYCOMA
-   39 declaretion: declaretion . PUNTOYCOMA tipo identificadorintermedio
+   16 sentencia: IF sentenciaif .
 
-    PUNTOYCOMA  shift, and go to state 67
+    $default  reduce usando la regla 16 (sentencia)
 
 
-state 44
+estado 43
 
-   38 declaretion: tipo . identificadorintermedio
+   26 sentenciawhile: ABRIRPARENTESIS . $@1 sentenciacomparacionwhile CERRARPARENTESIS sentenciainicialwhile
 
-    IDENTIFICADOR  shift, and go to state 68
+    $default  reduce usando la regla 25 ($@1)
 
-    identificadorintermedio  go to state 69
+    $@1  ir al estado 69
 
 
-state 45
+estado 44
 
-    1 programa: MAIN ABRIRLLAVE sentencias CERRARLLAVE .
+   15 sentencia: WHILE sentenciawhile .
 
-    $default  reduce using rule 1 (programa)
+    $default  reduce usando la regla 15 (sentencia)
 
 
-state 46
+estado 45
 
-    3 sentencias: sentencias sentencia . PUNTOYCOMA
+   23 sentenciaparentesis: ABRIRPARENTESIS . STRING CERRARPARENTESIS
+   24 factorparentesis: ABRIRPARENTESIS . IDENTIFICADOR CERRARPARENTESIS
 
-    PUNTOYCOMA  shift, and go to state 70
+    IDENTIFICADOR  desplazar e ir al estado 70
+    STRING         desplazar e ir al estado 71
 
 
-state 47
+estado 46
 
-    2 sentencias: sentencia PUNTOYCOMA .
+   20 sentencia: PUT sentenciaparentesis .
 
-    $default  reduce using rule 2 (sentencias)
+    $default  reduce usando la regla 20 (sentencia)
 
 
-state 48
+estado 47
 
-   50 expresion: expresion SUMA . termino
+   22 sentenciaparentesis: factorparentesis .
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+    $default  reduce usando la regla 22 (sentenciaparentesis)
 
-    termino  go to state 71
-    factor   go to state 20
 
+estado 48
 
-state 49
+   24 factorparentesis: ABRIRPARENTESIS . IDENTIFICADOR CERRARPARENTESIS
 
-   49 expresion: expresion RESTA . termino
+    IDENTIFICADOR  desplazar e ir al estado 70
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
 
-    termino  go to state 72
-    factor   go to state 20
+estado 49
 
+   21 sentencia: GET factorparentesis .
 
-state 50
+    $default  reduce usando la regla 21 (sentencia)
 
-   52 termino: termino MULTIPLICACION . factor
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+estado 50
 
-    factor  go to state 73
+    1 programa: MAIN ABRIRLLAVE declaracion sentencias CERRARLLAVE .
 
+    $default  reduce usando la regla 1 (programa)
 
-state 51
 
-   53 termino: termino DIVISION . factor
+estado 51
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+   14 sentencias: sentencias sentencia . PUNTOYCOMA
 
-    factor  go to state 74
+    PUNTOYCOMA  desplazar e ir al estado 72
 
 
-state 52
+estado 52
 
-   60 factor: IDENTIFICADOR .
-   63       | IDENTIFICADOR . ABRIRCORCHETE CONSTANTE CERRARCORCHETE
+   13 sentencias: sentencia PUNTOYCOMA .
 
-    ABRIRCORCHETE  shift, and go to state 22
+    $default  reduce usando la regla 13 (sentencias)
 
-    $default  reduce using rule 60 (factor)
 
+estado 53
 
-state 53
+   64 expresion: expresion SUMA . termino
 
-   32 asignacion: IDENTIFICADOR ASIG expresion .
-   49 expresion: expresion . RESTA termino
-   50          | expresion . SUMA termino
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
-    SUMA   shift, and go to state 48
-    RESTA  shift, and go to state 49
+    termino  ir al estado 73
+    factor   ir al estado 29
 
-    $default  reduce using rule 32 (asignacion)
 
+estado 54
 
-state 54
+   63 expresion: expresion RESTA . termino
 
-   63 factor: IDENTIFICADOR ABRIRCORCHETE CONSTANTE . CERRARCORCHETE
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
-    CERRARCORCHETE  shift, and go to state 75
+    termino  ir al estado 74
+    factor   ir al estado 29
 
 
-state 55
+estado 55
 
-   34 asignadorespecial: ASIGESPMAS expresion .
-   49 expresion: expresion . RESTA termino
-   50          | expresion . SUMA termino
+   66 termino: termino MULTIPLICACION . factor
 
-    SUMA   shift, and go to state 48
-    RESTA  shift, and go to state 49
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
-    $default  reduce using rule 34 (asignadorespecial)
+    factor  ir al estado 75
 
 
-state 56
+estado 56
 
-   35 asignadorespecial: ASIGESPMENOS expresion .
-   49 expresion: expresion . RESTA termino
-   50          | expresion . SUMA termino
+   67 termino: termino DIVISION . factor
 
-    SUMA   shift, and go to state 48
-    RESTA  shift, and go to state 49
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
-    $default  reduce using rule 35 (asignadorespecial)
+    factor  ir al estado 76
 
 
-state 57
+estado 57
 
-   36 asignadorespecial: ASIGESPMULTIPLICACION expresion .
-   49 expresion: expresion . RESTA termino
-   50          | expresion . SUMA termino
+    4 sentenciadeclaracion: sentenciadeclaracion tipo identificadorintermedio .
+   12 identificadorintermedio: identificadorintermedio . IDENTIFICADOR
 
-    SUMA   shift, and go to state 48
-    RESTA  shift, and go to state 49
+    IDENTIFICADOR  desplazar e ir al estado 58
 
-    $default  reduce using rule 36 (asignadorespecial)
+    $default  reduce usando la regla 4 (sentenciadeclaracion)
 
 
-state 58
+estado 58
 
-   37 asignadorespecial: ASIGESPDIVISION expresion .
-   49 expresion: expresion . RESTA termino
-   50          | expresion . SUMA termino
+   12 identificadorintermedio: identificadorintermedio IDENTIFICADOR .
 
-    SUMA   shift, and go to state 48
-    RESTA  shift, and go to state 49
+    $default  reduce usando la regla 12 (identificadorintermedio)
 
-    $default  reduce using rule 37 (asignadorespecial)
 
+estado 59
 
-state 59
+   74 factor: IDENTIFICADOR .
+   77       | IDENTIFICADOR . ABRIRCORCHETE CONSTANTE CERRARCORCHETE
 
-   23 sentenciaif: ABRIRPARENTESIS sentenciacomparacionif . CERRARPARENTESIS sentenciainicialif
+    ABRIRCORCHETE  desplazar e ir al estado 35
 
-    CERRARPARENTESIS  shift, and go to state 76
+    $default  reduce usando la regla 74 (factor)
 
 
-state 60
+estado 60
 
-   24 sentenciacomparacionif: expresioncomparacionif .
-   25                       | expresioncomparacionif . AND expresioncomparacionif
-   26                       | expresioncomparacionif . OR expresioncomparacionif
+   59 expresionstrings: STRING . CONCAT STRING
+   78 factor: STRING .
 
-    AND  shift, and go to state 77
-    OR   shift, and go to state 78
+    CONCAT  desplazar e ir al estado 77
 
-    $default  reduce using rule 24 (sentenciacomparacionif)
+    $default  reduce usando la regla 78 (factor)
 
 
-state 61
+estado 61
 
-   27 expresioncomparacionif: expresion . comparadores expresion
-   49 expresion: expresion . RESTA termino
-   50          | expresion . SUMA termino
+   53 asignacion: IDENTIFICADOR ASIG expresionstrings .
+   60 expresionstrings: expresionstrings . CONCAT STRING
 
-    SUMA        shift, and go to state 48
-    RESTA       shift, and go to state 49
-    MAYOR       shift, and go to state 79
-    MENOR       shift, and go to state 80
-    MAYORIGUAL  shift, and go to state 81
-    MENORIGUAL  shift, and go to state 82
-    IGUAL       shift, and go to state 83
-    DISTINTO    shift, and go to state 84
+    CONCAT  desplazar e ir al estado 78
 
-    comparadores  go to state 85
+    $default  reduce usando la regla 53 (asignacion)
 
 
-state 62
+estado 62
 
-   15 sentenciawhile: ABRIRPARENTESIS sentenciacomparacionwhile . CERRARPARENTESIS sentenciainicialwhile
+   52 asignacion: IDENTIFICADOR ASIG expresion .
+   63 expresion: expresion . RESTA termino
+   64          | expresion . SUMA termino
 
-    CERRARPARENTESIS  shift, and go to state 86
+    SUMA   desplazar e ir al estado 53
+    RESTA  desplazar e ir al estado 54
 
+    $default  reduce usando la regla 52 (asignacion)
 
-state 63
 
-   16 sentenciacomparacionwhile: expresioncomparacionwhile .
-   17                          | expresioncomparacionwhile . AND expresioncomparacionwhile
-   18                          | expresioncomparacionwhile . OR expresioncomparacionwhile
+estado 63
 
-    AND  shift, and go to state 87
-    OR   shift, and go to state 88
+   77 factor: IDENTIFICADOR ABRIRCORCHETE CONSTANTE . CERRARCORCHETE
 
-    $default  reduce using rule 16 (sentenciacomparacionwhile)
+    CERRARCORCHETE  desplazar e ir al estado 79
 
 
-state 64
+estado 64
 
-   19 expresioncomparacionwhile: expresion . comparadores expresion
-   49 expresion: expresion . RESTA termino
-   50          | expresion . SUMA termino
+   55 asignadorespecial: ASIGESPMAS expresion .
+   63 expresion: expresion . RESTA termino
+   64          | expresion . SUMA termino
 
-    SUMA        shift, and go to state 48
-    RESTA       shift, and go to state 49
-    MAYOR       shift, and go to state 79
-    MENOR       shift, and go to state 80
-    MAYORIGUAL  shift, and go to state 81
-    MENORIGUAL  shift, and go to state 82
-    IGUAL       shift, and go to state 83
-    DISTINTO    shift, and go to state 84
+    SUMA   desplazar e ir al estado 53
+    RESTA  desplazar e ir al estado 54
 
-    comparadores  go to state 89
+    $default  reduce usando la regla 55 (asignadorespecial)
 
 
-state 65
+estado 65
 
-   14 factorparentesis: ABRIRPARENTESIS IDENTIFICADOR . CERRARPARENTESIS
+   56 asignadorespecial: ASIGESPMENOS expresion .
+   63 expresion: expresion . RESTA termino
+   64          | expresion . SUMA termino
 
-    CERRARPARENTESIS  shift, and go to state 90
+    SUMA   desplazar e ir al estado 53
+    RESTA  desplazar e ir al estado 54
 
+    $default  reduce usando la regla 56 (asignadorespecial)
 
-state 66
 
-   13 sentenciaparentesis: ABRIRPARENTESIS STRING . CERRARPARENTESIS
+estado 66
 
-    CERRARPARENTESIS  shift, and go to state 91
+   57 asignadorespecial: ASIGESPMULTIPLICACION expresion .
+   63 expresion: expresion . RESTA termino
+   64          | expresion . SUMA termino
 
+    SUMA   desplazar e ir al estado 53
+    RESTA  desplazar e ir al estado 54
 
-state 67
+    $default  reduce usando la regla 57 (asignadorespecial)
 
-    6 sentencia: DECLARE declaretion PUNTOYCOMA .
-   39 declaretion: declaretion PUNTOYCOMA . tipo identificadorintermedio
 
-    INT      shift, and go to state 37
-    FLOAT    shift, and go to state 38
-    DOUBLE   shift, and go to state 39
-    CHAR     shift, and go to state 40
-    BOOLEAN  shift, and go to state 41
-    STRING   shift, and go to state 42
+estado 67
 
-    $default  reduce using rule 6 (sentencia)
+   58 asignadorespecial: ASIGESPDIVISION expresion .
+   63 expresion: expresion . RESTA termino
+   64          | expresion . SUMA termino
 
-    tipo  go to state 92
+    SUMA   desplazar e ir al estado 53
+    RESTA  desplazar e ir al estado 54
 
+    $default  reduce usando la regla 58 (asignadorespecial)
 
-state 68
 
-   46 identificadorintermedio: IDENTIFICADOR .
+estado 68
 
-    $default  reduce using rule 46 (identificadorintermedio)
+   38 sentenciaif: ABRIRPARENTESIS $@4 . sentenciacomparacionif CERRARPARENTESIS $@5 sentenciainicialif
 
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
-state 69
+    sentenciacomparacionif  ir al estado 80
+    expresioncomparacionif  ir al estado 81
+    expresion2              ir al estado 82
+    expresion               ir al estado 83
+    termino                 ir al estado 28
+    factor                  ir al estado 29
 
-   38 declaretion: tipo identificadorintermedio .
-   47 identificadorintermedio: identificadorintermedio . ',' IDENTIFICADOR
 
-    ','  shift, and go to state 93
+estado 69
 
-    $default  reduce using rule 38 (declaretion)
+   26 sentenciawhile: ABRIRPARENTESIS $@1 . sentenciacomparacionwhile CERRARPARENTESIS sentenciainicialwhile
 
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
-state 70
+    sentenciacomparacionwhile  ir al estado 84
+    expresioncomparacionwhile  ir al estado 85
+    expresion2                 ir al estado 86
+    expresion                  ir al estado 83
+    termino                    ir al estado 28
+    factor                     ir al estado 29
 
-    3 sentencias: sentencias sentencia PUNTOYCOMA .
 
-    $default  reduce using rule 3 (sentencias)
+estado 70
 
+   24 factorparentesis: ABRIRPARENTESIS IDENTIFICADOR . CERRARPARENTESIS
 
-state 71
+    CERRARPARENTESIS  desplazar e ir al estado 87
 
-   50 expresion: expresion SUMA termino .
-   52 termino: termino . MULTIPLICACION factor
-   53        | termino . DIVISION factor
 
-    MULTIPLICACION  shift, and go to state 50
-    DIVISION        shift, and go to state 51
+estado 71
 
-    $default  reduce using rule 50 (expresion)
+   23 sentenciaparentesis: ABRIRPARENTESIS STRING . CERRARPARENTESIS
 
+    CERRARPARENTESIS  desplazar e ir al estado 88
 
-state 72
 
-   49 expresion: expresion RESTA termino .
-   52 termino: termino . MULTIPLICACION factor
-   53        | termino . DIVISION factor
+estado 72
 
-    MULTIPLICACION  shift, and go to state 50
-    DIVISION        shift, and go to state 51
+   14 sentencias: sentencias sentencia PUNTOYCOMA .
 
-    $default  reduce using rule 49 (expresion)
+    $default  reduce usando la regla 14 (sentencias)
 
 
-state 73
+estado 73
 
-   52 termino: termino MULTIPLICACION factor .
+   64 expresion: expresion SUMA termino .
+   66 termino: termino . MULTIPLICACION factor
+   67        | termino . DIVISION factor
 
-    $default  reduce using rule 52 (termino)
+    MULTIPLICACION  desplazar e ir al estado 55
+    DIVISION        desplazar e ir al estado 56
 
+    $default  reduce usando la regla 64 (expresion)
 
-state 74
 
-   53 termino: termino DIVISION factor .
+estado 74
 
-    $default  reduce using rule 53 (termino)
+   63 expresion: expresion RESTA termino .
+   66 termino: termino . MULTIPLICACION factor
+   67        | termino . DIVISION factor
 
+    MULTIPLICACION  desplazar e ir al estado 55
+    DIVISION        desplazar e ir al estado 56
 
-state 75
+    $default  reduce usando la regla 63 (expresion)
 
-   63 factor: IDENTIFICADOR ABRIRCORCHETE CONSTANTE CERRARCORCHETE .
 
-    $default  reduce using rule 63 (factor)
+estado 75
 
+   66 termino: termino MULTIPLICACION factor .
 
-state 76
+    $default  reduce usando la regla 66 (termino)
 
-   23 sentenciaif: ABRIRPARENTESIS sentenciacomparacionif CERRARPARENTESIS . sentenciainicialif
 
-    ABRIRLLAVE  shift, and go to state 94
+estado 76
 
-    sentenciainicialif  go to state 95
+   67 termino: termino DIVISION factor .
 
+    $default  reduce usando la regla 67 (termino)
 
-state 77
 
-   25 sentenciacomparacionif: expresioncomparacionif AND . expresioncomparacionif
+estado 77
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+   59 expresionstrings: STRING CONCAT . STRING
 
-    expresioncomparacionif  go to state 96
-    expresion               go to state 61
-    termino                 go to state 19
-    factor                  go to state 20
+    STRING  desplazar e ir al estado 89
 
 
-state 78
+estado 78
 
-   26 sentenciacomparacionif: expresioncomparacionif OR . expresioncomparacionif
+   60 expresionstrings: expresionstrings CONCAT . STRING
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+    STRING  desplazar e ir al estado 90
 
-    expresioncomparacionif  go to state 97
-    expresion               go to state 61
-    termino                 go to state 19
-    factor                  go to state 20
 
+estado 79
 
-state 79
+   77 factor: IDENTIFICADOR ABRIRCORCHETE CONSTANTE CERRARCORCHETE .
 
-   54 comparadores: MAYOR .
+    $default  reduce usando la regla 77 (factor)
 
-    $default  reduce using rule 54 (comparadores)
 
+estado 80
 
-state 80
+   38 sentenciaif: ABRIRPARENTESIS $@4 sentenciacomparacionif . CERRARPARENTESIS $@5 sentenciainicialif
 
-   55 comparadores: MENOR .
+    CERRARPARENTESIS  desplazar e ir al estado 91
 
-    $default  reduce using rule 55 (comparadores)
 
+estado 81
 
-state 81
+   39 sentenciacomparacionif: expresioncomparacionif .
+   41                       | expresioncomparacionif . $@6 AND expresioncomparacionif
+   43                       | expresioncomparacionif . $@7 OR expresioncomparacionif
 
-   56 comparadores: MAYORIGUAL .
+    AND       reduce usando la regla 40 ($@6)
+    OR        reduce usando la regla 42 ($@7)
+    $default  reduce usando la regla 39 (sentenciacomparacionif)
 
-    $default  reduce using rule 56 (comparadores)
+    $@6  ir al estado 92
+    $@7  ir al estado 93
 
 
-state 82
+estado 82
 
-   57 comparadores: MENORIGUAL .
+   44 expresioncomparacionif: expresion2 . comparadores expresion
 
-    $default  reduce using rule 57 (comparadores)
+    MAYOR       desplazar e ir al estado 94
+    MENOR       desplazar e ir al estado 95
+    MAYORIGUAL  desplazar e ir al estado 96
+    MENORIGUAL  desplazar e ir al estado 97
+    IGUAL       desplazar e ir al estado 98
+    DISTINTO    desplazar e ir al estado 99
 
+    comparadores  ir al estado 100
 
-state 83
 
-   58 comparadores: IGUAL .
+estado 83
 
-    $default  reduce using rule 58 (comparadores)
+   61 expresion2: expresion .
+   63 expresion: expresion . RESTA termino
+   64          | expresion . SUMA termino
 
+    SUMA   desplazar e ir al estado 53
+    RESTA  desplazar e ir al estado 54
 
-state 84
+    $default  reduce usando la regla 61 (expresion2)
 
-   59 comparadores: DISTINTO .
 
-    $default  reduce using rule 59 (comparadores)
+estado 84
 
+   26 sentenciawhile: ABRIRPARENTESIS $@1 sentenciacomparacionwhile . CERRARPARENTESIS sentenciainicialwhile
 
-state 85
+    CERRARPARENTESIS  desplazar e ir al estado 101
 
-   27 expresioncomparacionif: expresion comparadores . expresion
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+estado 85
 
-    expresion  go to state 98
-    termino    go to state 19
-    factor     go to state 20
+   27 sentenciacomparacionwhile: expresioncomparacionwhile .
+   29                          | expresioncomparacionwhile . $@2 AND expresioncomparacionwhile
+   31                          | expresioncomparacionwhile . $@3 OR expresioncomparacionwhile
 
+    AND       reduce usando la regla 28 ($@2)
+    OR        reduce usando la regla 30 ($@3)
+    $default  reduce usando la regla 27 (sentenciacomparacionwhile)
 
-state 86
+    $@2  ir al estado 102
+    $@3  ir al estado 103
 
-   15 sentenciawhile: ABRIRPARENTESIS sentenciacomparacionwhile CERRARPARENTESIS . sentenciainicialwhile
 
-    ABRIRLLAVE  shift, and go to state 99
+estado 86
 
-    sentenciainicialwhile  go to state 100
+   32 expresioncomparacionwhile: expresion2 . comparadores expresion
 
+    MAYOR       desplazar e ir al estado 94
+    MENOR       desplazar e ir al estado 95
+    MAYORIGUAL  desplazar e ir al estado 96
+    MENORIGUAL  desplazar e ir al estado 97
+    IGUAL       desplazar e ir al estado 98
+    DISTINTO    desplazar e ir al estado 99
 
-state 87
+    comparadores  ir al estado 104
 
-   17 sentenciacomparacionwhile: expresioncomparacionwhile AND . expresioncomparacionwhile
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+estado 87
 
-    expresioncomparacionwhile  go to state 101
-    expresion                  go to state 64
-    termino                    go to state 19
-    factor                     go to state 20
+   24 factorparentesis: ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS .
 
+    $default  reduce usando la regla 24 (factorparentesis)
 
-state 88
 
-   18 sentenciacomparacionwhile: expresioncomparacionwhile OR . expresioncomparacionwhile
+estado 88
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+   23 sentenciaparentesis: ABRIRPARENTESIS STRING CERRARPARENTESIS .
 
-    expresioncomparacionwhile  go to state 102
-    expresion                  go to state 64
-    termino                    go to state 19
-    factor                     go to state 20
+    $default  reduce usando la regla 23 (sentenciaparentesis)
 
 
-state 89
+estado 89
 
-   19 expresioncomparacionwhile: expresion comparadores . expresion
+   59 expresionstrings: STRING CONCAT STRING .
 
-    IDENTIFICADOR  shift, and go to state 52
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    STRING         shift, and go to state 13
+    $default  reduce usando la regla 59 (expresionstrings)
 
-    expresion  go to state 103
-    termino    go to state 19
-    factor     go to state 20
 
+estado 90
 
-state 90
+   60 expresionstrings: expresionstrings CONCAT STRING .
 
-   14 factorparentesis: ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS .
+    $default  reduce usando la regla 60 (expresionstrings)
 
-    $default  reduce using rule 14 (factorparentesis)
 
+estado 91
 
-state 91
+   38 sentenciaif: ABRIRPARENTESIS $@4 sentenciacomparacionif CERRARPARENTESIS . $@5 sentenciainicialif
 
-   13 sentenciaparentesis: ABRIRPARENTESIS STRING CERRARPARENTESIS .
+    $default  reduce usando la regla 37 ($@5)
 
-    $default  reduce using rule 13 (sentenciaparentesis)
+    $@5  ir al estado 105
 
 
-state 92
+estado 92
 
-   39 declaretion: declaretion PUNTOYCOMA tipo . identificadorintermedio
+   41 sentenciacomparacionif: expresioncomparacionif $@6 . AND expresioncomparacionif
 
-    IDENTIFICADOR  shift, and go to state 68
+    AND  desplazar e ir al estado 106
 
-    identificadorintermedio  go to state 104
 
+estado 93
 
-state 93
+   43 sentenciacomparacionif: expresioncomparacionif $@7 . OR expresioncomparacionif
 
-   47 identificadorintermedio: identificadorintermedio ',' . IDENTIFICADOR
+    OR  desplazar e ir al estado 107
 
-    IDENTIFICADOR  shift, and go to state 105
 
+estado 94
 
-state 94
+   68 comparadores: MAYOR .
 
-   28 sentenciainicialif: ABRIRLLAVE . sentenciaintermediaif CERRARLLAVE ELSE ABRIRLLAVE sentenciaintermediaif CERRARLLAVE
-   29                   | ABRIRLLAVE . sentenciaintermediaif CERRARLLAVE
+    $default  reduce usando la regla 68 (comparadores)
 
-    IDENTIFICADOR  shift, and go to state 5
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    IF             shift, and go to state 8
-    WHILE          shift, and go to state 9
-    PUT            shift, and go to state 10
-    GET            shift, and go to state 11
-    DECLARE        shift, and go to state 12
-    STRING         shift, and go to state 13
 
-    sentencia              go to state 106
-    sentenciaintermediaif  go to state 107
-    asignacion             go to state 16
-    asignacionespecial     go to state 17
-    expresion              go to state 18
-    termino                go to state 19
-    factor                 go to state 20
+estado 95
 
+   69 comparadores: MENOR .
 
-state 95
+    $default  reduce usando la regla 69 (comparadores)
 
-   23 sentenciaif: ABRIRPARENTESIS sentenciacomparacionif CERRARPARENTESIS sentenciainicialif .
 
-    $default  reduce using rule 23 (sentenciaif)
+estado 96
 
+   71 comparadores: MAYORIGUAL .
 
-state 96
+    $default  reduce usando la regla 71 (comparadores)
 
-   25 sentenciacomparacionif: expresioncomparacionif AND expresioncomparacionif .
 
-    $default  reduce using rule 25 (sentenciacomparacionif)
+estado 97
 
+   70 comparadores: MENORIGUAL .
 
-state 97
+    $default  reduce usando la regla 70 (comparadores)
 
-   26 sentenciacomparacionif: expresioncomparacionif OR expresioncomparacionif .
 
-    $default  reduce using rule 26 (sentenciacomparacionif)
+estado 98
 
+   72 comparadores: IGUAL .
 
-state 98
+    $default  reduce usando la regla 72 (comparadores)
 
-   27 expresioncomparacionif: expresion comparadores expresion .
-   49 expresion: expresion . RESTA termino
-   50          | expresion . SUMA termino
 
-    SUMA   shift, and go to state 48
-    RESTA  shift, and go to state 49
+estado 99
 
-    $default  reduce using rule 27 (expresioncomparacionif)
+   73 comparadores: DISTINTO .
 
+    $default  reduce usando la regla 73 (comparadores)
 
-state 99
 
-   20 sentenciainicialwhile: ABRIRLLAVE . sentenciaintermediawhile CERRARLLAVE
+estado 100
 
-    IDENTIFICADOR  shift, and go to state 5
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    IF             shift, and go to state 8
-    WHILE          shift, and go to state 9
-    PUT            shift, and go to state 10
-    GET            shift, and go to state 11
-    DECLARE        shift, and go to state 12
-    STRING         shift, and go to state 13
+   44 expresioncomparacionif: expresion2 comparadores . expresion
 
-    sentencia                 go to state 108
-    sentenciaintermediawhile  go to state 109
-    asignacion                go to state 16
-    asignacionespecial        go to state 17
-    expresion                 go to state 18
-    termino                   go to state 19
-    factor                    go to state 20
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
+    expresion  ir al estado 108
+    termino    ir al estado 28
+    factor     ir al estado 29
 
-state 100
 
-   15 sentenciawhile: ABRIRPARENTESIS sentenciacomparacionwhile CERRARPARENTESIS sentenciainicialwhile .
+estado 101
 
-    $default  reduce using rule 15 (sentenciawhile)
+   26 sentenciawhile: ABRIRPARENTESIS $@1 sentenciacomparacionwhile CERRARPARENTESIS . sentenciainicialwhile
 
+    ABRIRLLAVE  desplazar e ir al estado 109
 
-state 101
+    sentenciainicialwhile  ir al estado 110
 
-   17 sentenciacomparacionwhile: expresioncomparacionwhile AND expresioncomparacionwhile .
 
-    $default  reduce using rule 17 (sentenciacomparacionwhile)
+estado 102
 
+   29 sentenciacomparacionwhile: expresioncomparacionwhile $@2 . AND expresioncomparacionwhile
 
-state 102
+    AND  desplazar e ir al estado 111
 
-   18 sentenciacomparacionwhile: expresioncomparacionwhile OR expresioncomparacionwhile .
 
-    $default  reduce using rule 18 (sentenciacomparacionwhile)
+estado 103
 
+   31 sentenciacomparacionwhile: expresioncomparacionwhile $@3 . OR expresioncomparacionwhile
 
-state 103
+    OR  desplazar e ir al estado 112
 
-   19 expresioncomparacionwhile: expresion comparadores expresion .
-   49 expresion: expresion . RESTA termino
-   50          | expresion . SUMA termino
 
-    SUMA   shift, and go to state 48
-    RESTA  shift, and go to state 49
+estado 104
 
-    $default  reduce using rule 19 (expresioncomparacionwhile)
+   32 expresioncomparacionwhile: expresion2 comparadores . expresion
 
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
-state 104
+    expresion  ir al estado 113
+    termino    ir al estado 28
+    factor     ir al estado 29
 
-   39 declaretion: declaretion PUNTOYCOMA tipo identificadorintermedio .
-   47 identificadorintermedio: identificadorintermedio . ',' IDENTIFICADOR
 
-    ','  shift, and go to state 93
+estado 105
 
-    $default  reduce using rule 39 (declaretion)
+   38 sentenciaif: ABRIRPARENTESIS $@4 sentenciacomparacionif CERRARPARENTESIS $@5 . sentenciainicialif
 
+    ABRIRLLAVE  desplazar e ir al estado 114
 
-state 105
+    sentenciainicialif  ir al estado 115
 
-   47 identificadorintermedio: identificadorintermedio ',' IDENTIFICADOR .
 
-    $default  reduce using rule 47 (identificadorintermedio)
+estado 106
 
+   41 sentenciacomparacionif: expresioncomparacionif $@6 AND . expresioncomparacionif
 
-state 106
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
-   30 sentenciaintermediaif: sentencia .
+    expresioncomparacionif  ir al estado 116
+    expresion2              ir al estado 82
+    expresion               ir al estado 83
+    termino                 ir al estado 28
+    factor                  ir al estado 29
 
-    $default  reduce using rule 30 (sentenciaintermediaif)
 
+estado 107
 
-state 107
+   43 sentenciacomparacionif: expresioncomparacionif $@7 OR . expresioncomparacionif
 
-   28 sentenciainicialif: ABRIRLLAVE sentenciaintermediaif . CERRARLLAVE ELSE ABRIRLLAVE sentenciaintermediaif CERRARLLAVE
-   29                   | ABRIRLLAVE sentenciaintermediaif . CERRARLLAVE
-   31 sentenciaintermediaif: sentenciaintermediaif . PUNTOYCOMA sentencia
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
-    PUNTOYCOMA   shift, and go to state 110
-    CERRARLLAVE  shift, and go to state 111
+    expresioncomparacionif  ir al estado 117
+    expresion2              ir al estado 82
+    expresion               ir al estado 83
+    termino                 ir al estado 28
+    factor                  ir al estado 29
 
 
-state 108
+estado 108
 
-   21 sentenciaintermediawhile: sentencia .
+   44 expresioncomparacionif: expresion2 comparadores expresion .
+   63 expresion: expresion . RESTA termino
+   64          | expresion . SUMA termino
 
-    $default  reduce using rule 21 (sentenciaintermediawhile)
+    SUMA   desplazar e ir al estado 53
+    RESTA  desplazar e ir al estado 54
 
+    $default  reduce usando la regla 44 (expresioncomparacionif)
 
-state 109
 
-   20 sentenciainicialwhile: ABRIRLLAVE sentenciaintermediawhile . CERRARLLAVE
-   22 sentenciaintermediawhile: sentenciaintermediawhile . PUNTOYCOMA sentencia
+estado 109
 
-    PUNTOYCOMA   shift, and go to state 112
-    CERRARLLAVE  shift, and go to state 113
+   33 sentenciainicialwhile: ABRIRLLAVE . sentenciaintermediawhile CERRARLLAVE
 
+    IDENTIFICADOR  desplazar e ir al estado 15
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    IF             desplazar e ir al estado 18
+    WHILE          desplazar e ir al estado 19
+    PUT            desplazar e ir al estado 20
+    GET            desplazar e ir al estado 21
+    STRING         desplazar e ir al estado 22
 
-state 110
+    sentencia                 ir al estado 118
+    sentenciaintermediawhile  ir al estado 119
+    asignacion                ir al estado 25
+    asignacionespecial        ir al estado 26
+    expresion                 ir al estado 27
+    termino                   ir al estado 28
+    factor                    ir al estado 29
 
-   31 sentenciaintermediaif: sentenciaintermediaif PUNTOYCOMA . sentencia
 
-    IDENTIFICADOR  shift, and go to state 5
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    IF             shift, and go to state 8
-    WHILE          shift, and go to state 9
-    PUT            shift, and go to state 10
-    GET            shift, and go to state 11
-    DECLARE        shift, and go to state 12
-    STRING         shift, and go to state 13
+estado 110
 
-    sentencia           go to state 114
-    asignacion          go to state 16
-    asignacionespecial  go to state 17
-    expresion           go to state 18
-    termino             go to state 19
-    factor              go to state 20
+   26 sentenciawhile: ABRIRPARENTESIS $@1 sentenciacomparacionwhile CERRARPARENTESIS sentenciainicialwhile .
 
+    $default  reduce usando la regla 26 (sentenciawhile)
 
-state 111
 
-   28 sentenciainicialif: ABRIRLLAVE sentenciaintermediaif CERRARLLAVE . ELSE ABRIRLLAVE sentenciaintermediaif CERRARLLAVE
-   29                   | ABRIRLLAVE sentenciaintermediaif CERRARLLAVE .
+estado 111
 
-    ELSE  shift, and go to state 115
+   29 sentenciacomparacionwhile: expresioncomparacionwhile $@2 AND . expresioncomparacionwhile
 
-    $default  reduce using rule 29 (sentenciainicialif)
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
+    expresioncomparacionwhile  ir al estado 120
+    expresion2                 ir al estado 86
+    expresion                  ir al estado 83
+    termino                    ir al estado 28
+    factor                     ir al estado 29
 
-state 112
 
-   22 sentenciaintermediawhile: sentenciaintermediawhile PUNTOYCOMA . sentencia
+estado 112
 
-    IDENTIFICADOR  shift, and go to state 5
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    IF             shift, and go to state 8
-    WHILE          shift, and go to state 9
-    PUT            shift, and go to state 10
-    GET            shift, and go to state 11
-    DECLARE        shift, and go to state 12
-    STRING         shift, and go to state 13
+   31 sentenciacomparacionwhile: expresioncomparacionwhile $@3 OR . expresioncomparacionwhile
 
-    sentencia           go to state 116
-    asignacion          go to state 16
-    asignacionespecial  go to state 17
-    expresion           go to state 18
-    termino             go to state 19
-    factor              go to state 20
+    IDENTIFICADOR  desplazar e ir al estado 59
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    STRING         desplazar e ir al estado 22
 
+    expresioncomparacionwhile  ir al estado 121
+    expresion2                 ir al estado 86
+    expresion                  ir al estado 83
+    termino                    ir al estado 28
+    factor                     ir al estado 29
 
-state 113
 
-   20 sentenciainicialwhile: ABRIRLLAVE sentenciaintermediawhile CERRARLLAVE .
+estado 113
 
-    $default  reduce using rule 20 (sentenciainicialwhile)
+   32 expresioncomparacionwhile: expresion2 comparadores expresion .
+   63 expresion: expresion . RESTA termino
+   64          | expresion . SUMA termino
 
+    SUMA   desplazar e ir al estado 53
+    RESTA  desplazar e ir al estado 54
 
-state 114
+    $default  reduce usando la regla 32 (expresioncomparacionwhile)
 
-   31 sentenciaintermediaif: sentenciaintermediaif PUNTOYCOMA sentencia .
 
-    $default  reduce using rule 31 (sentenciaintermediaif)
+estado 114
 
+   46 sentenciainicialif: ABRIRLLAVE . sentenciaintermediaif CERRARLLAVE $@8 sentenciaelse
+   47                   | ABRIRLLAVE . sentenciaintermediaif CERRARLLAVE
 
-state 115
+    IDENTIFICADOR  desplazar e ir al estado 15
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    IF             desplazar e ir al estado 18
+    WHILE          desplazar e ir al estado 19
+    PUT            desplazar e ir al estado 20
+    GET            desplazar e ir al estado 21
+    STRING         desplazar e ir al estado 22
 
-   28 sentenciainicialif: ABRIRLLAVE sentenciaintermediaif CERRARLLAVE ELSE . ABRIRLLAVE sentenciaintermediaif CERRARLLAVE
+    sentencia              ir al estado 122
+    sentenciaintermediaif  ir al estado 123
+    asignacion             ir al estado 25
+    asignacionespecial     ir al estado 26
+    expresion              ir al estado 27
+    termino                ir al estado 28
+    factor                 ir al estado 29
 
-    ABRIRLLAVE  shift, and go to state 117
 
+estado 115
 
-state 116
+   38 sentenciaif: ABRIRPARENTESIS $@4 sentenciacomparacionif CERRARPARENTESIS $@5 sentenciainicialif .
 
-   22 sentenciaintermediawhile: sentenciaintermediawhile PUNTOYCOMA sentencia .
+    $default  reduce usando la regla 38 (sentenciaif)
 
-    $default  reduce using rule 22 (sentenciaintermediawhile)
 
+estado 116
 
-state 117
+   41 sentenciacomparacionif: expresioncomparacionif $@6 AND expresioncomparacionif .
 
-   28 sentenciainicialif: ABRIRLLAVE sentenciaintermediaif CERRARLLAVE ELSE ABRIRLLAVE . sentenciaintermediaif CERRARLLAVE
+    $default  reduce usando la regla 41 (sentenciacomparacionif)
 
-    IDENTIFICADOR  shift, and go to state 5
-    CONSTANTE      shift, and go to state 6
-    REAL           shift, and go to state 7
-    IF             shift, and go to state 8
-    WHILE          shift, and go to state 9
-    PUT            shift, and go to state 10
-    GET            shift, and go to state 11
-    DECLARE        shift, and go to state 12
-    STRING         shift, and go to state 13
 
-    sentencia              go to state 106
-    sentenciaintermediaif  go to state 118
-    asignacion             go to state 16
-    asignacionespecial     go to state 17
-    expresion              go to state 18
-    termino                go to state 19
-    factor                 go to state 20
+estado 117
 
+   43 sentenciacomparacionif: expresioncomparacionif $@7 OR expresioncomparacionif .
 
-state 118
+    $default  reduce usando la regla 43 (sentenciacomparacionif)
 
-   28 sentenciainicialif: ABRIRLLAVE sentenciaintermediaif CERRARLLAVE ELSE ABRIRLLAVE sentenciaintermediaif . CERRARLLAVE
-   31 sentenciaintermediaif: sentenciaintermediaif . PUNTOYCOMA sentencia
 
-    PUNTOYCOMA   shift, and go to state 110
-    CERRARLLAVE  shift, and go to state 119
+estado 118
 
+   34 sentenciaintermediawhile: sentencia . PUNTOYCOMA
 
-state 119
+    PUNTOYCOMA  desplazar e ir al estado 124
 
-   28 sentenciainicialif: ABRIRLLAVE sentenciaintermediaif CERRARLLAVE ELSE ABRIRLLAVE sentenciaintermediaif CERRARLLAVE .
 
-    $default  reduce using rule 28 (sentenciainicialif)
+estado 119
+
+   33 sentenciainicialwhile: ABRIRLLAVE sentenciaintermediawhile . CERRARLLAVE
+   35 sentenciaintermediawhile: sentenciaintermediawhile . PUNTOYCOMA sentencia PUNTOYCOMA
+
+    PUNTOYCOMA   desplazar e ir al estado 125
+    CERRARLLAVE  desplazar e ir al estado 126
+
+
+estado 120
+
+   29 sentenciacomparacionwhile: expresioncomparacionwhile $@2 AND expresioncomparacionwhile .
+
+    $default  reduce usando la regla 29 (sentenciacomparacionwhile)
+
+
+estado 121
+
+   31 sentenciacomparacionwhile: expresioncomparacionwhile $@3 OR expresioncomparacionwhile .
+
+    $default  reduce usando la regla 31 (sentenciacomparacionwhile)
+
+
+estado 122
+
+   48 sentenciaintermediaif: sentencia . PUNTOYCOMA
+
+    PUNTOYCOMA  desplazar e ir al estado 127
+
+
+estado 123
+
+   46 sentenciainicialif: ABRIRLLAVE sentenciaintermediaif . CERRARLLAVE $@8 sentenciaelse
+   47                   | ABRIRLLAVE sentenciaintermediaif . CERRARLLAVE
+   49 sentenciaintermediaif: sentenciaintermediaif . PUNTOYCOMA sentencia PUNTOYCOMA
+
+    PUNTOYCOMA   desplazar e ir al estado 128
+    CERRARLLAVE  desplazar e ir al estado 129
+
+
+estado 124
+
+   34 sentenciaintermediawhile: sentencia PUNTOYCOMA .
+
+    $default  reduce usando la regla 34 (sentenciaintermediawhile)
+
+
+estado 125
+
+   35 sentenciaintermediawhile: sentenciaintermediawhile PUNTOYCOMA . sentencia PUNTOYCOMA
+
+    IDENTIFICADOR  desplazar e ir al estado 15
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    IF             desplazar e ir al estado 18
+    WHILE          desplazar e ir al estado 19
+    PUT            desplazar e ir al estado 20
+    GET            desplazar e ir al estado 21
+    STRING         desplazar e ir al estado 22
+
+    sentencia           ir al estado 130
+    asignacion          ir al estado 25
+    asignacionespecial  ir al estado 26
+    expresion           ir al estado 27
+    termino             ir al estado 28
+    factor              ir al estado 29
+
+
+estado 126
+
+   33 sentenciainicialwhile: ABRIRLLAVE sentenciaintermediawhile CERRARLLAVE .
+
+    $default  reduce usando la regla 33 (sentenciainicialwhile)
+
+
+estado 127
+
+   48 sentenciaintermediaif: sentencia PUNTOYCOMA .
+
+    $default  reduce usando la regla 48 (sentenciaintermediaif)
+
+
+estado 128
+
+   49 sentenciaintermediaif: sentenciaintermediaif PUNTOYCOMA . sentencia PUNTOYCOMA
+
+    IDENTIFICADOR  desplazar e ir al estado 15
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    IF             desplazar e ir al estado 18
+    WHILE          desplazar e ir al estado 19
+    PUT            desplazar e ir al estado 20
+    GET            desplazar e ir al estado 21
+    STRING         desplazar e ir al estado 22
+
+    sentencia           ir al estado 131
+    asignacion          ir al estado 25
+    asignacionespecial  ir al estado 26
+    expresion           ir al estado 27
+    termino             ir al estado 28
+    factor              ir al estado 29
+
+
+estado 129
+
+   46 sentenciainicialif: ABRIRLLAVE sentenciaintermediaif CERRARLLAVE . $@8 sentenciaelse
+   47                   | ABRIRLLAVE sentenciaintermediaif CERRARLLAVE .
+
+    PUNTOYCOMA  reduce usando la regla 47 (sentenciainicialif)
+    $default    reduce usando la regla 45 ($@8)
+
+    $@8  ir al estado 132
+
+
+estado 130
+
+   35 sentenciaintermediawhile: sentenciaintermediawhile PUNTOYCOMA sentencia . PUNTOYCOMA
+
+    PUNTOYCOMA  desplazar e ir al estado 133
+
+
+estado 131
+
+   49 sentenciaintermediaif: sentenciaintermediaif PUNTOYCOMA sentencia . PUNTOYCOMA
+
+    PUNTOYCOMA  desplazar e ir al estado 134
+
+
+estado 132
+
+   46 sentenciainicialif: ABRIRLLAVE sentenciaintermediaif CERRARLLAVE $@8 . sentenciaelse
+
+    ELSE  desplazar e ir al estado 135
+
+    sentenciaelse  ir al estado 136
+
+
+estado 133
+
+   35 sentenciaintermediawhile: sentenciaintermediawhile PUNTOYCOMA sentencia PUNTOYCOMA .
+
+    $default  reduce usando la regla 35 (sentenciaintermediawhile)
+
+
+estado 134
+
+   49 sentenciaintermediaif: sentenciaintermediaif PUNTOYCOMA sentencia PUNTOYCOMA .
+
+    $default  reduce usando la regla 49 (sentenciaintermediaif)
+
+
+estado 135
+
+   51 sentenciaelse: ELSE . ABRIRLLAVE $@9 sentenciaintermediaif CERRARLLAVE
+
+    ABRIRLLAVE  desplazar e ir al estado 137
+
+
+estado 136
+
+   46 sentenciainicialif: ABRIRLLAVE sentenciaintermediaif CERRARLLAVE $@8 sentenciaelse .
+
+    $default  reduce usando la regla 46 (sentenciainicialif)
+
+
+estado 137
+
+   51 sentenciaelse: ELSE ABRIRLLAVE . $@9 sentenciaintermediaif CERRARLLAVE
+
+    $default  reduce usando la regla 50 ($@9)
+
+    $@9  ir al estado 138
+
+
+estado 138
+
+   51 sentenciaelse: ELSE ABRIRLLAVE $@9 . sentenciaintermediaif CERRARLLAVE
+
+    IDENTIFICADOR  desplazar e ir al estado 15
+    CONSTANTE      desplazar e ir al estado 16
+    REAL           desplazar e ir al estado 17
+    IF             desplazar e ir al estado 18
+    WHILE          desplazar e ir al estado 19
+    PUT            desplazar e ir al estado 20
+    GET            desplazar e ir al estado 21
+    STRING         desplazar e ir al estado 22
+
+    sentencia              ir al estado 122
+    sentenciaintermediaif  ir al estado 139
+    asignacion             ir al estado 25
+    asignacionespecial     ir al estado 26
+    expresion              ir al estado 27
+    termino                ir al estado 28
+    factor                 ir al estado 29
+
+
+estado 139
+
+   49 sentenciaintermediaif: sentenciaintermediaif . PUNTOYCOMA sentencia PUNTOYCOMA
+   51 sentenciaelse: ELSE ABRIRLLAVE $@9 sentenciaintermediaif . CERRARLLAVE
+
+    PUNTOYCOMA   desplazar e ir al estado 128
+    CERRARLLAVE  desplazar e ir al estado 140
+
+
+estado 140
+
+   51 sentenciaelse: ELSE ABRIRLLAVE $@9 sentenciaintermediaif CERRARLLAVE .
+
+    $default  reduce usando la regla 51 (sentenciaelse)

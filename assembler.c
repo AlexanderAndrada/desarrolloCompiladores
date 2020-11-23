@@ -6,6 +6,13 @@
 
 int ultimo_terceto;
 int fin_tabla;
+FILE *fileSimbolos;
+
+struct tercetoResultado{
+	char operador[20];
+	char op1[20];
+	char op2[20];
+};
 
 struct terceto{
 	int operador;
@@ -13,23 +20,147 @@ struct terceto{
 	int op2;
 };
 
-  struct tablaSimbolos
+  struct tabla_simbolo
   {
       char nombre[20];
       char tipo[20];
 	  int tipoToken;
       char valor[20];
       int longitud;
-  };
+  } tabla_simbolo[100]={0};
 
 struct terceto *lista_terceto;
-struct tablaSimbolos *tabla_simbolo;
+struct tercetoResultado *listaTercetosResultado;
+//struct tabla_simbolo *tabla_simbolo;
 
-void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct tablaSimbolos *tablaSimbolo, int finTabla)
+
+    void lecturaArchivoDeSimbolos(){
+        char lineaSimbolo[80]={0};
+        char indiceLineaSimbolo=0;
+        char caracter;
+        int contadorNombre=0;
+        char nombre[20]={0};
+        char tipo[20]={0};
+        char valor[20]={0};
+        char cadenaSeparada[20]={0};
+        int i;
+        int borrar;
+        int x,y,z,c;
+        int indiceCopiar=0 ;
+		int contadorDeSimbolos=0;
+		int tokenTipoAux;
+
+
+		fileSimbolos = fopen("tablaSimboloss.txt","r");
+
+		if (fileSimbolos == NULL)
+        {
+            printf("\nError de apertura del archivo. \n\n");
+        }else{
+
+        while((caracter = fgetc(fileSimbolos)) != EOF){
+			
+            if(caracter!='\n'){
+                lineaSimbolo[indiceLineaSimbolo]=caracter;
+			
+                indiceLineaSimbolo++;
+            }
+            else{
+               // contadorDeSimbolos++;
+
+                for(x=0; x < 20; x++){
+                    if(strlen(nombre)<19){
+                        nombre[x]=lineaSimbolo[x];
+                    }
+                }
+
+                indiceCopiar=0;
+
+
+                 for(y=20; y < 40; y++){
+                        if(strlen(tipo)<19){
+                            tipo[indiceCopiar]=lineaSimbolo[y];
+                            indiceCopiar++;
+                        }
+                }
+
+				tokenTipoAux = devolverNumeroTipo(tipo);
+				if(tokenTipoAux != -1){
+					tabla_simbolo[contadorDeSimbolos].tipoToken = tokenTipoAux;
+				}
+                indiceCopiar=0;
+
+                 for(z=40; z < 60; z++){
+                     if(strlen(valor)<19){
+                         valor[indiceCopiar]=lineaSimbolo[z];
+                         indiceCopiar++;
+                     }
+                }
+
+                indiceCopiar=0;
+
+                 for(c=60; c < 80; c++){
+                    cadenaSeparada[indiceCopiar] = lineaSimbolo[c];
+                    indiceCopiar++;
+                }
+
+                if(c == 80){
+
+                    if(strcmp(cadenaSeparada,"                   ")==0){
+
+						tabla_simbolo[contadorDeSimbolos].longitud = 0;
+                    }else{
+                        tabla_simbolo[contadorDeSimbolos].longitud = atoi(cadenaSeparada);
+                    }
+                    indiceCopiar = 0;
+                }
+
+
+				char nombreCopiar[20]={0};
+
+                strncpy(tabla_simbolo[contadorDeSimbolos].nombre, nombre, 19);
+                strncpy(tabla_simbolo[contadorDeSimbolos].tipo, tipo, 19);
+                strncpy(tabla_simbolo[contadorDeSimbolos].valor, valor, 19);
+
+                contadorDeSimbolos++;
+                indiceLineaSimbolo=0;
+
+            for(borrar=0; borrar < 80; borrar++){
+                lineaSimbolo[borrar]='\0';
+            }
+            for(borrar=0; borrar < 20; borrar++){
+                nombre[borrar]='\0';
+                tipo[borrar]='\0';
+                valor[borrar]='\0';
+                cadenaSeparada[borrar]='\0';
+
+            }
+            }
+
+        }
+	close(fileSimbolos);
+	}
+    }
+
+
+
+
+
+
+
+void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct tercetoResultado *tercetoResult, int finTabla)
 {
 	lista_terceto = listaTerceto;
-	tabla_simbolo = tablaSimbolo;
+	listaTercetosResultado = tercetoResult;
+
+	printf("Op 1 es: %s\n", listaTercetosResultado[3].op1);
+	printf("Op 2 es: %s\n", listaTercetosResultado[3].op2);
+
+	printf("Op1 en posicion 0 es: %s\n", listaTercetosResultado[0].op2);
+	printf("Op2 en posicion 0 es: %s\n", listaTercetosResultado[1].op2);
 	
+	lecturaArchivoDeSimbolos();
+
 	ultimo_terceto = ultimoTerceto;
 	fin_tabla = finTabla;
 
@@ -129,24 +260,26 @@ void escribirInicio(FILE *arch){
 }
 
 void escribirInicioCodigo(FILE* arch){
-	fprintf(arch, ".CODE\n\nMOV AX, @DATA\nMOV DS, AX\nFINIT\n\n");
+	fprintf(arch, ".CODE\nMAIN:\n\nMOV AX, @DATA\nMOV DS, AX\n\n");
 }
 
 void escribirFinal(FILE *arch){
-    fprintf(arch, "\nMOV AH, 1\nINT 21h\nMOV AX, 4C00h\nINT 21h\n\nEND\n");
+    fprintf(arch, "\nMOV AH, 1\nINT 21h\nMOV AX, 4C00h\nINT 21h\n\nEND MAIN\n");
 	// TODO: Preguntar por flags y escribir subrutinas
 }
 
 void generarTabla(FILE *arch){
     fprintf(arch, ".DATA\n");
-    fprintf(arch, "NEW_LINE DB 0AH,0DH,'$'\n");
-	fprintf(arch, "CWprevio DW ?\n");
+    //fprintf(arch, "NEW_LINE DB 0AH,0DH,'$'\n");
+	//fprintf(arch, "CWprevio DW ?\n");
 
     for(int i=0; i<=fin_tabla; i++){
         fprintf(arch, "%s ", tabla_simbolo[i].nombre);
+		
         switch(tabla_simbolo[i].tipoToken){
         case INT:
-            fprintf(arch, "dd %d\n", tabla_simbolo[i].valor);
+            //fprintf(arch, "db %d\n", tabla_simbolo[i].valor);
+			fprintf(arch, "db %d\n", 2);
             break;
         case FLOAT:
             fprintf(arch, "dd %f\n", tabla_simbolo[i].valor);
@@ -155,7 +288,8 @@ void generarTabla(FILE *arch){
             fprintf(arch, "db \"%s\", '$'\n", tabla_simbolo[i].valor);
             break;
         default: //Es una variable int, float o puntero a string
-            fprintf(arch, "dd ?\n");
+            //fprintf(arch, "dd ?\n");
+			printf("");
         }
     }
 
@@ -240,10 +374,41 @@ void comparacion(FILE* arch, int ind){
 
 }
 /** Levanta, suma, y deja en pila */
+/*
 void suma(FILE* arch, int ind){
 	levantarEnPila(arch, ind);
 	fprintf(arch, "FADD\n");
 }
+*/
+
+void suma(FILE* arch, int ind){
+	int indiceOp1;
+	int indiceOp2;
+
+	indiceOp1 = atoi(listaTercetosResultado[ind].op1);
+	indiceOp2 = atoi(listaTercetosResultado[ind].op2);
+
+	fprintf(arch, "mov al, ");
+	fprintf(arch, listaTercetosResultado[indiceOp1].op2);
+	fprintf(arch, "\n");
+	fprintf(arch, "add al,");
+	fprintf(arch, listaTercetosResultado[indiceOp2].op2);
+	fprintf(arch, "\n");
+	//fprintf();
+	fprintf(arch,"mov ah, 9\n");
+	fprintf(arch, "mov dl,");
+	fprintf(arch, listaTercetosResultado[indiceOp1].op2);
+	fprintf(arch, "\n");
+
+	fprintf(arch,"add dl, 30h\n");
+	fprintf(arch,"mov ah, 2\n");
+ 	fprintf(arch,"int 21h\n");
+
+
+	//levantarEnPila(arch, ind);
+//	fprintf(arch, "FADD\n");
+}
+
 /** Levanta, revisa si hay dos operadores: Si hay uno, calcula el negativo. Si hay dos, resta y deja en pila*/
 /*
 void resta(FILE* arch, int ind){
@@ -293,6 +458,11 @@ void division(FILE* arch, int ind){ //Mañana reviso, seguro acá distinguimos o
 void levantarEnPila(FILE* arch, const int ind){
 	int elemIzq = lista_terceto[ind].op1;
 	int elemDer = lista_terceto[ind].op2;
+	
+	printf("Elemento de izquierda: %d\n", elemIzq);
+
+	printf("Elemento de derecha: %d\n", elemDer);
+
 	int izqLevantado = 0;
 	/* Si el elemento no está en pila lo levanta */
 //	if(elemIzq < OFFSET){
@@ -384,4 +554,11 @@ void read(FILE* arch, int terceto){
 
 	}
 	fprintf(arch, "\n");
+}
+
+int devolverNumeroTipo(char const *tipo){
+	if(strcmp(tipo, "INT                ")==0){
+        return INT;
+    }
+	return -1;
 }

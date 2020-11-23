@@ -10,6 +10,13 @@ int maxTabla = 100;
 int cantidadDeSimbolos=0;
 FILE *archivoSimbolos;
 
+
+struct tercetoResultado{
+	char operador[20];
+	char op1[20];
+	char op2[20];
+}listaTercetosResultado[100]={0};
+
 struct terceto{
 	int operador;
 	int op1;
@@ -129,7 +136,7 @@ struct terceto{
             }
 
         }
-
+	close(archivoSimbolos);
     }
 
 
@@ -374,32 +381,40 @@ void guardarArchivoTercetos(){
 		//La forma es [i] (operador, op1, op2)
 		//Escribo indice
 		fprintf(arch, "[%d] ( ", i);
-
+		
 		//escribo operador
 		switch(listaTercetos[i].operador){
 		case NOOP:
 			fprintf(arch, "_");
+			strcpy(listaTercetosResultado[i].operador,"_");
 			break;
 		case ASIGESPMAS:
 			fprintf(arch, "+=");
+			strcpy(listaTercetosResultado[i].operador,"+=");
 			break;
         case ASIGESPMENOS:
 			fprintf(arch, "-=");
+			strcpy(listaTercetosResultado[i].operador,"-=");
             break;
         case ASIGESPMULTIPLICACION:
 			fprintf(arch, "*=");
+			strcpy(listaTercetosResultado[i].operador,"*=");
             break;
         case ASIGESPDIVISION:
 			fprintf(arch, "/=");
+			strcpy(listaTercetosResultado[i].operador,"/=");
 			break;
 		case BLOQ:
 			fprintf(arch, "sentencia");
+			strcpy(listaTercetosResultado[i].operador,"sentencia");
 			break;
 		case MAIN:
 			fprintf(arch, "main");
+			strcpy(listaTercetosResultado[i].operador,"main");
 			break;
 		case IDENTIFICADOR:
 			fprintf(arch, "identificador");
+			strcpy(listaTercetosResultado[i].operador,"identificador");
 			break;
 		case IF:
 			fprintf(arch, "if");
@@ -427,15 +442,19 @@ void guardarArchivoTercetos(){
 			break;
 		case SUMA:
 			fprintf(arch, "+");
+			strcpy(listaTercetosResultado[i].operador,"+");
 			break;
 		case RESTA:
 			fprintf(arch, "-");
+			strcpy(listaTercetosResultado[i].operador,"-");
 			break;
 		case MULTIPLICACION:
 			fprintf(arch, "*");
+			strcpy(listaTercetosResultado[i].operador,"*");
 			break;
 		case DIVISION:
 			fprintf(arch, "/");
+			strcpy(listaTercetosResultado[i].operador,"/");
 			break;
 		case AND:
 			fprintf(arch, "y");
@@ -513,8 +532,10 @@ void guardarArchivoTercetos(){
 		//Escribo op1, el SEGUNDO PARAMETRO
 		int op = listaTercetos[i].op1;
 
-		if(op == NOOP)
+		if(op == NOOP){
 			fprintf(arch, "_");
+			strcpy(listaTercetosResultado[i].op1,"_");
+		}
 		else if(op < maxTabla){
 			//Es una entrada a tablaSimbolos de simbolos
 			char nombreCopiar[20]={0};
@@ -527,23 +548,42 @@ void guardarArchivoTercetos(){
 			}
 			indiceLimpioSimbolo=0;
 			//fprintf(arch, "%s", &(tablaSimbolos[op].nombre) );
-			//fprintf(arch, "%s", nombreCopiar );
+			//fprintf(arch, "%s", nombreCopiar );			int i = 247593;
+			char str[3];
+
+     		sprintf(str, "%d", op);
+
 			fprintf(arch, "[%d]", op );
+
+			strcpy(listaTercetosResultado[i].op1,str);
+
 		}
 		else //Es el indice de otro terceto
-			fprintf(arch, "[%d]", op);
+		{			
+			char str[3];
 
+     		sprintf(str, "%d", op);
+
+			fprintf(arch, "[%d]", op );
+
+			strcpy(listaTercetosResultado[i].op1,str);
+
+		}
 		fprintf(arch, " , ");
 
 		//Escribo op2 TERCER PARAMETRO
 
 		op = listaTercetos[i].op2;
-		if(op == NOOP)
+		if(op == NOOP){
 			fprintf(arch, "_");
+			strcpy(listaTercetosResultado[i].op2,"_");
+		}
 		else if(op < maxTabla){
 			//Es una entrada a tablaSimbolos de simbolos
 				char nombreCopiar[20]={0};
-			int indiceLimpioSimbolo=0;
+			int indiceLimpioSimbolo=1;
+			
+			nombreCopiar[0]='_';
 			for(o=1; o< strlen(tablaSimbolos[op].nombre); o++){
 				if(tablaSimbolos[op].nombre[o] != ' '){
 					nombreCopiar[indiceLimpioSimbolo] = tablaSimbolos[op].nombre[o];
@@ -554,14 +594,29 @@ void guardarArchivoTercetos(){
 
 		if(listaTercetos[i].operador == NOOP && listaTercetos[i].op1 == NOOP){
 			fprintf(arch, "%s", nombreCopiar );
+			strcpy(listaTercetosResultado[i].op2,nombreCopiar);
 		}
 		else{
-			fprintf(arch, "[%d]", op );
-		}
-		}
-		else //Es el indice de otro terceto
-			fprintf(arch, "[%d]", op);
 
+			char str[3];
+
+     		sprintf(str, "%d", op);
+
+			fprintf(arch, "[%d]", op );
+
+			strcpy(listaTercetosResultado[i].op2,str);
+		}
+		}
+		else{
+
+			char str[3];
+
+     		sprintf(str, "%d", op);
+
+			fprintf(arch, "[%d]", op );
+
+			strcpy(listaTercetosResultado[i].op2,str);
+		}
 		fprintf(arch, " )\n");
 	}
 	fclose(arch);
@@ -698,36 +753,42 @@ int agregarTipoTablaDeSimbolos(int token){
 	{
 		case INT:
 			strcpy(tablaSimbolos[cantidadDeSimbolos].tipo, "INT");
+			tablaSimbolos[cantidadDeSimbolos].tipoToken = token;			
 			cantidadDeSimbolos++;
 			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case CONSTANTE:
 			strcpy(tablaSimbolos[cantidadDeSimbolos].tipo, "CONSTANTE");
+			tablaSimbolos[cantidadDeSimbolos].tipoToken = token;
 			cantidadDeSimbolos++;
 			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case REAL:
 			strcpy(tablaSimbolos[cantidadDeSimbolos].tipo, "REAL");
+			tablaSimbolos[cantidadDeSimbolos].tipoToken = token;
 			cantidadDeSimbolos++;
 			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case DOUBLE:
 			strcpy(tablaSimbolos[cantidadDeSimbolos].tipo, "DOUBLE");
+			tablaSimbolos[cantidadDeSimbolos].tipoToken = token;
 			cantidadDeSimbolos++;
 			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case FLOAT:
 			strcpy(tablaSimbolos[cantidadDeSimbolos].tipo, "FLOAT");
+			tablaSimbolos[cantidadDeSimbolos].tipoToken = token;
 			cantidadDeSimbolos++;
 			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;	
 
 		case STRING:
 			strcpy(tablaSimbolos[cantidadDeSimbolos].tipo, "STRING");
+			tablaSimbolos[cantidadDeSimbolos].tipoToken = token;
 			cantidadDeSimbolos++;
 			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;		
@@ -758,11 +819,11 @@ void validarExistenciaVariable(int status, char const *variable){
 	return status;
 }
 
-int devolverUltimoTerceto(){
+int devolverCantidadTercetos(){
 	return ultimoTerceto;
 }
 
-int devolverUltimoSimboloTabla(){
+int devolverCantidadSimbolos(){
 	return cantidadDeSimbolos;
 }
 
@@ -772,4 +833,8 @@ struct terceto *devolverTercetos(){
 
 struct tablaSimbolos *devolverTablaSimbolos(){
 	return tablaSimbolos;
+}
+
+struct tercetoResultado *devolverTercetoResultado(){
+	return listaTercetosResultado;
 }

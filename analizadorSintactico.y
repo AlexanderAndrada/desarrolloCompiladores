@@ -78,7 +78,7 @@ programa:
 		escribirTablaSimbolos();
 		guardarArchivoTercetos();
 
-		generarAssembler(devolverTercetos(),devolverUltimoTerceto(),devolverTablaSimbolos(),devolverUltimoSimboloTabla());
+		generarAssembler(devolverTercetos(),devolverCantidadTercetos(),devolverTercetoResultado(),devolverCantidadSimbolos());
 		}
 	;
 
@@ -288,7 +288,7 @@ expresion2:
 	;
 
 expresion:
-	termino {printf("llega a expresion");indiceExpresion = indiceTermino;};
+	termino {indiceExpresion = indiceTermino;};
 	|expresion RESTA termino {
 		printf("Resta OK\n");
 		indiceExpresion=crear_terceto(RESTA, indiceExpresion,indiceTermino);
@@ -300,7 +300,7 @@ expresion:
 	;
 
 termino:
-	factor {printf("llega a factor");indiceTermino = indiceFactor;};
+	factor {indiceTermino = indiceFactor;};
 	|termino MULTIPLICACION factor  {
 		   printf("Multiplicacion OK\n");
 		   indiceTermino=crear_terceto(MULTIPLICACION, indiceFactor,indiceTermino);

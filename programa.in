@@ -1,3 +1,4 @@
-MAIN{DECLARE INT numero INT num;
-num + numero;
+MAIN{
+DECLARE INT numero INT num INT resultado;
+numero+num;
 }
