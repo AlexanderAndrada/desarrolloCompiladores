@@ -43,11 +43,11 @@
      CONSTANTE = 259,
      REAL = 260,
      MAIN = 261,
-     COMENTARIO = 262,
-     CONCAT = 263,
-     SUMA = 264,
-     RESTA = 265,
-     MULTIPLICACION = 266,
+     MULTIPLICACION = 262,
+     SUMA = 263,
+     COMENTARIO = 264,
+     CONCAT = 265,
+     RESTA = 266,
      DIVISION = 267,
      ASIG = 268,
      MAYOR = 269,
@@ -74,18 +74,17 @@
      INT = 290,
      FLOAT = 291,
      DOUBLE = 292,
-     CHAR = 293,
-     BOOLEAN = 294,
-     ASIGESPMAS = 295,
-     ASIGESPMENOS = 296,
-     ASIGESPMULTIPLICACION = 297,
-     ASIGESPDIVISION = 298,
-     STRING = 299,
-     JNA = 300,
-     ENDIF = 301,
-     TRUE = 302,
-     ENDSENTENCE = 303,
-     ENDWHILE = 304
+     BOOLEAN = 293,
+     ASIGESPMAS = 294,
+     ASIGESPMENOS = 295,
+     ASIGESPMULTIPLICACION = 296,
+     ASIGESPDIVISION = 297,
+     STRING = 298,
+     JNA = 299,
+     ENDIF = 300,
+     TRUE = 301,
+     ENDSENTENCE = 302,
+     ENDWHILE = 303
    };
 #endif
 /* Tokens.  */
@@ -93,11 +92,11 @@
 #define CONSTANTE 259
 #define REAL 260
 #define MAIN 261
-#define COMENTARIO 262
-#define CONCAT 263
-#define SUMA 264
-#define RESTA 265
-#define MULTIPLICACION 266
+#define MULTIPLICACION 262
+#define SUMA 263
+#define COMENTARIO 264
+#define CONCAT 265
+#define RESTA 266
 #define DIVISION 267
 #define ASIG 268
 #define MAYOR 269
@@ -124,18 +123,17 @@
 #define INT 290
 #define FLOAT 291
 #define DOUBLE 292
-#define CHAR 293
-#define BOOLEAN 294
-#define ASIGESPMAS 295
-#define ASIGESPMENOS 296
-#define ASIGESPMULTIPLICACION 297
-#define ASIGESPDIVISION 298
-#define STRING 299
-#define JNA 300
-#define ENDIF 301
-#define TRUE 302
-#define ENDSENTENCE 303
-#define ENDWHILE 304
+#define BOOLEAN 293
+#define ASIGESPMAS 294
+#define ASIGESPMENOS 295
+#define ASIGESPMULTIPLICACION 296
+#define ASIGESPDIVISION 297
+#define STRING 298
+#define JNA 299
+#define ENDIF 300
+#define TRUE 301
+#define ENDSENTENCE 302
+#define ENDWHILE 303
 
 
 
@@ -145,7 +143,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 50 "analizadorSintactico.y"
+#line 58 "analizadorSintactico.y"
 
 	char var[20];
 	int valor;
@@ -153,7 +151,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 157 "y.tab.h"
+#line 155 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

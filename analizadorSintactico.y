@@ -11,6 +11,13 @@ int yystopparser=0;
 FILE  *yyin;
 char *yyltext;
 char *yytext;
+int buscarFactor;
+int buscarTermino;
+int buscarExpresion;
+int buscarAsignacion;
+int buscarString;
+int indiceString;
+int indiceStringAux;
 int indiceIdentificador;
 int indiceConstante;
 int indiceReal;
@@ -34,6 +41,7 @@ int indiceWhileFin[9];
 int indiceWhileAux[9];
 int indiceWhileAuxAnd[9];
 int indiceWhileAuxOr[9];
+int indiceTipoVariable;
 int banderaIfAnd[9];
 int banderaIfOr[9];
 int banderaWhileAnd[9];
@@ -56,14 +64,16 @@ int ultimoTerceto;
 %token <var> CONSTANTE
 %token <var> REAL
 %right MAIN
+%right SUMA MULTIPLICACION
 %token COMENTARIO CONCAT
-%token SUMA RESTA MULTIPLICACION DIVISION ASIG
+%token RESTA DIVISION ASIG
 %token MAYOR MENOR MAYORIGUAL MENORIGUAL IGUAL DISTINTO
 %token PUNTOYCOMA ABRIRPARENTESIS CERRARPARENTESIS ABRIRLLAVE CERRARLLAVE ABRIRCORCHETE CERRARCORCHETE
 %token IF ELSE WHILE PUT GET AND OR DECLARE
-%token INT FLOAT DOUBLE CHAR BOOLEAN
-%token <var> ASIGESPMAS 
-%token ASIGESPMENOS ASIGESPMULTIPLICACION ASIGESPDIVISION
+%token <var> INT 
+%token <var> FLOAT 
+%token DOUBLE BOOLEAN
+%token ASIGESPMAS ASIGESPMENOS ASIGESPMULTIPLICACION ASIGESPDIVISION
 %token <var> STRING
 %token JNA
 %token ENDIF TRUE ENDSENTENCE ENDWHILE
@@ -72,42 +82,57 @@ int ultimoTerceto;
 
 %%
 programa:
-	MAIN ABRIRLLAVE declaracion sentencias CERRARLLAVE {printf("Main OK\n");escribirTablaSimbolos();guardarArchivoTercetos();}
+	MAIN ABRIRLLAVE declaracion sentencias CERRARLLAVE{printf("Main OK\n");escribirTablaSimbolos();guardarArchivoTercetos();}
 	;
 
 declaracion:
-	DECLARE sentenciadeclaracion PUNTOYCOMA {printf("Declaraciones ok\n");}
+	DECLARE sentenciadeclaracion PUNTOYCOMA{printf("Declaraciones ok\n");}
 	;
 
 sentenciadeclaracion:
-	tipo identificadorintermedio 
-	|sentenciadeclaracion tipo identificadorintermedio 
+	tipo identificadorintermedio
+	|sentenciadeclaracion tipo identificadorintermedio
 	;
 
 tipo: 
-	FLOAT
-	|INT
-	|STRING
-	|BOOLEAN
-	|CHAR
-	|DOUBLE
+	FLOAT{
+	indiceTipoVariable=FLOAT;}
+	|INT{
+	indiceTipoVariable=INT;}
+	|STRING{
+	indiceTipoVariable=STRING;}
+	|BOOLEAN{
+	indiceTipoVariable=BOOLEAN;}
+	|DOUBLE{
+	indiceTipoVariable=DOUBLE;}
 	;
 
 identificadorintermedio:
-	IDENTIFICADOR {
+	IDENTIFICADOR{
+		if(buscarPosicionTablaSimbolos($1)!=-1){
+			printf("\nError: Variable %s ya declarada\n",$1);
+			system("Pause");
+			exit(2);};
 		printf("La variable es: %s ",$1);
 		agregarVariableATablaDeSimbolos($1, IDENTIFICADOR);
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
-		printf("indice: %d ",indiceIdentificador);
 		crear_terceto(NOOP, NOOP, indiceIdentificador);
+		agregarTipoDatosVariable($1,indiceTipoVariable);
 		contadorVariables++;
+		printf("indice: %d\n",indiceIdentificador);
 		}
 	|identificadorintermedio IDENTIFICADOR{
+		if(buscarPosicionTablaSimbolos($2)!=-1){
+			printf("\nError: Variable %s ya declarada\n",$2);
+			system("Pause");
+			exit(2);};
 		printf("La variable es: %s ",$2);
 		agregarVariableATablaDeSimbolos($2, IDENTIFICADOR);
 		indiceIdentificador = buscarPosicionTablaSimbolos($2);
 		crear_terceto(NOOP, NOOP, indiceIdentificador);
+		agregarTipoDatosVariable($2,indiceTipoVariable);		
 		contadorVariables++;		
+		printf("indice: %d \n",indiceIdentificador);		
 		}
 	;
 	
@@ -132,7 +157,12 @@ sentenciaparentesis:
 	;
 
 factorparentesis:
-	ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS
+	ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS{
+		indiceIdentificador = buscarPosicionTablaSimbolos($2);
+		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
+		crear_terceto(GET, NOOP, indiceAsignacion);
+		printf("Var: %s GET ok\n",$2);
+		}
 	;
 
 sentenciawhile:
@@ -143,6 +173,8 @@ sentenciawhile:
 	sentenciacomparacionwhile CERRARPARENTESIS sentenciainicialwhile{
 		indiceWhileFin[contadorWhile]=crear_terceto(ENDSENTENCE, NOOP, NOOP);
 		modificarTerceto(indiceWhileAux[contadorWhile],OP2,indiceWhileFin[contadorWhile]);
+		if(banderaWhileAnd[contadorWhile]==1) {modificarTerceto(indiceWhileAuxAnd[contadorWhile],OP2,indiceWhileFin[contadorWhile]);}
+		if(banderaWhileOr[contadorWhile]==1) {modificarTerceto(indiceWhileAuxOr[contadorWhile],OP2,indiceWhileFin[contadorWhile]);}
 		contadorWhile--;}
 	;
 
@@ -153,13 +185,13 @@ sentenciacomparacionwhile:
 	|expresioncomparacionwhile {
 		indiceWhileAuxAnd[contadorWhile]=crear_terceto(JNA, NOOP, NOOP);}
 	AND expresioncomparacionwhile {
-		banderaWhileAnd[contadorIf]=1;printf("Sentencia AND comparacion WHILE ok\n");
-		indiceWhileAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);}
+		banderaWhileAnd[contadorWhile]=1;printf("Sentencia AND comparacion WHILE ok\n");
+		indiceWhileAux[contadorWhile]=crear_terceto(JNA, NOOP, NOOP);}
 	|expresioncomparacionwhile {
-		indiceWhileAuxOr[contadorIf]=crear_terceto(JMP, NOOP, NOOP);} 
+		indiceWhileAuxOr[contadorWhile]=crear_terceto(JMP, NOOP, NOOP);} 
 	OR expresioncomparacionwhile{
-		banderaWhileOr[contadorIf]=1;indiceWhileAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);
-		printf("Sentencia OR comparacion WHILE ok\n");}
+		banderaWhileOr[contadorWhile]=1;printf("Sentencia OR comparacion WHILE ok\n");
+		indiceWhileAux[contadorWhile]=crear_terceto(JNA, NOOP, NOOP);		}
 	;
 
 expresioncomparacionwhile:
@@ -235,31 +267,29 @@ sentenciaelse:
 
 asignacion:
 	IDENTIFICADOR ASIG expresion {
-		printf("Var: %s Asignacion ok\n",$1);
-		agregarVariableATablaDeSimbolos($1, IDENTIFICADOR);
+		compararTipoVariable($1,buscarExpresion);
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
 		crear_terceto(ASIG, indiceExpresion, indiceAsignacion);
+		printf("Var: %s Asignacion ok\n",$1);
 		}
 	|IDENTIFICADOR ASIG expresionstrings {
-		printf("Var: %s Asignacion ok\n",$1);
+		compararTipoVariable($1,buscarString);
 		agregarVariableATablaDeSimbolos($1, IDENTIFICADOR);
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
-		crear_terceto(ASIG, indiceExpresion, indiceAsignacion);
+		crear_terceto(ASIG, indiceString, indiceAsignacion);
+		printf("Var: %s Asignacion ok\n",$1);
 		}
 	;
 
 asignacionespecial:
 	IDENTIFICADOR asignadorespecial {
-		agregarVariableATablaDeSimbolos($1, IDENTIFICADOR);
+		compararTipoVariable($1,buscarExpresion);
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
-		printf("asigesp es: %d\n", indiceAsignacionEspecial );
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
-		//modificarTerceto(indiceAsignacionEspecial,OP1,indiceAsignacion);
 		indiceAsignacionEspecial = crear_terceto(indiceAsignacionEspecial, indiceExpresion, indiceAsignacion);
 		indiceAsignacionEspecial = crear_terceto(ASIG,indiceAsignacionEspecial,indiceAsignacion);
-		printf("falla");
 		}
 	;
 
@@ -271,38 +301,65 @@ asignadorespecial:
 	;
 
 expresionstrings:
-	STRING CONCAT STRING {
-		printf("concatenacion de %s y %s ",$1,$3);}
-	|expresionstrings CONCAT STRING
+	expresionconcat
+	|STRING {
+		agregarVariableATablaDeSimbolos($1, STRING);
+		indiceString = buscarPosicionTablaSimbolos($1);
+		indiceString = crear_terceto(NOOP, NOOP, indiceString);
+		buscarString = $1;
+		printf("El string es: %s ",$1);
+		}
 	;
-
+	
+expresionconcat:
+	STRING CONCAT STRING {
+		verificarLargoString($1,$3);
+		agregarVariableATablaDeSimbolos($1, STRING);
+		agregarVariableATablaDeSimbolos($3, STRING);
+		indiceString = buscarPosicionTablaSimbolos($1);
+		indiceStringAux = buscarPosicionTablaSimbolos($3);
+		indiceString = crear_terceto(NOOP, NOOP, indiceString);
+		indiceStringAux = crear_terceto(NOOP, NOOP, indiceStringAux);
+		indiceString = crear_terceto(CONCAT, indiceStringAux, indiceString);
+		buscarString = $1;		
+		printf("El string es: %s %s ",$1,$3);
+		}
+	;
 
 expresion2:
 	expresion {indiceExpresion2 = indiceExpresion;}
 	;
 
 expresion:
-	termino {printf("llega a expresion");indiceExpresion = indiceTermino;};
+	termino {
+		printf("llega a expresion");
+		indiceExpresion = indiceTermino;
+		buscarExpresion=buscarTermino;}
 	|expresion RESTA termino {
+		compararTipoVariable(buscarTermino,buscarExpresion);	
 		printf("Resta OK\n");
 		indiceExpresion=crear_terceto(RESTA, indiceExpresion,indiceTermino);
 		}
 	|expresion SUMA termino  {
+		compararTipoVariable(buscarTermino,buscarExpresion);
 		printf("Suma OK\n");
 		indiceExpresion=crear_terceto(SUMA, indiceExpresion,indiceTermino);
 		}
 	;
 
 termino:
-	factor {indiceTermino = indiceFactor;};
+	factor {
+		indiceTermino = indiceFactor;
+		buscarTermino=buscarFactor;}
 	|termino MULTIPLICACION factor  {
-		   printf("Multiplicacion OK\n");
-		   indiceTermino=crear_terceto(MULTIPLICACION, indiceFactor,indiceTermino);
-		   }
+		compararTipoVariable(buscarFactor,buscarTermino);
+		printf("Multiplicacion OK\n");
+		indiceTermino=crear_terceto(MULTIPLICACION, indiceFactor,indiceTermino);}
 	|termino DIVISION factor {
-		  printf("Division OK\n");
-		  indiceTermino=crear_terceto(DIVISION, indiceFactor,indiceTermino);
-		  }
+		compararTipoVariable(buscarFactor,buscarTermino);	
+		printf("Division OK\n");
+		indiceTermino=crear_terceto(DIVISION, indiceFactor,indiceTermino);
+		}
 	;
 
 comparadores:
@@ -315,27 +372,26 @@ comparadores:
 	;
 
 factor:
-	IDENTIFICADOR {
+	IDENTIFICADOR{
 		printf("La variable es: %s ",$1);
-		agregarVariableATablaDeSimbolos($1, IDENTIFICADOR);
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
 		indiceFactor = buscar_terceto(indiceIdentificador,contadorVariables);
+		buscarFactor=$1;
 		}
-	|CONSTANTE {
+	|INT{
 		printf("La constante es: %s\n",$1);
-		agregarVariableATablaDeSimbolos($1, CONSTANTE);
+		agregarVariableATablaDeSimbolos($1, INT);
 		indiceConstante = buscarPosicionTablaSimbolos($1);
 		indiceFactor = crear_terceto(NOOP, NOOP, indiceConstante);
-		printf("\nEl indiceFactor es: %d\n", indiceFactor);
+		buscarFactor=$1;
 		}
-	|REAL {
+	|FLOAT {
 		printf("El numero real es: %s ",$1);
-		agregarVariableATablaDeSimbolos($1, REAL);
-		indiceReal = buscarPosicionTablaSimbolos($1);
+		agregarVariableATablaDeSimbolos($1, FLOAT);
+		indiceReal = buscarPosicionTablaSimbolos($1);	
 		indiceFactor = crear_terceto(NOOP, NOOP, indiceReal);
+		buscarFactor=$1;		
 		}
-	|IDENTIFICADOR ABRIRCORCHETE CONSTANTE CERRARCORCHETE {printf("vector %s con %s espacios",$1,$3);}
-	|STRING {printf("string: %s ",$1);}
 	;
 
 %%

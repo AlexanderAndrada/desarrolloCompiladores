@@ -150,8 +150,8 @@ extern FILE *yyin;
                 tkn.valor=-1;
                 return tkn;
             }
-            if(strcmp(identificador, "CHAR")==0){
-                tkn.token=CHAR;
+            if(strcmp(identificador, "STRING")==0){
+                tkn.token=STRING;
                 tkn.valor=-1;
                 return tkn;
             }
@@ -179,14 +179,14 @@ extern FILE *yyin;
 	    }
 
 	    if(strlen(constante)>0){
-            tkn.token=CONSTANTE;
+            tkn.token=INT;
 
             strcpy(yylval.var,constante);
             tkn.valor=-1;
 
             strcpy(tabla[contadorRegistroTabla].nombre, "_");
             strcat(tabla[contadorRegistroTabla].nombre, constante);
-            strcpy(tabla[contadorRegistroTabla].tipo,"CONSTANTE");
+            strcpy(tabla[contadorRegistroTabla].tipo,"INT");
             strcpy(tabla[contadorRegistroTabla].valor,constante);
             tabla[contadorRegistroTabla].longitud=0;
             contadorRegistroTabla++;
@@ -195,14 +195,14 @@ extern FILE *yyin;
 	    }
 
 	    if(strlen(reales)>0){
-            tkn.token=REAL;
+            tkn.token=FLOAT;
 
             strcpy(yylval.var,reales);
             tkn.valor=-1;
 
             strcpy(tabla[contadorRegistroTabla].nombre, "_");
             strcat(tabla[contadorRegistroTabla].nombre, reales);
-            strcpy(tabla[contadorRegistroTabla].tipo,"REAL");
+            strcpy(tabla[contadorRegistroTabla].tipo,"FLOAT");
             strcpy(tabla[contadorRegistroTabla].valor,reales);
             tabla[contadorRegistroTabla].longitud=0;
             contadorRegistroTabla++;
@@ -563,7 +563,13 @@ extern FILE *yyin;
     void f22(){
         if(contadorComillas==0)
             contadorComillas++;
-            else string[strlen(string)]=caracter;
+            else if(strlen(string)<20)
+                    string[strlen(string)]=caracter;
+            else{
+                printf("\nError String muy largo\n");
+                system("Pause");
+                exit(2);
+            }
     };
 
     //Guarda el comparador <
