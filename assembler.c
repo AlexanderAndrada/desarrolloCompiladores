@@ -57,10 +57,10 @@ struct tercetoResultado *listaTercetosResultado;
         }else{
 
         while((caracter = fgetc(fileSimbolos)) != EOF){
-			
+
             if(caracter!='\n'){
                 lineaSimbolo[indiceLineaSimbolo]=caracter;
-			
+
                 indiceLineaSimbolo++;
             }
             else{
@@ -165,8 +165,9 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
   escribirInicio(arch);
   generarTabla(arch);
   escribirInicioCodigo(arch);
-    
-  for(int i=0; i <= ultimo_terceto; i++){
+  int i;
+
+  for(i=0; i <= ultimo_terceto; i++){
     switch(lista_terceto[i].operador){
       //case ASIG:
 	  	//asignacion(arch, i);
@@ -179,10 +180,10 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
 		break;
 	  case MENOR:
 	  	armarComparacion(arch, i);
-		break;		
+		break;
 	  case IGUAL:
 	  	armarComparacion(arch, i);
-		break;	
+		break;
 
 
       case BGT:
@@ -274,8 +275,9 @@ void escribirFinal(FILE *arch){
 
 void generarTabla(FILE *arch){
     fprintf(arch, ".DATA\n");
+    int i;
 
-    for(int i=0; i<=fin_tabla; i++){
+    for(i=0; i<=fin_tabla; i++){
         fprintf(arch, "%s ", tabla_simbolo[i].nombre);
 
         switch(tabla_simbolo[i].tipoToken){
@@ -306,7 +308,7 @@ void escribirEtiqueta(FILE* arch, char* etiqueta, int n){
 
 void escribirSalto(FILE* arch, char* salto, int tercetoDestino){
     fprintf(arch, "%s ", salto);
-	
+
     //Por si nos olvidamos de rellenar un salto
     if(tercetoDestino == NOOP){
    //     printf("Ups. Parece que me olvide de rellenar un salto en los tercetos y ahora no se como seguir.\n");
@@ -346,7 +348,7 @@ void suma(FILE* arch, int ind){
 	fprintf(arch, "add al,");
 	fprintf(arch, listaTercetosResultado[indiceOp2].op2);
 	fprintf(arch, "\n");
-	
+
 	fprintf(arch,"mov ah, 9\n");
 	fprintf(arch, "mov dl,");
 	//fprintf(arch, listaTercetosResultado[indiceOp1].op2);
@@ -373,7 +375,7 @@ void resta(FILE* arch, int ind){
 	fprintf(arch, "sub al,");
 	fprintf(arch, listaTercetosResultado[indiceOp2].op2);
 	fprintf(arch, "\n");
-	
+
 	fprintf(arch,"mov ah, 9\n");
 	fprintf(arch, "mov dl,");
 	//fprintf(arch, listaTercetosResultado[indiceOp1].op2);
@@ -399,7 +401,7 @@ void multiplicacion(FILE* arch, int ind){
 	fprintf(arch, "mul ");
 	fprintf(arch, listaTercetosResultado[indiceOp2].op2);
 	fprintf(arch, "\n");
-	
+
 	fprintf(arch,"mov ah, 9\n");
 	fprintf(arch, "mov dl,");
 	//fprintf(arch, listaTercetosResultado[indiceOp1].op2);
@@ -425,7 +427,7 @@ void division(FILE* arch, int ind){
 	fprintf(arch, "div ");
 	fprintf(arch, listaTercetosResultado[indiceOp2].op2);
 	fprintf(arch, "\n");
-	
+
 	fprintf(arch,"mov ah, 9\n");
 	fprintf(arch, "mov dl,");
 	//fprintf(arch, listaTercetosResultado[indiceOp1].op2);
@@ -453,7 +455,7 @@ int devolverNumeroTipo(char const *tipo){
 }
 
 void armarComparacion(FILE* arch, int ind){
-	
+
 	int indiceOp1;
 	int indiceOp2;
 

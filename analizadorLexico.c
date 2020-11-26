@@ -141,11 +141,6 @@ extern FILE *yyin;
                 tkn.valor=-1;
                 return tkn;
             }
-            if(strcmp(identificador, "CHAR")==0){
-                tkn.token=CHAR;
-                tkn.valor=-1;
-                return tkn;
-            }
             if(strcmp(identificador, "BOOLEAN")==0){
                 tkn.token=BOOLEAN;
                 tkn.valor=-1;

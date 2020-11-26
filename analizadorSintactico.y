@@ -57,19 +57,22 @@ int ultimoTerceto;
 %token <var> CONSTANTE
 %token <var> REAL
 %right MAIN
+%right SUMA MULTIPLICACION
 %token COMENTARIO CONCAT
-%token SUMA RESTA MULTIPLICACION DIVISION ASIG
+%token RESTA DIVISION ASIG
 %token MAYOR MENOR MAYORIGUAL MENORIGUAL IGUAL DISTINTO
 %token PUNTOYCOMA ABRIRPARENTESIS CERRARPARENTESIS ABRIRLLAVE CERRARLLAVE ABRIRCORCHETE CERRARCORCHETE
 %token IF ELSE WHILE PUT GET AND OR DECLARE
-%token <var> INT FLOAT DOUBLE CHAR BOOLEAN
-%token <var> ASIGESPMAS 
-%token ASIGESPMENOS ASIGESPMULTIPLICACION ASIGESPDIVISION
+%token <var> INT 
+%token <var> FLOAT 
+%token DOUBLE BOOLEAN
+%token ASIGESPMAS ASIGESPMENOS ASIGESPMULTIPLICACION ASIGESPDIVISION
 %token <var> STRING
 %token JNA
 %token ENDIF TRUE ENDSENTENCE ENDWHILE
 
 %type <var> identificadorintermedio
+
 
 %%
 programa:
@@ -96,7 +99,6 @@ tipo:
 	|INT {indiceTipo = agregarTipoTablaDeSimbolos(INT);}
 	|STRING {indiceTipo = agregarTipoTablaDeSimbolos(STRING);}
 	|BOOLEAN {indiceTipo = agregarTipoTablaDeSimbolos(BOOLEAN);}
-	|CHAR {indiceTipo = agregarTipoTablaDeSimbolos(CHAR);}
 	|DOUBLE {indiceTipo = agregarTipoTablaDeSimbolos(DOUBLE);}
 	;
 
