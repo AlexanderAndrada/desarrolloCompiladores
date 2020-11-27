@@ -161,11 +161,16 @@ extern FILE *yyin;
                 tkn.valor=-1;
                 return tkn;
             }
+            if(strcmp(identificador, "STRING")==0){
+                tkn.token=STRING;
+                tkn.valor=-1;
+                return tkn;
+            }
 
 	    }
 
 	    if(strlen(constante)>0){
-            tkn.token=CONSTANTE;
+            tkn.token=INT;
 
             strcpy(yylval.var,constante);
             tkn.valor=-1;
@@ -173,7 +178,7 @@ extern FILE *yyin;
 	    }
 
 	    if(strlen(reales)>0){
-            tkn.token=REAL;
+            tkn.token=FLOAT;
 
             strcpy(yylval.var,reales);
             tkn.valor=-1;

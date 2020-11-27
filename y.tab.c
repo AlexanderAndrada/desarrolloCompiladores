@@ -81,6 +81,8 @@ int yystopparser=0;
 FILE  *yyin;
 char *yyltext;
 char *yytext;
+int indiceString;
+int indiceStringAux;
 int indiceIdentificador;
 int indiceConstante;
 int indiceReal;
@@ -112,6 +114,12 @@ int contadorIf=0;
 int contadorWhile=0;
 int contadorVariables=0;
 int indiceTipo;
+int buscarString;
+int buscarFactor;
+int buscarTermino;
+int buscarExpresion;
+int buscarAsignacion;
+int tipoVariable;
 
 
 int ultimoTerceto;
@@ -119,7 +127,7 @@ int ultimoTerceto;
 
 
 /* Line 189 of yacc.c  */
-#line 123 "y.tab.c"
+#line 131 "y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -250,7 +258,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 51 "analizadorSintactico.y"
+#line 59 "analizadorSintactico.y"
 
 	char var[20];
 	int valor;
@@ -258,7 +266,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 262 "y.tab.c"
+#line 270 "y.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -270,7 +278,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 274 "y.tab.c"
+#line 282 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -485,16 +493,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   134
+#define YYLAST   143
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  49
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  39
+#define YYNNTS  40
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  78
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  140
+#define YYNSTATES  137
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -544,56 +552,56 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
 {
-       0,     0,     3,     9,    13,    16,    20,    22,    24,    26,
-      28,    30,    32,    35,    38,    42,    45,    48,    50,    52,
-      54,    57,    60,    62,    66,    70,    71,    77,    79,    80,
-      85,    86,    91,    95,    99,   102,   107,   108,   109,   116,
-     118,   119,   124,   125,   130,   134,   135,   141,   145,   148,
-     153,   154,   160,   164,   168,   171,   174,   177,   180,   183,
-     187,   191,   193,   195,   199,   203,   205,   209,   213,   215,
-     217,   219,   221,   223,   225,   227,   229,   231,   236
+       0,     0,     3,     9,    14,    18,    21,    25,    27,    29,
+      31,    33,    35,    37,    40,    43,    47,    50,    53,    55,
+      57,    59,    62,    65,    67,    71,    75,    76,    82,    84,
+      85,    90,    91,    96,   100,   104,   107,   112,   113,   114,
+     121,   123,   124,   129,   130,   135,   139,   140,   146,   150,
+     153,   158,   159,   165,   169,   173,   176,   179,   182,   185,
+     188,   190,   192,   196,   198,   200,   204,   208,   210,   214,
+     218,   220,   222,   224,   226,   228,   230,   232,   234
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      50,     0,    -1,     6,    23,    51,    55,    24,    -1,    34,
-      52,    20,    -1,    53,    54,    -1,    52,    53,    54,    -1,
-      36,    -1,    35,    -1,    43,    -1,    38,    -1,    37,    -1,
-       3,    -1,    54,     3,    -1,    56,    20,    -1,    55,    56,
-      20,    -1,    29,    59,    -1,    27,    67,    -1,    84,    -1,
-      79,    -1,    80,    -1,    30,    57,    -1,    31,    58,    -1,
-      58,    -1,    21,    43,    22,    -1,    21,     3,    22,    -1,
-      -1,    21,    60,    61,    22,    65,    -1,    64,    -1,    -1,
-      64,    62,    32,    64,    -1,    -1,    64,    63,    33,    64,
-      -1,    83,    86,    84,    -1,    23,    66,    24,    -1,    56,
-      20,    -1,    66,    20,    56,    20,    -1,    -1,    -1,    21,
-      68,    70,    22,    69,    74,    -1,    73,    -1,    -1,    73,
-      71,    32,    73,    -1,    -1,    73,    72,    33,    73,    -1,
-      83,    86,    84,    -1,    -1,    23,    76,    24,    75,    77,
-      -1,    23,    76,    24,    -1,    56,    20,    -1,    76,    20,
-      56,    20,    -1,    -1,    28,    23,    78,    76,    24,    -1,
-       3,    13,    84,    -1,     3,    13,    82,    -1,     3,    81,
-      -1,    39,    84,    -1,    40,    84,    -1,    41,    84,    -1,
-      42,    84,    -1,    43,    10,    43,    -1,    82,    10,    43,
-      -1,    84,    -1,    85,    -1,    84,    11,    85,    -1,    84,
-       8,    85,    -1,    87,    -1,    85,     7,    87,    -1,    85,
-      12,    87,    -1,    14,    -1,    15,    -1,    17,    -1,    16,
-      -1,    18,    -1,    19,    -1,     3,    -1,     4,    -1,     5,
-      -1,     3,    25,     4,    26,    -1,    43,    -1
+      50,     0,    -1,     6,    23,    51,    55,    24,    -1,     6,
+      23,    55,    24,    -1,    34,    52,    20,    -1,    53,    54,
+      -1,    52,    53,    54,    -1,    36,    -1,    35,    -1,    43,
+      -1,    38,    -1,    37,    -1,     3,    -1,    54,     3,    -1,
+      56,    20,    -1,    55,    56,    20,    -1,    29,    59,    -1,
+      27,    67,    -1,    85,    -1,    79,    -1,    80,    -1,    30,
+      57,    -1,    31,    58,    -1,    58,    -1,    21,    43,    22,
+      -1,    21,     3,    22,    -1,    -1,    21,    60,    61,    22,
+      65,    -1,    64,    -1,    -1,    64,    62,    32,    64,    -1,
+      -1,    64,    63,    33,    64,    -1,    84,    87,    85,    -1,
+      23,    66,    24,    -1,    56,    20,    -1,    66,    20,    56,
+      20,    -1,    -1,    -1,    21,    68,    70,    22,    69,    74,
+      -1,    73,    -1,    -1,    73,    71,    32,    73,    -1,    -1,
+      73,    72,    33,    73,    -1,    84,    87,    85,    -1,    -1,
+      23,    76,    24,    75,    77,    -1,    23,    76,    24,    -1,
+      56,    20,    -1,    76,    20,    56,    20,    -1,    -1,    28,
+      23,    78,    76,    24,    -1,     3,    13,    85,    -1,     3,
+      13,    82,    -1,     3,    81,    -1,    39,    85,    -1,    40,
+      85,    -1,    41,    85,    -1,    42,    85,    -1,    83,    -1,
+      43,    -1,    43,    10,    43,    -1,    85,    -1,    86,    -1,
+      85,    11,    86,    -1,    85,     8,    86,    -1,    88,    -1,
+      86,     7,    88,    -1,    86,    12,    88,    -1,    14,    -1,
+      15,    -1,    17,    -1,    16,    -1,    18,    -1,    19,    -1,
+       3,    -1,    35,    -1,    36,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    79,    79,    89,    93,    94,    98,    99,   100,   101,
-     102,   106,   114,   123,   124,   128,   129,   130,   131,   132,
-     133,   134,   138,   139,   143,   147,   147,   158,   161,   161,
-     166,   166,   174,   181,   186,   187,   191,   193,   191,   200,
-     202,   202,   206,   206,   214,   220,   220,   223,   230,   231,
-     235,   235,   245,   252,   262,   275,   276,   277,   278,   282,
-     284,   289,   293,   294,   298,   305,   306,   310,   317,   318,
-     319,   320,   321,   322,   326,   331,   338,   344,   345
+       0,    87,    87,    94,   104,   108,   109,   113,   115,   117,
+     119,   121,   126,   134,   145,   146,   150,   151,   152,   153,
+     154,   155,   156,   160,   161,   165,   169,   169,   180,   183,
+     183,   188,   188,   196,   203,   208,   209,   213,   215,   213,
+     222,   224,   224,   228,   228,   236,   242,   242,   245,   252,
+     253,   257,   257,   267,   274,   285,   296,   297,   298,   299,
+     303,   304,   314,   330,   334,   337,   342,   350,   353,   358,
+     366,   367,   368,   369,   370,   371,   375,   383,   389
 };
 #endif
 
@@ -619,8 +627,8 @@ static const char *const yytname[] =
   "sentenciacomparacionif", "$@6", "$@7", "expresioncomparacionif",
   "sentenciainicialif", "$@8", "sentenciaintermediaif", "sentenciaelse",
   "$@9", "asignacion", "asignacionespecial", "asignadorespecial",
-  "expresionstrings", "expresion2", "expresion", "termino", "comparadores",
-  "factor", 0
+  "expresionstrings", "expresionconcat", "expresion2", "expresion",
+  "termino", "comparadores", "factor", 0
 };
 #endif
 
@@ -640,27 +648,27 @@ static const yytype_uint16 yytoknum[] =
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    49,    50,    51,    52,    52,    53,    53,    53,    53,
-      53,    54,    54,    55,    55,    56,    56,    56,    56,    56,
-      56,    56,    57,    57,    58,    60,    59,    61,    62,    61,
-      63,    61,    64,    65,    66,    66,    68,    69,    67,    70,
-      71,    70,    72,    70,    73,    75,    74,    74,    76,    76,
-      78,    77,    79,    79,    80,    81,    81,    81,    81,    82,
-      82,    83,    84,    84,    84,    85,    85,    85,    86,    86,
-      86,    86,    86,    86,    87,    87,    87,    87,    87
+       0,    49,    50,    50,    51,    52,    52,    53,    53,    53,
+      53,    53,    54,    54,    55,    55,    56,    56,    56,    56,
+      56,    56,    56,    57,    57,    58,    60,    59,    61,    62,
+      61,    63,    61,    64,    65,    66,    66,    68,    69,    67,
+      70,    71,    70,    72,    70,    73,    75,    74,    74,    76,
+      76,    78,    77,    79,    79,    80,    81,    81,    81,    81,
+      82,    82,    83,    84,    85,    85,    85,    86,    86,    86,
+      87,    87,    87,    87,    87,    87,    88,    88,    88
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     5,     3,     2,     3,     1,     1,     1,     1,
-       1,     1,     2,     2,     3,     2,     2,     1,     1,     1,
-       2,     2,     1,     3,     3,     0,     5,     1,     0,     4,
-       0,     4,     3,     3,     2,     4,     0,     0,     6,     1,
-       0,     4,     0,     4,     3,     0,     5,     3,     2,     4,
-       0,     5,     3,     3,     2,     2,     2,     2,     2,     3,
-       3,     1,     1,     3,     3,     1,     3,     3,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     4,     1
+       0,     2,     5,     4,     3,     2,     3,     1,     1,     1,
+       1,     1,     1,     2,     2,     3,     2,     2,     1,     1,
+       1,     2,     2,     1,     3,     3,     0,     5,     1,     0,
+       4,     0,     4,     3,     3,     2,     4,     0,     0,     6,
+       1,     0,     4,     0,     4,     3,     0,     5,     3,     2,
+       4,     0,     5,     3,     3,     2,     2,     2,     2,     2,
+       1,     1,     3,     1,     1,     3,     3,     1,     3,     3,
+       1,     1,     1,     1,     1,     1,     1,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -668,120 +676,122 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     0,     0,     1,     0,     0,     7,     6,    10,
-       9,     8,     0,     0,    74,    75,    76,     0,     0,     0,
-       0,    78,     0,     0,    18,    19,    17,    62,    65,     3,
-       0,    11,     4,     0,     0,     0,     0,     0,     0,    54,
-      36,    16,    25,    15,     0,    20,    22,     0,    21,     2,
-       0,    13,     0,     0,     0,     0,     5,    12,    74,    78,
-      53,    52,     0,    55,    56,    57,    58,     0,     0,     0,
-       0,    14,    64,    63,    66,    67,     0,     0,    77,     0,
-      39,     0,    61,     0,    27,     0,    24,    23,    59,    60,
-      37,     0,     0,    68,    69,    71,    70,    72,    73,     0,
-       0,     0,     0,     0,     0,     0,     0,    44,     0,    26,
-       0,     0,    32,     0,    38,    41,    43,     0,     0,    29,
-      31,     0,     0,    34,     0,    33,    48,     0,    45,     0,
-       0,     0,    35,    49,     0,    46,    50,     0,     0,    51
+       0,     0,     0,     0,     1,    76,     0,     0,     0,     0,
+       0,    77,    78,     0,     0,     0,    19,    20,    18,    64,
+      67,     0,     0,     0,     0,     0,    55,    37,    17,    26,
+      16,     0,    21,    23,     0,    22,     8,     7,    11,    10,
+       9,     0,     0,     0,     3,     0,    14,     0,     0,     0,
+       0,    76,    61,    54,    60,    53,    56,    57,    58,    59,
+       0,     0,     0,     0,     4,     0,    12,     5,     2,    15,
+      66,    65,    68,    69,     0,     0,    40,     0,    63,     0,
+      28,     0,    25,    24,     6,    13,    62,    38,     0,     0,
+      70,    71,    73,    72,    74,    75,     0,     0,     0,     0,
+       0,     0,     0,     0,    45,     0,    27,     0,     0,    33,
+       0,    39,    42,    44,     0,     0,    30,    32,     0,     0,
+      35,     0,    34,    49,     0,    46,     0,     0,     0,    36,
+      50,     0,    47,    51,     0,     0,    52
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
-      -1,     2,     6,    12,    13,    32,    22,   121,    45,    46,
-      43,    68,    83,   101,   102,    84,   109,   118,    41,    67,
-     104,    79,    91,    92,    80,   114,   131,   122,   135,   137,
-      24,    25,    39,    60,    81,    26,    27,    99,    28
+      -1,     2,    13,    41,    42,    67,    14,    15,    32,    33,
+      30,    61,    79,    98,    99,    80,   106,   115,    28,    60,
+     101,    75,    88,    89,    76,   111,   128,   119,   132,   134,
+      16,    17,    26,    53,    54,    77,    18,    19,    96,    20
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -67
+#define YYPACT_NINF -56
 static const yytype_int8 yypact[] =
 {
-       6,    38,    42,    24,   -67,    49,    19,   -67,   -67,   -67,
-     -67,   -67,   -10,    60,    41,   -67,   -67,    44,    51,    56,
-      69,   -67,    10,    50,   -67,   -67,    21,    31,   -67,   -67,
-      60,   -67,    88,     4,    97,    14,    14,    14,    14,   -67,
-     -67,   -67,   -67,   -67,     8,   -67,   -67,   100,   -67,   -67,
-      84,   -67,    14,    14,    14,    14,    88,   -67,    80,    96,
-      98,    21,    81,    21,    21,    21,    21,    14,    14,    87,
-      89,   -67,    31,    31,   -67,   -67,    67,    70,   -67,    90,
-     -12,    79,    21,    92,    -2,    79,   -67,   -67,   -67,   -67,
-     -67,    83,    86,   -67,   -67,   -67,   -67,   -67,   -67,    14,
-      93,    85,    91,    14,    99,    14,    14,    21,    19,   -67,
-      14,    14,    21,    19,   -67,   -67,   -67,   103,    32,   -67,
-     -67,   105,    35,   -67,    19,   -67,   -67,    19,   106,   107,
-     108,   101,   -67,   -67,   109,   -67,   -67,    19,    40,   -67
+      17,    10,    44,    27,   -56,    -5,    49,    58,    60,    63,
+     -24,   -56,   -56,    92,    42,    26,   -56,   -56,    20,     8,
+     -56,     7,    13,    13,    13,    13,   -56,   -56,   -56,   -56,
+     -56,     4,   -56,   -56,    86,   -56,   -56,   -56,   -56,   -56,
+     -56,   -11,    87,    82,   -56,    66,   -56,    13,    13,    13,
+      13,   -56,    84,   -56,   -56,    20,    20,    20,    20,    20,
+      13,    13,    81,    93,   -56,    87,   -56,   101,   -56,   -56,
+       8,     8,   -56,   -56,    62,    94,     6,    83,    20,   102,
+      32,    83,   -56,   -56,   101,   -56,   -56,   -56,    76,    96,
+     -56,   -56,   -56,   -56,   -56,   -56,    13,    91,    98,    99,
+      13,   103,    13,    13,    20,    92,   -56,    13,    13,    20,
+      92,   -56,   -56,   -56,   105,    -3,   -56,   -56,   111,    -2,
+     -56,    92,   -56,   -56,    92,   113,   114,   115,   108,   -56,
+     -56,   116,   -56,   -56,    92,    31,   -56
 };
 
 /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int8 yypgoto[] =
+static const yytype_int16 yypgoto[] =
 {
-     -67,   -67,   -67,   -67,   118,   104,   -67,    -6,   -67,   111,
-     -67,   -67,   -67,   -67,   -67,   -42,   -67,   -67,   -67,   -67,
-     -67,   -67,   -67,   -67,   -30,   -67,   -67,   -17,   -67,   -67,
-     -67,   -67,   -67,   -67,   -66,   -32,    36,    48,    45
+     -56,   -56,   -56,   -56,    97,    72,   127,   -14,   -56,   132,
+     -56,   -56,   -56,   -56,   -56,   -48,   -56,   -56,   -56,   -56,
+     -56,   -56,   -56,   -56,   -35,   -56,   -56,     9,   -56,   -56,
+     -56,   -56,   -56,   -56,   -56,   -55,   -20,    45,    61,    25
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If zero, do what YYDEFACT says.
    If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -48
+#define YYTABLE_NINF -49
 static const yytype_int16 yytable[] =
 {
-      23,    61,    85,    63,    64,    65,    66,    58,    15,    16,
-      29,    69,     1,    14,    15,    16,    50,    58,    15,    16,
-     -40,   -42,    14,    15,    16,     7,     8,     9,    10,    52,
-     -28,   -30,    53,    11,    49,    82,    82,    17,    54,    18,
-      19,    20,     4,    55,    85,    85,    17,    59,    18,    19,
-      20,    70,   124,    21,    33,   127,   125,    21,     5,   128,
-     127,     3,    21,    31,   139,    40,    34,   107,   119,   120,
-      51,   112,    42,    82,    82,   115,   116,    44,    82,    82,
-      35,    36,    37,    38,     7,     8,     9,    10,    72,    73,
-      47,    57,    11,    93,    94,    95,    96,    97,    98,    74,
-      75,    62,   117,    69,    71,    34,    76,    78,    77,    86,
-      88,    87,    90,    89,   100,   105,   108,   110,   129,   106,
-     138,   130,   113,   123,   111,   126,   -47,   132,   133,   134,
-      30,    48,   136,   103,    56
+      45,    55,    56,    57,    58,    59,    81,    62,    21,    64,
+      51,    36,    37,    38,    39,    49,    51,   121,   124,    40,
+      50,   122,   125,     1,    36,    37,    38,    39,    47,    45,
+       5,    48,    40,     3,    22,    23,    24,    25,   -41,   -43,
+      78,    78,    11,    12,     4,     5,    46,    63,    11,    12,
+      52,   124,    81,    81,     6,   136,     7,     8,     9,   116,
+     117,    10,    11,    12,   -29,   -31,    44,   112,   113,     6,
+      27,     7,     8,     9,    72,    73,   104,    11,    12,    29,
+     109,    31,    78,    78,    34,     5,    69,    78,    78,    62,
+      66,   114,    70,    71,    74,     5,   118,    90,    91,    92,
+      93,    94,    95,    82,    85,    86,    68,   126,   102,     6,
+     127,     7,     8,     9,   105,    83,    87,    11,    12,     6,
+     118,     7,     8,     9,    97,   120,   110,    11,    12,   103,
+     107,   123,   108,   -48,   129,   130,   131,    84,    65,   133,
+      43,    35,   100,   135
 };
 
 static const yytype_uint8 yycheck[] =
 {
-       6,    33,    68,    35,    36,    37,    38,     3,     4,     5,
-      20,     3,     6,     3,     4,     5,    22,     3,     4,     5,
-      32,    33,     3,     4,     5,    35,    36,    37,    38,     8,
-      32,    33,    11,    43,    24,    67,    68,    27,     7,    29,
-      30,    31,     0,    12,   110,   111,    27,    43,    29,    30,
-      31,    43,    20,    43,    13,    20,    24,    43,    34,    24,
-      20,    23,    43,     3,    24,    21,    25,    99,   110,   111,
-      20,   103,    21,   105,   106,   105,   106,    21,   110,   111,
-      39,    40,    41,    42,    35,    36,    37,    38,    52,    53,
-      21,     3,    43,    14,    15,    16,    17,    18,    19,    54,
-      55,     4,   108,     3,    20,    25,    10,    26,    10,    22,
-      43,    22,    22,    43,    22,    32,    23,    32,   124,    33,
-     137,   127,    23,    20,    33,    20,    20,    20,    20,    28,
-      12,    20,    23,    85,    30
+      14,    21,    22,    23,    24,    25,    61,     3,    13,    20,
+       3,    35,    36,    37,    38,     7,     3,    20,    20,    43,
+      12,    24,    24,     6,    35,    36,    37,    38,     8,    43,
+       3,    11,    43,    23,    39,    40,    41,    42,    32,    33,
+      60,    61,    35,    36,     0,     3,    20,    43,    35,    36,
+      43,    20,   107,   108,    27,    24,    29,    30,    31,   107,
+     108,    34,    35,    36,    32,    33,    24,   102,   103,    27,
+      21,    29,    30,    31,    49,    50,    96,    35,    36,    21,
+     100,    21,   102,   103,    21,     3,    20,   107,   108,     3,
+       3,   105,    47,    48,    10,     3,   110,    14,    15,    16,
+      17,    18,    19,    22,     3,    43,    24,   121,    32,    27,
+     124,    29,    30,    31,    23,    22,    22,    35,    36,    27,
+     134,    29,    30,    31,    22,    20,    23,    35,    36,    33,
+      32,    20,    33,    20,    20,    20,    28,    65,    41,    23,
+      13,     9,    81,   134
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     6,    50,    23,     0,    34,    51,    35,    36,    37,
-      38,    43,    52,    53,     3,     4,     5,    27,    29,    30,
-      31,    43,    55,    56,    79,    80,    84,    85,    87,    20,
-      53,     3,    54,    13,    25,    39,    40,    41,    42,    81,
-      21,    67,    21,    59,    21,    57,    58,    21,    58,    24,
-      56,    20,     8,    11,     7,    12,    54,     3,     3,    43,
-      82,    84,     4,    84,    84,    84,    84,    68,    60,     3,
-      43,    20,    85,    85,    87,    87,    10,    10,    26,    70,
-      73,    83,    84,    61,    64,    83,    22,    22,    43,    43,
-      22,    71,    72,    14,    15,    16,    17,    18,    19,    86,
-      22,    62,    63,    86,    69,    32,    33,    84,    23,    65,
-      32,    33,    84,    23,    74,    73,    73,    56,    66,    64,
-      64,    56,    76,    20,    20,    24,    20,    20,    24,    56,
-      56,    75,    20,    20,    28,    77,    23,    78,    76,    24
+       0,     6,    50,    23,     0,     3,    27,    29,    30,    31,
+      34,    35,    36,    51,    55,    56,    79,    80,    85,    86,
+      88,    13,    39,    40,    41,    42,    81,    21,    67,    21,
+      59,    21,    57,    58,    21,    58,    35,    36,    37,    38,
+      43,    52,    53,    55,    24,    56,    20,     8,    11,     7,
+      12,     3,    43,    82,    83,    85,    85,    85,    85,    85,
+      68,    60,     3,    43,    20,    53,     3,    54,    24,    20,
+      86,    86,    88,    88,    10,    70,    73,    84,    85,    61,
+      64,    84,    22,    22,    54,     3,    43,    22,    71,    72,
+      14,    15,    16,    17,    18,    19,    87,    22,    62,    63,
+      87,    69,    32,    33,    85,    23,    65,    32,    33,    85,
+      23,    74,    73,    73,    56,    66,    64,    64,    56,    76,
+      20,    20,    24,    20,    20,    24,    56,    56,    75,    20,
+      20,    28,    77,    23,    78,    76,    24
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1595,7 +1605,7 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 79 "analizadorSintactico.y"
+#line 87 "analizadorSintactico.y"
     {
 		printf("Main OK\n");
 		escribirTablaSimbolos();
@@ -1608,540 +1618,578 @@ yyreduce:
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 89 "analizadorSintactico.y"
-    {printf("Declaraciones ok\n");}
+#line 94 "analizadorSintactico.y"
+    {
+		printf("Main OK\n");
+		escribirTablaSimbolos();
+		guardarArchivoTercetos();
+
+		generarAssembler(devolverTercetos(),devolverCantidadTercetos(),devolverTercetoResultado(),devolverCantidadSimbolos());
+		}
     break;
 
-  case 6:
+  case 4:
 
 /* Line 1455 of yacc.c  */
-#line 98 "analizadorSintactico.y"
-    {indiceTipo = agregarTipoTablaDeSimbolos(FLOAT);}
+#line 104 "analizadorSintactico.y"
+    {printf("Declaraciones ok\n");}
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 99 "analizadorSintactico.y"
-    {indiceTipo = agregarTipoTablaDeSimbolos(INT);}
+#line 113 "analizadorSintactico.y"
+    {
+		tipoVariable=FLOAT;}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 100 "analizadorSintactico.y"
-    {indiceTipo = agregarTipoTablaDeSimbolos(STRING);}
+#line 115 "analizadorSintactico.y"
+    {
+		tipoVariable=INT;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 101 "analizadorSintactico.y"
-    {indiceTipo = agregarTipoTablaDeSimbolos(BOOLEAN);}
+#line 117 "analizadorSintactico.y"
+    {
+		tipoVariable=STRING;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 102 "analizadorSintactico.y"
-    {indiceTipo = agregarTipoTablaDeSimbolos(DOUBLE);}
+#line 119 "analizadorSintactico.y"
+    {
+		tipoVariable=BOOLEAN;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 106 "analizadorSintactico.y"
+#line 121 "analizadorSintactico.y"
     {
-		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
-		validarExistenciaVariable(indiceIdentificadorIntermedio,(yyvsp[(1) - (1)].var));
-		indiceIdentificadorIntermedio = agregarNombreTablaDeSimbolos(indiceTipo);
-
-		crear_terceto(NOOP, NOOP, indiceIdentificadorIntermedio);
-		contadorVariables++;
-		}
+		tipoVariable=DOUBLE;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 114 "analizadorSintactico.y"
+#line 126 "analizadorSintactico.y"
     {
-		//agregarVariableATablaDeSimbolos($2, IDENTIFICADOR);
-		//indiceIdentificador = buscarPosicionTablaSimbolos($2);
-		//crear_terceto(NOOP, NOOP, indiceIdentificador);
-		contadorVariables++;		
+		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
+		validarExistenciaVariable(indiceIdentificadorIntermedio,(yyvsp[(1) - (1)].var));
+		indiceTipo = agregarTipoTablaDeSimbolos(tipoVariable);
+		indiceIdentificadorIntermedio = agregarNombreTablaDeSimbolos(indiceTipo,(yyvsp[(1) - (1)].var));
+		crear_terceto(NOOP, NOOP, indiceIdentificadorIntermedio);
+		contadorVariables++;
 		}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 123 "analizadorSintactico.y"
-    {printf("Sentencia ok\n");}
+#line 134 "analizadorSintactico.y"
+    {
+		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(2) - (2)].var));
+		validarExistenciaVariable(indiceIdentificadorIntermedio,(yyvsp[(2) - (2)].var));
+		indiceTipo = agregarTipoTablaDeSimbolos(tipoVariable);		
+		indiceIdentificadorIntermedio = agregarNombreTablaDeSimbolos(indiceTipo,(yyvsp[(2) - (2)].var));
+		crear_terceto(NOOP, NOOP, indiceIdentificadorIntermedio);
+		contadorVariables++;		
+		}
     break;
 
-  case 15:
+  case 14:
 
 /* Line 1455 of yacc.c  */
-#line 128 "analizadorSintactico.y"
-    {printf("While ok\n");}
+#line 145 "analizadorSintactico.y"
+    {printf("Sentencia ok\n");}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 129 "analizadorSintactico.y"
-    {printf("If ok\n");}
+#line 150 "analizadorSintactico.y"
+    {printf("While ok\n");}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 130 "analizadorSintactico.y"
-    {printf("Expresion ok\n");}
+#line 151 "analizadorSintactico.y"
+    {printf("If ok\n");}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 131 "analizadorSintactico.y"
-    {printf("Asignacion ok\n");}
+#line 152 "analizadorSintactico.y"
+    {printf("Expresion ok\n");}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 132 "analizadorSintactico.y"
+#line 153 "analizadorSintactico.y"
+    {printf("Asignacion ok\n");}
+    break;
+
+  case 20:
+
+/* Line 1455 of yacc.c  */
+#line 154 "analizadorSintactico.y"
     {printf("Asignacion especial ok\n");}
     break;
 
-  case 25:
+  case 26:
 
 /* Line 1455 of yacc.c  */
-#line 147 "analizadorSintactico.y"
+#line 169 "analizadorSintactico.y"
     {
 		contadorWhile++;banderaWhileAnd[contadorWhile]=0;banderaWhileOr[contadorWhile]=0;
 		indiceWhileCondicion[contadorWhile]=crear_terceto(WHILE, NOOP, NOOP);
 		printf("numero de While: %d ",contadorWhile);}
     break;
 
-  case 26:
+  case 27:
 
 /* Line 1455 of yacc.c  */
-#line 151 "analizadorSintactico.y"
+#line 173 "analizadorSintactico.y"
     {
 		indiceWhileFin[contadorWhile]=crear_terceto(ENDSENTENCE, NOOP, NOOP);
 		modificarTerceto(indiceWhileAux[contadorWhile],OP2,indiceWhileFin[contadorWhile]);
 		contadorWhile--;}
     break;
 
-  case 27:
+  case 28:
 
 /* Line 1455 of yacc.c  */
-#line 158 "analizadorSintactico.y"
+#line 180 "analizadorSintactico.y"
     {
 		printf("Sentencia comparacion WHILE ok\n");
 		indiceWhileAux[contadorWhile]=crear_terceto(JNA, NOOP, NOOP);}
     break;
 
-  case 28:
-
-/* Line 1455 of yacc.c  */
-#line 161 "analizadorSintactico.y"
-    {
-		indiceWhileAuxAnd[contadorWhile]=crear_terceto(JNA, NOOP, NOOP);}
-    break;
-
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 163 "analizadorSintactico.y"
+#line 183 "analizadorSintactico.y"
     {
-		banderaWhileAnd[contadorIf]=1;printf("Sentencia AND comparacion WHILE ok\n");
-		indiceWhileAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);}
+		indiceWhileAuxAnd[contadorWhile]=crear_terceto(JNA, NOOP, NOOP);}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 166 "analizadorSintactico.y"
+#line 185 "analizadorSintactico.y"
     {
-		indiceWhileAuxOr[contadorIf]=crear_terceto(JMP, NOOP, NOOP);}
+		banderaWhileAnd[contadorIf]=1;printf("Sentencia AND comparacion WHILE ok\n");
+		indiceWhileAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 168 "analizadorSintactico.y"
+#line 188 "analizadorSintactico.y"
     {
-		banderaWhileOr[contadorIf]=1;indiceWhileAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);
-		printf("Sentencia OR comparacion WHILE ok\n");}
+		indiceWhileAuxOr[contadorIf]=crear_terceto(JMP, NOOP, NOOP);}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 174 "analizadorSintactico.y"
+#line 190 "analizadorSintactico.y"
+    {
+		banderaWhileOr[contadorIf]=1;indiceWhileAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);
+		printf("Sentencia OR comparacion WHILE ok\n");}
+    break;
+
+  case 33:
+
+/* Line 1455 of yacc.c  */
+#line 196 "analizadorSintactico.y"
     {
 		crear_terceto(indiceComparador, indiceExpresion, indiceExpresion2);
 		printf("Condicion WHILE ok\n");
 	}
     break;
 
-  case 33:
+  case 34:
 
 /* Line 1455 of yacc.c  */
-#line 181 "analizadorSintactico.y"
+#line 203 "analizadorSintactico.y"
     {
 	crear_terceto(JMP, NOOP, indiceWhileCondicion[contadorWhile]);}
-    break;
-
-  case 36:
-
-/* Line 1455 of yacc.c  */
-#line 191 "analizadorSintactico.y"
-    {
-		contadorIf++;banderaIfAnd[contadorIf]=0;banderaIfOr[contadorIf]=0;printf("numero de if: %d ",contadorIf);}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 193 "analizadorSintactico.y"
+#line 213 "analizadorSintactico.y"
     {
-		if(banderaIfOr[contadorIf]==1) modificarTerceto(indiceIfAuxOr[contadorIf],OP2,crear_terceto(TRUE, NOOP, NOOP));}
+		contadorIf++;banderaIfAnd[contadorIf]=0;banderaIfOr[contadorIf]=0;printf("numero de if: %d ",contadorIf);}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 195 "analizadorSintactico.y"
+#line 215 "analizadorSintactico.y"
     {
-		printf("Sentencia if ok\n");contadorIf--;}
+		if(banderaIfOr[contadorIf]==1) modificarTerceto(indiceIfAuxOr[contadorIf],OP2,crear_terceto(TRUE, NOOP, NOOP));}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 200 "analizadorSintactico.y"
+#line 217 "analizadorSintactico.y"
     {
-		printf("Sentencia comparacion IF ok\n");indiceIfAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);}
+		printf("Sentencia if ok\n");contadorIf--;}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 202 "analizadorSintactico.y"
+#line 222 "analizadorSintactico.y"
     {
-		indiceIfAuxAnd[contadorIf]=crear_terceto(JNA, NOOP, NOOP);}
+		printf("Sentencia comparacion IF ok\n");indiceIfAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 204 "analizadorSintactico.y"
+#line 224 "analizadorSintactico.y"
     {
-		banderaIfAnd[contadorIf]=1;printf("Sentencia AND comparacion IF ok\n");indiceIfAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);}
+		indiceIfAuxAnd[contadorIf]=crear_terceto(JNA, NOOP, NOOP);}
     break;
 
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 206 "analizadorSintactico.y"
+#line 226 "analizadorSintactico.y"
     {
-		indiceIfAuxOr[contadorIf]=crear_terceto(JMP, NOOP, NOOP);}
+		banderaIfAnd[contadorIf]=1;printf("Sentencia AND comparacion IF ok\n");indiceIfAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);}
     break;
 
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 208 "analizadorSintactico.y"
+#line 228 "analizadorSintactico.y"
     {
-		banderaIfOr[contadorIf]=1;indiceIfAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);
-		printf("Sentencia OR comparacion IF ok\n");}
+		indiceIfAuxOr[contadorIf]=crear_terceto(JMP, NOOP, NOOP);}
     break;
 
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 214 "analizadorSintactico.y"
+#line 230 "analizadorSintactico.y"
     {
-		crear_terceto(indiceComparador, indiceExpresion, indiceExpresion2);
-		printf("Condicion IF ok\n");}
+		banderaIfOr[contadorIf]=1;indiceIfAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);
+		printf("Sentencia OR comparacion IF ok\n");}
     break;
 
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 220 "analizadorSintactico.y"
+#line 236 "analizadorSintactico.y"
+    {
+		crear_terceto(indiceComparador, indiceExpresion, indiceExpresion2);
+		printf("Condicion IF ok\n");}
+    break;
+
+  case 46:
+
+/* Line 1455 of yacc.c  */
+#line 242 "analizadorSintactico.y"
     {
 		indiceIfFalso=crear_terceto(JMP, NOOP, NOOP);}
     break;
 
-  case 47:
+  case 48:
 
 /* Line 1455 of yacc.c  */
-#line 223 "analizadorSintactico.y"
+#line 245 "analizadorSintactico.y"
     {
 		indiceAnd=crear_terceto(ENDIF, NOOP, NOOP);
 		if(banderaIfAnd[contadorIf]==1) modificarTerceto(indiceIfAuxAnd[contadorIf],OP2,indiceAnd);
 		modificarTerceto(indiceIfAux[contadorIf],OP2,indiceAnd); printf("Cuerpo en If sin ELSE ok\n");}
     break;
 
-  case 50:
+  case 51:
 
 /* Line 1455 of yacc.c  */
-#line 235 "analizadorSintactico.y"
+#line 257 "analizadorSintactico.y"
     {
 		indiceAnd=crear_terceto(ELSE, NOOP, NOOP);
 		if(banderaIfAnd[contadorIf]==1) modificarTerceto(indiceIfAuxAnd[contadorIf],OP2,indiceAnd);
 		modificarTerceto(indiceIfAux[contadorIf],OP2,indiceAnd);}
     break;
 
-  case 51:
+  case 52:
 
 /* Line 1455 of yacc.c  */
-#line 239 "analizadorSintactico.y"
+#line 261 "analizadorSintactico.y"
     {
 		indiceAnd=crear_terceto(ENDIF, NOOP, NOOP);
 		modificarTerceto(indiceIfFalso,OP2,indiceAnd);}
     break;
 
-  case 52:
-
-/* Line 1455 of yacc.c  */
-#line 245 "analizadorSintactico.y"
-    {
-		printf("Var: %s Asignacion ok\n",(yyvsp[(1) - (3)].var));
-		agregarVariableATablaDeSimbolos((yyvsp[(1) - (3)].var), IDENTIFICADOR);
-		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (3)].var));
-		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
-		crear_terceto(ASIG, indiceExpresion, indiceAsignacion);
-		}
-    break;
-
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 252 "analizadorSintactico.y"
+#line 267 "analizadorSintactico.y"
     {
-		printf("Var: %s Asignacion ok\n",(yyvsp[(1) - (3)].var));
-		agregarVariableATablaDeSimbolos((yyvsp[(1) - (3)].var), IDENTIFICADOR);
+		compararTipoVariable((yyvsp[(1) - (3)].var),buscarExpresion);
 		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (3)].var));
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
 		crear_terceto(ASIG, indiceExpresion, indiceAsignacion);
+		printf("Var: %s Asignacion ok\n",(yyvsp[(1) - (3)].var));
 		}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 262 "analizadorSintactico.y"
+#line 274 "analizadorSintactico.y"
     {
-		agregarVariableATablaDeSimbolos((yyvsp[(1) - (2)].var), IDENTIFICADOR);
-		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (2)].var));
-		printf("asigesp es: %d\n", indiceAsignacionEspecial );
+		compararTipoVariable((yyvsp[(1) - (3)].var),buscarString);
+		agregarVariableATablaDeSimbolos((yyvsp[(1) - (3)].var), IDENTIFICADOR);
+		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (3)].var));
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
-		
-		indiceAsignacionEspecial = crear_terceto(indiceAsignacionEspecial, indiceExpresion, indiceAsignacion);
-		indiceAsignacionEspecial = crear_terceto(ASIG,indiceAsignacionEspecial,indiceAsignacion);
-
+		crear_terceto(ASIG, indiceString, indiceAsignacion);
+		printf("Var: %s Asignacion ok\n",(yyvsp[(1) - (3)].var));
 		}
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 275 "analizadorSintactico.y"
-    {indiceAsignacionEspecial=SUMA;}
+#line 285 "analizadorSintactico.y"
+    {
+		agregarVariableATablaDeSimbolos((yyvsp[(1) - (2)].var), IDENTIFICADOR);
+		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (2)].var));
+		printf("asigesp es: %d\n", indiceAsignacionEspecial );
+		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
+		indiceAsignacionEspecial = crear_terceto(indiceAsignacionEspecial, indiceExpresion, indiceAsignacion);
+		indiceAsignacionEspecial = crear_terceto(ASIG,indiceAsignacionEspecial,indiceAsignacion);
+		}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 276 "analizadorSintactico.y"
-    {indiceAsignacionEspecial=RESTA;}
+#line 296 "analizadorSintactico.y"
+    {indiceAsignacionEspecial=SUMA;}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 277 "analizadorSintactico.y"
-    {indiceAsignacionEspecial=MULTIPLICACION;}
+#line 297 "analizadorSintactico.y"
+    {indiceAsignacionEspecial=RESTA;}
     break;
 
   case 58:
 
 /* Line 1455 of yacc.c  */
-#line 278 "analizadorSintactico.y"
-    {indiceAsignacionEspecial=DIVISION;}
+#line 298 "analizadorSintactico.y"
+    {indiceAsignacionEspecial=MULTIPLICACION;}
     break;
 
   case 59:
 
 /* Line 1455 of yacc.c  */
-#line 282 "analizadorSintactico.y"
-    {
-		printf("concatenacion de %s y %s ",(yyvsp[(1) - (3)].var),(yyvsp[(3) - (3)].var));}
+#line 299 "analizadorSintactico.y"
+    {indiceAsignacionEspecial=DIVISION;}
     break;
 
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 289 "analizadorSintactico.y"
-    {indiceExpresion2 = indiceExpresion;}
+#line 304 "analizadorSintactico.y"
+    {
+		agregarVariableATablaDeSimbolos((yyvsp[(1) - (1)].var), STRING);
+		indiceString = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
+		indiceString = crear_terceto(NOOP, NOOP, indiceString);
+		buscarString = (yyvsp[(1) - (1)].var);
+		printf("El string es: %s ",(yyvsp[(1) - (1)].var));
+		}
     break;
 
   case 62:
 
 /* Line 1455 of yacc.c  */
-#line 293 "analizadorSintactico.y"
-    {indiceExpresion = indiceTermino;}
+#line 314 "analizadorSintactico.y"
+    {
+		verificarLargoString((yyvsp[(1) - (3)].var),(yyvsp[(3) - (3)].var));
+		agregarVariableATablaDeSimbolos((yyvsp[(1) - (3)].var), STRING);
+		agregarVariableATablaDeSimbolos((yyvsp[(3) - (3)].var), STRING);
+		indiceString = buscarPosicionTablaSimbolos((yyvsp[(1) - (3)].var));
+		indiceStringAux = buscarPosicionTablaSimbolos((yyvsp[(3) - (3)].var));
+		indiceString = crear_terceto(NOOP, NOOP, indiceString);
+		indiceStringAux = crear_terceto(NOOP, NOOP, indiceStringAux);
+		indiceString = crear_terceto(CONCAT, indiceStringAux, indiceString);
+		buscarString = (yyvsp[(1) - (3)].var);		
+		printf("El string es: %s %s ",(yyvsp[(1) - (3)].var),(yyvsp[(3) - (3)].var));
+		}
     break;
 
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 294 "analizadorSintactico.y"
-    {
-		printf("Resta OK\n");
-		indiceExpresion=crear_terceto(RESTA, indiceExpresion,indiceTermino);
-		}
+#line 330 "analizadorSintactico.y"
+    {indiceExpresion2 = indiceExpresion;}
     break;
 
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 298 "analizadorSintactico.y"
+#line 334 "analizadorSintactico.y"
     {
-		printf("Suma OK\n");
-		indiceExpresion=crear_terceto(SUMA, indiceExpresion,indiceTermino);
-		}
+		indiceExpresion = indiceTermino;
+		buscarExpresion=buscarTermino;}
     break;
 
   case 65:
 
 /* Line 1455 of yacc.c  */
-#line 305 "analizadorSintactico.y"
-    {indiceTermino = indiceFactor;}
+#line 337 "analizadorSintactico.y"
+    {
+		compararTipoVariable(buscarTermino,buscarExpresion);	
+		printf("Resta OK\n");
+		indiceExpresion=crear_terceto(RESTA, indiceExpresion,indiceTermino);
+		}
     break;
 
   case 66:
 
 /* Line 1455 of yacc.c  */
-#line 306 "analizadorSintactico.y"
+#line 342 "analizadorSintactico.y"
     {
-		   printf("Multiplicacion OK\n");
-		   indiceTermino=crear_terceto(MULTIPLICACION, indiceFactor,indiceTermino);
-		   }
+		compararTipoVariable(buscarTermino,buscarExpresion);	
+		printf("Suma OK\n");
+		indiceExpresion=crear_terceto(SUMA, indiceExpresion,indiceTermino);
+		}
     break;
 
   case 67:
 
 /* Line 1455 of yacc.c  */
-#line 310 "analizadorSintactico.y"
+#line 350 "analizadorSintactico.y"
     {
-		  printf("Division OK\n");
-		  indiceTermino=crear_terceto(DIVISION, indiceFactor,indiceTermino);
-		  }
+		indiceTermino = indiceFactor;
+		buscarTermino=buscarFactor;}
     break;
 
   case 68:
 
 /* Line 1455 of yacc.c  */
-#line 317 "analizadorSintactico.y"
-    {indiceComparador=MAYOR;}
+#line 353 "analizadorSintactico.y"
+    {
+		compararTipoVariable(buscarFactor,buscarTermino);
+		printf("Multiplicacion OK\n");
+		indiceTermino=crear_terceto(MULTIPLICACION, indiceFactor,indiceTermino);
+		   }
     break;
 
   case 69:
 
 /* Line 1455 of yacc.c  */
-#line 318 "analizadorSintactico.y"
-    {indiceComparador=MENOR;}
+#line 358 "analizadorSintactico.y"
+    {
+		compararTipoVariable(buscarFactor,buscarTermino);		
+		printf("Division OK\n");
+		indiceTermino=crear_terceto(DIVISION, indiceFactor,indiceTermino);
+		  }
     break;
 
   case 70:
 
 /* Line 1455 of yacc.c  */
-#line 319 "analizadorSintactico.y"
-    {indiceComparador=MENORIGUAL;}
+#line 366 "analizadorSintactico.y"
+    {indiceComparador=MAYOR;}
     break;
 
   case 71:
 
 /* Line 1455 of yacc.c  */
-#line 320 "analizadorSintactico.y"
-    {indiceComparador=MAYORIGUAL;}
+#line 367 "analizadorSintactico.y"
+    {indiceComparador=MENOR;}
     break;
 
   case 72:
 
 /* Line 1455 of yacc.c  */
-#line 321 "analizadorSintactico.y"
-    {indiceComparador=IGUAL;}
+#line 368 "analizadorSintactico.y"
+    {indiceComparador=MENORIGUAL;}
     break;
 
   case 73:
 
 /* Line 1455 of yacc.c  */
-#line 322 "analizadorSintactico.y"
-    {indiceComparador=DISTINTO;}
+#line 369 "analizadorSintactico.y"
+    {indiceComparador=MAYORIGUAL;}
     break;
 
   case 74:
 
 /* Line 1455 of yacc.c  */
-#line 326 "analizadorSintactico.y"
-    {
-		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
-		validarExistenciaVariable(indiceIdentificador,(yyvsp[(1) - (1)].var));
-		indiceFactor = buscar_terceto(indiceIdentificador,contadorVariables);
-		}
+#line 370 "analizadorSintactico.y"
+    {indiceComparador=IGUAL;}
     break;
 
   case 75:
 
 /* Line 1455 of yacc.c  */
-#line 331 "analizadorSintactico.y"
-    {
-
-		agregarVariableATablaDeSimbolos((yyvsp[(1) - (1)].var), CONSTANTE);
-		indiceConstante = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
-		indiceFactor = crear_terceto(NOOP, NOOP, indiceConstante);
-		printf("\nEl indiceFactor es: %d\n", indiceFactor);
-		}
+#line 371 "analizadorSintactico.y"
+    {indiceComparador=DISTINTO;}
     break;
 
   case 76:
 
 /* Line 1455 of yacc.c  */
-#line 338 "analizadorSintactico.y"
+#line 375 "analizadorSintactico.y"
     {
-		
-		agregarVariableATablaDeSimbolos((yyvsp[(1) - (1)].var), REAL);
-		indiceReal = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
-		indiceFactor = crear_terceto(NOOP, NOOP, indiceReal);
+		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
+		printf("\n%d\n",indiceIdentificador);
+		validarExistenciaVariable(indiceIdentificador,(yyvsp[(1) - (1)].var));
+		indiceFactor = buscar_terceto(indiceIdentificador,contadorVariables);
+		buscarFactor=(yyvsp[(1) - (1)].var);		
+		printf("\nLa variable es: %d\n", indiceFactor);		
 		}
     break;
 
   case 77:
 
 /* Line 1455 of yacc.c  */
-#line 344 "analizadorSintactico.y"
-    {printf("vector %s con %s espacios",(yyvsp[(1) - (4)].var),(yyvsp[(3) - (4)].var));}
+#line 383 "analizadorSintactico.y"
+    {
+		agregarVariableATablaDeSimbolos((yyvsp[(1) - (1)].var), INT);
+		indiceConstante = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
+		indiceFactor = crear_terceto(NOOP, NOOP, indiceConstante);
+		printf("\nEl indiceFactor es: %d\n", indiceFactor);
+		}
     break;
 
   case 78:
 
 /* Line 1455 of yacc.c  */
-#line 345 "analizadorSintactico.y"
-    {printf("string: %s ",(yyvsp[(1) - (1)].var));}
+#line 389 "analizadorSintactico.y"
+    {
+		
+		agregarVariableATablaDeSimbolos((yyvsp[(1) - (1)].var), FLOAT);
+		indiceReal = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
+		indiceFactor = crear_terceto(NOOP, NOOP, indiceReal);
+		}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 2145 "y.tab.c"
+#line 2193 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2353,7 +2401,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 348 "analizadorSintactico.y"
+#line 397 "analizadorSintactico.y"
 
 
 int main(int argc,char *argv[])
