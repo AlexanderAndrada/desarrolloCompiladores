@@ -1,0 +1,9 @@
+MAIN{
+	DECLARE INT gato perro seis tres STRING mensaje;
+	IF(perro > gato)
+	{
+		seis+tres;
+	}ELSE{
+		seis-tres;
+	};
+}

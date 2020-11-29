@@ -480,3 +480,40 @@ int armarFinSeccion(FILE* arch, int ind){
 	fprintf(arch, ".exit\n\n");
 
 }
+
+/** Asegura que el elemento de la izquierda esté en st1, y el de la derecha en st0 */
+void levantarEnPila(FILE* arch, const int ind){
+	int elemIzq = lista_terceto[ind].op1;
+	int elemDer = lista_terceto[ind].op2;
+	int izqLevantado = 0;
+	/* Si el elemento no está en pila lo levanta */
+	if(elemIzq < maximoTercetos){
+		switch(tabla_simbolo[elemIzq].tipoToken){
+		case INT:
+			//FILD n; Donde n es el numero integer en memoria
+			fprintf(arch, "FILD %s\n", tabla_simbolo[elemIzq].nombre);
+			break;
+		case FLOAT:
+			//FLD n; Donde n es el numero float en memoria
+			fprintf(arch, "FLD %s\n", tabla_simbolo[elemIzq].nombre);
+			break;
+		}
+		izqLevantado=1;
+	}
+	if(elemDer < maximoTercetos){
+		switch(tabla_simbolo[elemDer].tipoToken){
+		case INT:
+			//FILD n; Donde n es el numero integer en memoria
+			fprintf(arch, "FILD %s\n", tabla_simbolo[elemDer].nombre);
+			break;
+		case FLOAT:
+			//FLD n; Donde n es el numero float en memoria
+			fprintf(arch, "FLD %s\n", tabla_simbolo[elemDer].nombre);
+			break;
+		}
+		izqLevantado=0;
+	}
+	if(izqLevantado){
+		fprintf(arch, "FXCH\n");
+	}
+}
