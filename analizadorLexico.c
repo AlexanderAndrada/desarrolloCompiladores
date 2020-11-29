@@ -676,7 +676,7 @@ extern FILE *yyin;
         if(letra==' '){
                 if(strlen(identificador)>0) return 35;
                 else if(banderaOR==1||banderaAND==1) return 36;
-                    else estado;
+                    else return estado;
         };
         if(letra=='?') return 33;
         if(letra=='~') return 34;
