@@ -509,6 +509,12 @@ void guardarArchivoTercetos(){
 			fprintf(arch, "identificador");
 			strcpy(listaTercetosResultado[i].operador,"identificador");
 			break;
+		case PUT:
+			fprintf(arch, "put");
+			break;
+		case GET:
+			fprintf(arch, "get");
+			break;
 		case IF:
 			fprintf(arch, "if");
 			break;

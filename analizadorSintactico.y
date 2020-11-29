@@ -49,6 +49,7 @@ int buscarFactor;
 int buscarTermino;
 int buscarExpresion;
 int buscarAsignacion;
+int buscarPut;
 int tipoVariable;
 
 
@@ -157,12 +158,23 @@ sentencia:
 	;
 
 sentenciaparentesis:
-	factorparentesis
-	|ABRIRPARENTESIS STRING CERRARPARENTESIS
+	ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS{
+		indiceIdentificador = buscarPosicionTablaSimbolos($2);
+		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
+		crear_terceto(PUT, NOOP, indiceAsignacion);}
+	|ABRIRPARENTESIS STRING CERRARPARENTESIS{
+		indiceString = agregarTipoTablaDeSimbolos(STRING);
+		indiceString = agregarNombreTablaDeSimbolos(indiceString,$2);
+		indiceString = crear_terceto(NOOP, NOOP, indiceString);
+		indiceString = crear_terceto(PUT, NOOP, indiceString);
+		printf("\n%s\n",$2);}
 	;
 
 factorparentesis:
-	ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS
+	ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS{
+		indiceIdentificador = buscarPosicionTablaSimbolos($2);
+		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
+		crear_terceto(GET, NOOP, indiceAsignacion);}
 	;
 
 sentenciawhile:
@@ -283,12 +295,11 @@ asignacion:
 
 asignacionespecial:
 	IDENTIFICADOR asignadorespecial {
-		agregarVariableATablaDeSimbolos($1, IDENTIFICADOR);
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
-		printf("asigesp es: %d\n", indiceAsignacionEspecial );
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
 		indiceAsignacionEspecial = crear_terceto(indiceAsignacionEspecial, indiceExpresion, indiceAsignacion);
 		indiceAsignacionEspecial = crear_terceto(ASIG,indiceAsignacionEspecial,indiceAsignacion);
+		printf("asigesp es: %d\n", indiceAsignacionEspecial );
 		}
 	;
 
@@ -302,8 +313,8 @@ asignadorespecial:
 expresionstrings:
 	expresionconcat
 	|STRING {
-		agregarVariableATablaDeSimbolos($1, STRING);
-		indiceString = buscarPosicionTablaSimbolos($1);
+		indiceString = agregarTipoTablaDeSimbolos(STRING);
+		indiceString = agregarNombreTablaDeSimbolos(indiceString,$1);
 		indiceString = crear_terceto(NOOP, NOOP, indiceString);
 		buscarString = $1;
 		printf("El string es: %s ",$1);
@@ -313,10 +324,10 @@ expresionstrings:
 expresionconcat:
 	STRING CONCAT STRING {
 		verificarLargoString($1,$3);
-		agregarVariableATablaDeSimbolos($1, STRING);
-		agregarVariableATablaDeSimbolos($3, STRING);
-		indiceString = buscarPosicionTablaSimbolos($1);
-		indiceStringAux = buscarPosicionTablaSimbolos($3);
+		indiceString = agregarTipoTablaDeSimbolos(STRING);
+		indiceString = agregarNombreTablaDeSimbolos(indiceString,$1);
+		indiceStringAux = agregarTipoTablaDeSimbolos(STRING);
+		indiceStringAux = agregarNombreTablaDeSimbolos(indiceStringAux,$3);
 		indiceString = crear_terceto(NOOP, NOOP, indiceString);
 		indiceStringAux = crear_terceto(NOOP, NOOP, indiceStringAux);
 		indiceString = crear_terceto(CONCAT, indiceStringAux, indiceString);
@@ -381,16 +392,16 @@ factor:
 		printf("\nLa variable es: %d\n", indiceFactor);		
 		}
 	|INT {
-		agregarVariableATablaDeSimbolos($1, INT);
-		indiceConstante = buscarPosicionTablaSimbolos($1);
+		indiceConstante = agregarTipoTablaDeSimbolos(INT);
+		indiceConstante = agregarNombreTablaDeSimbolos(indiceConstante,$1);
 		indiceFactor = crear_terceto(NOOP, NOOP, indiceConstante);
-		printf("\nEl indiceFactor es: %d\n", indiceFactor);
+		buscarFactor=$1;		
 		}
 	|FLOAT {
-		
-		agregarVariableATablaDeSimbolos($1, FLOAT);
-		indiceReal = buscarPosicionTablaSimbolos($1);
+		indiceReal = agregarTipoTablaDeSimbolos(FLOAT);
+		indiceReal = agregarNombreTablaDeSimbolos(indiceReal,$1);
 		indiceFactor = crear_terceto(NOOP, NOOP, indiceReal);
+		buscarFactor=$1;		
 		}
 	;
 
