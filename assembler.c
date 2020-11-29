@@ -240,12 +240,12 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
       case RESTA:
 		resta(arch,i);
         break;
-    //  case MULTIPLICACION: ARMAR EN UN RATO
-	//	multiplicacion(arch,i);
-      //  break;
-    //  case DIVISION: ARMAR EN UN RATO
-	//	division(arch,i);
-      //  break;
+      case MULTIPLICACION:
+		    multiplicacion(arch,i);
+        break;
+      case DIVISION:
+		division(arch,i);
+        break;
 
       //case READ: read (arch,i);
       //  break;
