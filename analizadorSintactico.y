@@ -89,7 +89,6 @@ programa:
 		printf("Main OK\n");
 		escribirTablaSimbolos();
 		guardarArchivoTercetos();
-
 		generarAssembler(devolverTercetos(),devolverCantidadTercetos(),devolverTercetoResultado(),devolverCantidadSimbolos());
 		}
 	|MAIN ABRIRLLAVE sentencias CERRARLLAVE {
@@ -167,14 +166,15 @@ sentenciaparentesis:
 		indiceString = agregarNombreTablaDeSimbolos(indiceString,$2);
 		indiceString = crear_terceto(NOOP, NOOP, indiceString);
 		indiceString = crear_terceto(PUT, NOOP, indiceString);
-		printf("\n%s\n",$2);}
+	}
 	;
 
 factorparentesis:
 	ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS{
 		indiceIdentificador = buscarPosicionTablaSimbolos($2);
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
-		crear_terceto(GET, NOOP, indiceAsignacion);}
+		crear_terceto(GET, NOOP, indiceAsignacion);
+		}
 	;
 
 sentenciawhile:
@@ -385,11 +385,9 @@ comparadores:
 factor:
 	IDENTIFICADOR {
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
-		printf("\n%d\n",indiceIdentificador);
 		validarExistenciaVariable(indiceIdentificador,$1);
 		indiceFactor = buscar_terceto(indiceIdentificador,contadorVariables);
-		buscarFactor=$1;		
-		printf("\nLa variable es: %d\n", indiceFactor);		
+		buscarFactor=$1;			
 		}
 	|INT {
 		indiceConstante = agregarTipoTablaDeSimbolos(INT);

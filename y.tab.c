@@ -595,14 +595,14 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    88,    88,    95,   105,   109,   110,   114,   116,   118,
-     120,   122,   127,   135,   146,   147,   151,   152,   153,   154,
-     155,   156,   157,   161,   165,   174,   181,   181,   192,   195,
+       0,    88,    88,    94,   104,   108,   109,   113,   115,   117,
+     119,   121,   126,   134,   145,   146,   150,   151,   152,   153,
+     154,   155,   156,   160,   164,   173,   181,   181,   192,   195,
      195,   200,   200,   208,   215,   220,   221,   225,   227,   225,
      234,   236,   236,   240,   240,   248,   254,   254,   257,   264,
      265,   269,   269,   279,   286,   297,   307,   308,   309,   310,
      314,   315,   325,   341,   345,   348,   353,   361,   364,   369,
-     377,   378,   379,   380,   381,   382,   386,   394,   400
+     377,   378,   379,   380,   381,   382,   386,   392,   398
 };
 #endif
 
@@ -1611,7 +1611,6 @@ yyreduce:
 		printf("Main OK\n");
 		escribirTablaSimbolos();
 		guardarArchivoTercetos();
-
 		generarAssembler(devolverTercetos(),devolverCantidadTercetos(),devolverTercetoResultado(),devolverCantidadSimbolos());
 		}
     break;
@@ -1619,7 +1618,7 @@ yyreduce:
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 95 "analizadorSintactico.y"
+#line 94 "analizadorSintactico.y"
     {
 		printf("Main OK\n");
 		escribirTablaSimbolos();
@@ -1632,14 +1631,14 @@ yyreduce:
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 105 "analizadorSintactico.y"
+#line 104 "analizadorSintactico.y"
     {printf("Declaraciones ok\n");}
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 114 "analizadorSintactico.y"
+#line 113 "analizadorSintactico.y"
     {
 		tipoVariable=FLOAT;}
     break;
@@ -1647,7 +1646,7 @@ yyreduce:
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 116 "analizadorSintactico.y"
+#line 115 "analizadorSintactico.y"
     {
 		tipoVariable=INT;}
     break;
@@ -1655,7 +1654,7 @@ yyreduce:
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 118 "analizadorSintactico.y"
+#line 117 "analizadorSintactico.y"
     {
 		tipoVariable=STRING;}
     break;
@@ -1663,7 +1662,7 @@ yyreduce:
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 120 "analizadorSintactico.y"
+#line 119 "analizadorSintactico.y"
     {
 		tipoVariable=BOOLEAN;}
     break;
@@ -1671,7 +1670,7 @@ yyreduce:
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 122 "analizadorSintactico.y"
+#line 121 "analizadorSintactico.y"
     {
 		tipoVariable=DOUBLE;}
     break;
@@ -1679,7 +1678,7 @@ yyreduce:
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 127 "analizadorSintactico.y"
+#line 126 "analizadorSintactico.y"
     {
 		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
 		validarExistenciaVariable(indiceIdentificadorIntermedio,(yyvsp[(1) - (1)].var));
@@ -1693,7 +1692,7 @@ yyreduce:
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 135 "analizadorSintactico.y"
+#line 134 "analizadorSintactico.y"
     {
 		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(2) - (2)].var));
 		validarExistenciaVariable(indiceIdentificadorIntermedio,(yyvsp[(2) - (2)].var));
@@ -1707,49 +1706,49 @@ yyreduce:
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 146 "analizadorSintactico.y"
+#line 145 "analizadorSintactico.y"
     {printf("Sentencia ok\n");}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 151 "analizadorSintactico.y"
+#line 150 "analizadorSintactico.y"
     {printf("While ok\n");}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 152 "analizadorSintactico.y"
+#line 151 "analizadorSintactico.y"
     {printf("If ok\n");}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 153 "analizadorSintactico.y"
+#line 152 "analizadorSintactico.y"
     {printf("Expresion ok\n");}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 154 "analizadorSintactico.y"
+#line 153 "analizadorSintactico.y"
     {printf("Asignacion ok\n");}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 155 "analizadorSintactico.y"
+#line 154 "analizadorSintactico.y"
     {printf("Asignacion especial ok\n");}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 161 "analizadorSintactico.y"
+#line 160 "analizadorSintactico.y"
     {
 		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(2) - (3)].var));
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
@@ -1759,23 +1758,24 @@ yyreduce:
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 165 "analizadorSintactico.y"
+#line 164 "analizadorSintactico.y"
     {
 		indiceString = agregarTipoTablaDeSimbolos(STRING);
 		indiceString = agregarNombreTablaDeSimbolos(indiceString,(yyvsp[(2) - (3)].var));
 		indiceString = crear_terceto(NOOP, NOOP, indiceString);
 		indiceString = crear_terceto(PUT, NOOP, indiceString);
-		printf("\n%s\n",(yyvsp[(2) - (3)].var));}
+	}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 174 "analizadorSintactico.y"
+#line 173 "analizadorSintactico.y"
     {
 		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(2) - (3)].var));
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
-		crear_terceto(GET, NOOP, indiceAsignacion);}
+		crear_terceto(GET, NOOP, indiceAsignacion);
+		}
     break;
 
   case 26:
@@ -2186,18 +2186,16 @@ yyreduce:
 #line 386 "analizadorSintactico.y"
     {
 		indiceIdentificador = buscarPosicionTablaSimbolos((yyvsp[(1) - (1)].var));
-		printf("\n%d\n",indiceIdentificador);
 		validarExistenciaVariable(indiceIdentificador,(yyvsp[(1) - (1)].var));
 		indiceFactor = buscar_terceto(indiceIdentificador,contadorVariables);
-		buscarFactor=(yyvsp[(1) - (1)].var);		
-		printf("\nLa variable es: %d\n", indiceFactor);		
+		buscarFactor=(yyvsp[(1) - (1)].var);			
 		}
     break;
 
   case 77:
 
 /* Line 1455 of yacc.c  */
-#line 394 "analizadorSintactico.y"
+#line 392 "analizadorSintactico.y"
     {
 		indiceConstante = agregarTipoTablaDeSimbolos(INT);
 		indiceConstante = agregarNombreTablaDeSimbolos(indiceConstante,(yyvsp[(1) - (1)].var));
@@ -2209,7 +2207,7 @@ yyreduce:
   case 78:
 
 /* Line 1455 of yacc.c  */
-#line 400 "analizadorSintactico.y"
+#line 398 "analizadorSintactico.y"
     {
 		indiceReal = agregarTipoTablaDeSimbolos(FLOAT);
 		indiceReal = agregarNombreTablaDeSimbolos(indiceReal,(yyvsp[(1) - (1)].var));
@@ -2221,7 +2219,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 2225 "y.tab.c"
+#line 2223 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2433,7 +2431,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 408 "analizadorSintactico.y"
+#line 406 "analizadorSintactico.y"
 
 
 int main(int argc,char *argv[])

@@ -186,7 +186,7 @@ int crear_terceto(int operador, int op1, int op2){
 	    char registroTabla[80]={0};
 	    char longitudChar[20]={0};
 
-        FILE* arch = fopen("tablaSimbolos.txt", "w+");
+        FILE* archivoTablaSimbolos = fopen("tablaSimbolos.txt", "w+");
 
 	    for(i=0; i<cantidadDeSimbolos; i++){
 
@@ -226,8 +226,8 @@ int crear_terceto(int operador, int op1, int op2){
                }
            }
 
-           fprintf(arch, registroTabla);
-           fprintf(arch, "\n");
+           fprintf(archivoTablaSimbolos, registroTabla);
+           fprintf(archivoTablaSimbolos, "\n");
 
 
            posCero=0;
@@ -235,7 +235,7 @@ int crear_terceto(int operador, int op1, int op2){
            posCuarentena=40;
            posSesenta=60;
 	    }
-        close(arch);
+        close(archivoTablaSimbolos);
 	}
 
 
@@ -347,10 +347,6 @@ int compararTipoVariable (char const *token, char const *token2){
 
     posicion = buscarPosicionTablaSimbolos(token);
     posicion2 = buscarPosicionTablaSimbolos(token2);
-
-    printf("\nposicion 1: %d posicion 2: %d",posicion,posicion2);
-
-    printf("\nexpresion: %s tipo: %s expresion2: %s tipo: %s\n",tablaSimbolos[posicion].nombre,tablaSimbolos[posicion].tipo,tablaSimbolos[posicion2].nombre,tablaSimbolos[posicion2].tipo);
 
     if(strcmp(tablaSimbolos[posicion].tipo,tablaSimbolos[posicion2].tipo)==0)
         return 1;

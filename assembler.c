@@ -4,6 +4,7 @@
 #include "y.tab.h"
 #include "tercetos.h"
 
+
 int ultimo_terceto;
 int fin_tabla;
 FILE *fileSimbolos;
@@ -47,7 +48,6 @@ struct tercetoResultado *listaTercetosResultado;
         int indiceCopiar=0 ;
 		int contadorDeSimbolos=0;
 		int tokenTipoAux;
-
 
 		fileSimbolos = fopen("tablaSimboloss.txt","r");
 
@@ -148,6 +148,7 @@ struct tercetoResultado *listaTercetosResultado;
 
 void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct tercetoResultado *tercetoResult, int finTabla)
 {
+
 	lista_terceto = listaTerceto;
 	listaTercetosResultado = tercetoResult;
 
