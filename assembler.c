@@ -170,20 +170,20 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
 
   for(i=0; i <= ultimo_terceto; i++){
     switch(lista_terceto[i].operador){
-      //case ASIG:
-	  	//asignacion(arch, i);
-        //break;
+      case ASIG:
+	  	asignacion(arch, i);
+        break;
     //  case CMP:
 	//	comparacion(arch, i);
       //  break;
 	  case MAYOR:
-	  	armarComparacion(arch, i);
+	  	comparacion(arch, i);
 		break;
 	  case MENOR:
-	  	armarComparacion(arch, i);
+	  	comparacion(arch, i);
 		break;
 	  case IGUAL:
-	  	armarComparacion(arch, i);
+	  	comparacion(arch, i);
 		break;
 
 
@@ -396,28 +396,6 @@ int devolverNumeroTipo(char const *tipo){
 	return -1;
 }
 
-void armarComparacion(FILE* arch, int ind){
-
-	int indiceOp1;
-	int indiceOp2;
-
-	indiceOp1 = atoi(listaTercetosResultado[ind].op1);
-	indiceOp2 = atoi(listaTercetosResultado[ind].op2);
-
-	fprintf(arch, "mov al, ");
-	fprintf(arch, listaTercetosResultado[indiceOp1].op2);
-	fprintf(arch, "\n");
-	fprintf(arch, "CMP ");
-	fprintf(arch, "al, ");
-	fprintf(arch, listaTercetosResultado[indiceOp2].op2);
-	fprintf(arch, "\n\n");
-    fprintf(arch, "jc true\n");
-	fprintf(arch, "jz false\n\n");
-
-	fprintf(arch, "true:\n");
-
-}
-
 int armarFinSeccion(FILE* arch, int ind){
 	fprintf(arch, ".exit\n\n");
 
@@ -458,4 +436,50 @@ void levantarEnPila(FILE* arch, const int ind){
 	if(izqLevantado){
 		fprintf(arch, "FXCH\n");
 	}
+}
+
+
+/** Levanta, da vuelta los elementos y compara */
+void comparacion(FILE* arch, int ind){
+	levantarEnPila(arch, ind);
+	fprintf(arch, "FXCH\nFCOMP\nFSTSW AX\nSAHF\n");
+    fprintf(arch, "\ntrue:\n");
+
+}
+
+void asignacion(FILE* arch, int ind){
+	int origen = lista_terceto[ind].op1;
+	int destino = lista_terceto[ind].op2;
+
+    printf("Destino: %d\n", destino);
+    printf("Origen: %d\n", origen);
+
+
+
+	//Ver tipo de dato
+	switch(tabla_simbolo[destino].tipoToken){
+	case INT:
+		// Si es un int de tabla de simbolos, primero hay que traerlo de memoria a st(0)
+		// Sino es el resultado de una expresion anterior y ya esta en st(0)
+		if(origen < maximoTercetos) //Es un int en tabla de simbolos
+			//fprintf(arch, "FILD %s\n", tabla_simbolo[origen].nombre);
+            printf("");
+		else //El valor ya esta en el copro, puede que haga falta redondear
+			fprintf(arch, "FSTCW CWprevio ;Guardo Control Word del copro\nOR CWprevio, 0400h ;Preparo Control Word seteando RC con redondeo hacia abajo\nFLDCW CWprevio ;Cargo nueva Control Word\n");
+		fprintf(arch, "FISTP %s", tabla_simbolo[destino].nombre);
+		break;
+	case FLOAT:
+		// Si es un float de tabla de simbolos, primero hay que traerlo de memoria a st(0)
+		// Sino es el resultado de una expresion anterior y ya esta en st(0)
+		if(origen < maximoTercetos) //Es un float en tabla de simbolos
+			fprintf(arch, "FLD %s\n", tabla_simbolo[origen].nombre);
+		fprintf(arch, "FSTP %s", tabla_simbolo[destino].nombre);
+		break;
+	case STRING:
+		//destino y origen son entradas a tabla de simbolos
+		//Cargo direccion del origen y pongo esa direccion en la variable en memoria. La variable sera puntero a string.
+		fprintf(arch, "LEA EAX, %s\nMOV %s, EAX", tabla_simbolo[origen].nombre, tabla_simbolo[destino].nombre);
+	}
+
+	fprintf(arch, "\n");
 }
