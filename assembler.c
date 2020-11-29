@@ -368,40 +368,16 @@ void resta(FILE* arch, int ind){
 }
 
 void multiplicacion(FILE* arch, int ind){
-	//int indiceOp1;
-	//int indiceOp2;
 
-	//indiceOp1 = atoi(listaTercetosResultado[ind].op1);
-	//indiceOp2 = atoi(listaTercetosResultado[ind].op2);
     levantarEnPila(arch, ind);
-    fprintf(arch, "FADD\n");
-
+    fprintf(arch, "FMUL\n");
 
 }
 
 void division(FILE* arch, int ind){
-	int indiceOp1;
-	int indiceOp2;
 
-	indiceOp1 = atoi(listaTercetosResultado[ind].op1);
-	indiceOp2 = atoi(listaTercetosResultado[ind].op2);
-
-	fprintf(arch, "mov al, ");
-	fprintf(arch, listaTercetosResultado[indiceOp1].op2);
-	fprintf(arch, "\n");
-	fprintf(arch, "div ");
-	fprintf(arch, listaTercetosResultado[indiceOp2].op2);
-	fprintf(arch, "\n");
-
-	fprintf(arch,"mov ah, 9\n");
-	fprintf(arch, "mov dl,");
-	//fprintf(arch, listaTercetosResultado[indiceOp1].op2);
-    fprintf(arch, "al");
-	fprintf(arch, "\n");
-
-	fprintf(arch,"add dl, 30h\n");
-	fprintf(arch,"mov ah, 2\n");
- 	fprintf(arch,"int 21h\n");
+    levantarEnPila(arch, ind);
+    fprintf(arch, "FDIV\n");
 
 }
 
