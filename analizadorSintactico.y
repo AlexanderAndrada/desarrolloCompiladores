@@ -218,7 +218,7 @@ sentenciainicialwhile:
 
 sentenciaintermediawhile:
 	sentencia PUNTOYCOMA
-	|sentenciaintermediawhile PUNTOYCOMA sentencia PUNTOYCOMA
+	|sentenciaintermediawhile sentencia PUNTOYCOMA
 	;
 
 sentenciaif:
@@ -262,7 +262,7 @@ sentenciainicialif:
 
 sentenciaintermediaif:
 	sentencia PUNTOYCOMA
-	|sentenciaintermediaif PUNTOYCOMA sentencia PUNTOYCOMA
+	|sentenciaintermediaif sentencia PUNTOYCOMA
 	;
 
 sentenciaelse:
