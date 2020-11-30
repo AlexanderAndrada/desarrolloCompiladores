@@ -143,7 +143,7 @@ identificadorintermedio:
 	
 sentencias:
 	sentencia PUNTOYCOMA {printf("Sentencia ok\n");}
-	|sentencias sentencia PUNTOYCOMA
+	|sentencias sentencia
 	;
 
 sentencia:
@@ -152,10 +152,10 @@ sentencia:
 	|expresion {printf("Expresion ok\n");}
 	|asignacion {printf("Asignacion ok\n");}
 	|asignacionespecial {printf("Asignacion especial ok\n");}
-	|PUT sentenciaparentesis
-	|GET factorparentesis
+	|lectura
+	|escritura
 	;
-
+/*
 sentenciaparentesis:
 	ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS{
 		indiceIdentificador = buscarPosicionTablaSimbolos($2);
@@ -176,7 +176,7 @@ factorparentesis:
 		crear_terceto(GET, NOOP, indiceAsignacion);
 		}
 	;
-
+*/
 sentenciawhile:
 	ABRIRPARENTESIS {
 		contadorWhile++;banderaWhileAnd[contadorWhile]=0;banderaWhileOr[contadorWhile]=0;
@@ -402,6 +402,19 @@ factor:
 		buscarFactor=$1;		
 		}
 	;
+
+	lectura:
+		GET IDENTIFICADOR	{
+	//	crear_terceto(GET, NOOP, indiceIdentificador);
+
+		}
+	;
+
+	escritura:
+		PUT IDENTIFICADOR {
+		crear_terceto(PUT, NOOP, indiceIdentificador);
+		}
+	;	
 
 %%
 

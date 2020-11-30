@@ -248,11 +248,11 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
 		division(arch,i);
         break;
 
-      //case READ: read (arch,i);
-      //  break;
-      //case WRITE:
-	  	//write(arch, i);
-      //  break;
+      //case GET: read(arch,i);
+       // break;
+      case PUT:
+	  	write(arch, i);
+        break;
     }
   }
 
@@ -451,11 +451,6 @@ void asignacion(FILE* arch, int ind){
 	int origen = lista_terceto[ind].op1;
 	int destino = lista_terceto[ind].op2;
 
-    printf("Destino: %d\n", destino);
-    printf("Origen: %d\n", origen);
-
-
-
 	//Ver tipo de dato
 	switch(tabla_simbolo[destino].tipoToken){
 	case INT:
@@ -481,5 +476,23 @@ void asignacion(FILE* arch, int ind){
 		fprintf(arch, "LEA EAX, %s\nMOV %s, EAX", tabla_simbolo[origen].nombre, tabla_simbolo[destino].nombre);
 	}
 
+	fprintf(arch, "\n");
+}
+
+void write(FILE* arch, int terceto){
+
+	int ind = lista_terceto[terceto].op2; //Indice de entrada a tabla de simbolos del mensaje a mostrar
+    
+	switch(tabla_simbolo[ind].tipoToken){
+	case INT:
+		fprintf(arch, "DisplayInteger %s\n", tabla_simbolo[ind].nombre);
+		break;
+	case FLOAT:
+		fprintf(arch, "DisplayFloat %s,2\n", tabla_simbolo[ind].nombre);
+		break;
+	case STRING:
+		fprintf(arch, "MOV EBX, %s\ndisplayString [EBX]\n", tabla_simbolo[ind].nombre);
+		break;
+	}
 	fprintf(arch, "\n");
 }
