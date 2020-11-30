@@ -187,8 +187,8 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
 		break;
 
 
-      case BGT:
-        escribirSalto(arch, "JA", lista_terceto[i].op2);
+      case JNA:
+        escribirSalto(arch, "JNA", lista_terceto[i].op2);
         break;
       case BGE:
         escribirSalto(arch, "JAE", lista_terceto[i].op2);
@@ -206,19 +206,19 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
         escribirSalto(arch, "JE", lista_terceto[i].op2);
         break;
       case JMP:
-        armarFinSeccion(arch, lista_terceto[i].op1);
-        break;
+        escribirSalto(arch, "JMP", lista_terceto[i].op2);
+        break; 
 
    //   case THEN:
      //   escribirEtiqueta(arch, "then", i);
        // break;
       case ELSE:
-        //escribirEtiqueta(arch, "else", i);
-        fprintf(arch, "false:\n");
+        escribirEtiqueta(arch, "else", i);
+        //fprintf(arch, "false:\n");
         break;
       case ENDIF:
-        //escribirEtiqueta(arch, "endif", i);
-        armarFinSeccion(arch,lista_terceto[i].op1);
+        escribirEtiqueta(arch, "endif", i);
+        //armarFinSeccion(arch,lista_terceto[i].op1);
         break;
 
       case WHILE:
@@ -441,9 +441,10 @@ void levantarEnPila(FILE* arch, const int ind){
 
 /** Levanta, da vuelta los elementos y compara */
 void comparacion(FILE* arch, int ind){
-	levantarEnPila(arch, ind);
+	
+    levantarEnPilaInvertida(arch, ind);
 	fprintf(arch, "FXCH\nFCOMP\nFSTSW AX\nSAHF\n");
-    fprintf(arch, "\ntrue:\n");
+   // fprintf(arch, "\ntrue:\n");
 
 }
 
@@ -495,4 +496,42 @@ void write(FILE* arch, int terceto){
 		break;
 	}
 	fprintf(arch, "\n");
+}
+
+
+/** Asegura que el elemento de la izquierda esté en st1, y el de la derecha en st0 */
+void levantarEnPilaInvertida(FILE* arch, const int ind){
+	int elemIzq = lista_terceto[ind].op2;
+	int elemDer = lista_terceto[ind].op1;
+	int izqLevantado = 0;
+	/* Si el elemento no está en pila lo levanta */
+	if(elemIzq < maximoTercetos){
+		switch(tabla_simbolo[elemIzq].tipoToken){
+		case INT:
+			//FILD n; Donde n es el numero integer en memoria
+			fprintf(arch, "FILD %s\n", tabla_simbolo[elemIzq].nombre);
+			break;
+		case FLOAT:
+			//FLD n; Donde n es el numero float en memoria
+			fprintf(arch, "FLD %s\n", tabla_simbolo[elemIzq].nombre);
+			break;
+		}
+		izqLevantado=1;
+	}
+	if(elemDer < maximoTercetos){
+		switch(tabla_simbolo[elemDer].tipoToken){
+		case INT:
+			//FILD n; Donde n es el numero integer en memoria
+			fprintf(arch, "FILD %s\n", tabla_simbolo[elemDer].nombre);
+			break;
+		case FLOAT:
+			//FLD n; Donde n es el numero float en memoria
+			fprintf(arch, "FLD %s\n", tabla_simbolo[elemDer].nombre);
+			break;
+		}
+		izqLevantado=0;
+	}
+	if(izqLevantado){
+		fprintf(arch, "FXCH\n");
+	}
 }

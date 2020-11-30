@@ -1,0 +1,8 @@
+MAIN{
+	DECLARE INT loro sonic num numero resultado STRING mensaje FLOAT michi;
+	IF(sonic < loro)
+	{
+		numero = 5;;
+		PUT numero;
+	};
+}
