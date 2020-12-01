@@ -190,19 +190,19 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
       case JNA:
         escribirSalto(arch, "JNA", lista_terceto[i].op2);
         break;
-      case BGE:
-        escribirSalto(arch, "JAE", lista_terceto[i].op2);
+      case JNBE:
+        escribirSalto(arch, "JNBE", lista_terceto[i].op2);
         break;
-      case BLT:
-        escribirSalto(arch, "JB", lista_terceto[i].op2);
+      case JNAE:
+        escribirSalto(arch, "JNAE", lista_terceto[i].op2);
         break;
-      case BLE:
-        escribirSalto(arch, "JBE", lista_terceto[i].op2);
+      case JNB:
+        escribirSalto(arch, "JNB", lista_terceto[i].op2);
         break;
-      case BNE:
+      case JNE:
         escribirSalto(arch, "JNE", lista_terceto[i].op2);
         break;
-      case BEQ:
+      case JE:
         escribirSalto(arch, "JE", lista_terceto[i].op2);
         break;
       case JMP:
