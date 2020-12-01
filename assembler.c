@@ -3,6 +3,8 @@
 #include "assembler.h"
 #include "y.tab.h"
 #include "tercetos.h"
+#include <ctype.h>
+
 
 
 int ultimo_terceto;
@@ -33,6 +35,8 @@ struct terceto{
 struct terceto *lista_terceto;
 struct tercetoResultado *listaTercetosResultado;
 
+int contadorDeSimbolos=0;
+
     void lecturaArchivoDeSimbolos(){
         char lineaSimbolo[80]={0};
         char indiceLineaSimbolo=0;
@@ -46,7 +50,6 @@ struct tercetoResultado *listaTercetosResultado;
         int borrar;
         int x,y,z,c;
         int indiceCopiar=0 ;
-		int contadorDeSimbolos=0;
 		int tokenTipoAux;
 
 		fileSimbolos = fopen("tablaSimboloss.txt","r");
@@ -210,12 +213,8 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
         escribirSalto(arch, "JMP", lista_terceto[i].op2);
         break; 
 
-   //   case THEN:
-     //   escribirEtiqueta(arch, "then", i);
-       // break;
       case ELSE:
         escribirEtiqueta(arch, "else", i);
-        //fprintf(arch, "false:\n");
         break;
       case ENDIF:
         escribirEtiqueta(arch, "endif", i);
@@ -228,13 +227,6 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
       case ENDWHILE:
         escribirEtiqueta(arch, "endwhile", i);
         break;
-
-	//case INLIST_TRUE:
-	//	escribirEtiqueta(arch, "inlistTrue", i);
-	//	break;
-	//case INLIST_CMP:
-	//	escribirEtiqueta(arch, "inlistCMP", i);
-	//	break;
 
       case SUMA:
 		suma(arch,i);
@@ -285,7 +277,7 @@ void generarTabla(FILE *arch){
     fprintf(arch, ".DATA\n");
     int i;
 
-    fprintf(arch,"_integrantes        db 13,10,'Grupo C: Andrada Alexander - Pirovano Pablo',13,10,'$'\n");
+    fprintf(arch,"_integrantes        db 13,10,'Grupo 3: Andrada Alexander - Pirovano Pablo',13,10,'$'\n");
     fprintf(arch,"_universidad        db 13,10,'Universidad Nacional del Oeste',13,10,'$'\n");
     fprintf(arch,"_materia            db 13,10,'Desarrollo de Compiladores',13,10,'$'\n");
 
@@ -296,7 +288,7 @@ void generarTabla(FILE *arch){
         switch(tabla_simbolo[i].tipoToken){
         case INT:
             //fprintf(arch, "db %d\n", tabla_simbolo[i].valor);
-			fprintf(arch, "dd %d\n", 2); //Cambiar tipo
+			fprintf(arch, "dd %d\n", devolverValorEntero(tabla_simbolo[i].nombre)); //Cambiar tipo
             break;
         case FLOAT:
             //fprintf(arch, "dd %f\n", tabla_simbolo[i].valor);
@@ -504,10 +496,12 @@ void write(FILE* arch, int terceto){
 
 /** Asegura que el elemento de la izquierda esté en st1, y el de la derecha en st0 */
 void levantarEnPilaInvertida(FILE* arch, const int ind){
-	int elemIzq = lista_terceto[ind].op2;
-	int elemDer = lista_terceto[ind].op1;
+     
+    int elemIzq = posicionTablaSimbolosAssembler(listaTercetosResultado[lista_terceto[ind].op2].op2);
+    int elemDer = posicionTablaSimbolosAssembler(listaTercetosResultado[lista_terceto[ind].op1].op2);
+
 	int izqLevantado = 0;
-	/* Si el elemento no está en pila lo levanta */
+
 	if(elemIzq < maximoTercetos){
 		switch(tabla_simbolo[elemIzq].tipoToken){
 		case INT:
@@ -524,7 +518,6 @@ void levantarEnPilaInvertida(FILE* arch, const int ind){
 	if(elemDer < maximoTercetos){
 		switch(tabla_simbolo[elemDer].tipoToken){
 		case INT:
-			//FILD n; Donde n es el numero integer en memoria
 			fprintf(arch, "FILD %s\n", tabla_simbolo[elemDer].nombre);
 			break;
 		case FLOAT:
@@ -538,3 +531,55 @@ void levantarEnPilaInvertida(FILE* arch, const int ind){
 		fprintf(arch, "FXCH\n");
 	}
 }
+
+   int devolverValorEntero(char* identificadorNombre){
+
+        char valorDevInt[20]={0};
+        int i;
+        int x = 0;
+        char vacio = '  ';
+
+        for(i=1; i< 19;i++){
+            if(isdigit(identificadorNombre[i]) != 0){ // si es 0  no es un numero
+                valorDevInt[x] = identificadorNombre[i];
+                x++;
+            }else{
+                break;
+            }
+        }
+
+        if(strlen(valorDevInt) < 1){
+            return 0;
+        }
+        else{
+            return atoi(valorDevInt);
+        }
+	}
+
+
+    int posicionTablaSimbolosAssembler(char const *cadena){
+        int i,x;
+        char auxiliar[80]={0};
+        int contadorNombreAuxiliar=0;
+
+        strcat(auxiliar, cadena);
+
+         for(i=0; i<contadorDeSimbolos; i++){
+
+             char nombreAuxiliar[80]={0};
+
+             for(x=0; x< strlen(tabla_simbolo[i].nombre);x++){
+
+                if(tabla_simbolo[i].nombre[x] != ' '){
+                    nombreAuxiliar[contadorNombreAuxiliar] = tabla_simbolo[i].nombre[x];
+                    contadorNombreAuxiliar++;
+                }
+             }
+             contadorNombreAuxiliar=0;
+
+             if(strcmp(auxiliar, nombreAuxiliar)==0){
+                 return i;
+             }
+         }
+        return -1;
+    }
