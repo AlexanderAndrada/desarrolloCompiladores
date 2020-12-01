@@ -166,6 +166,7 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
   escribirInicio(arch);
   generarTabla(arch);
   escribirInicioCodigo(arch);
+  escribirInicioInformacionMateria(arch);
   int i;
 
   for(i=0; i <= ultimo_terceto; i++){
@@ -269,6 +270,12 @@ void escribirInicioCodigo(FILE* arch){
 	fprintf(arch, ".CODE\nMAIN:\n\nMOV AX, @DATA\nMOV DS, AX\n\n");
 }
 
+void escribirInicioInformacionMateria(FILE* arch){
+    fprintf(arch, "lea dx,_universidad\n mov ah,09h\n int 21h\n\n");
+    fprintf(arch, "lea dx,_materia\n mov ah,09h\n int 21h\n\n");
+    fprintf(arch, "lea dx,_integrantes\n mov ah,09h\n int 21h\n\n");
+}
+
 void escribirFinal(FILE *arch){
     fprintf(arch, "\nMOV AH, 1\nINT 21h\nMOV AX, 4C00h\nINT 21h\n\nEND MAIN\n");
 	// TODO: Preguntar por flags y escribir subrutinas
@@ -277,6 +284,11 @@ void escribirFinal(FILE *arch){
 void generarTabla(FILE *arch){
     fprintf(arch, ".DATA\n");
     int i;
+
+    fprintf(arch,"_integrantes        db 13,10,'Grupo C: Andrada Alexander - Pirovano Pablo',13,10,'$'\n");
+    fprintf(arch,"_universidad        db 13,10,'Universidad Nacional del Oeste',13,10,'$'\n");
+    fprintf(arch,"_materia            db 13,10,'Desarrollo de Compiladores',13,10,'$'\n");
+
 
     for(i=0; i<=fin_tabla; i++){
         fprintf(arch, "%s ", tabla_simbolo[i].nombre);
