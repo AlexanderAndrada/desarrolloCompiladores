@@ -153,10 +153,10 @@ sentencia:
 	|expresion {printf("Expresion ok\n");}
 	|asignacion {printf("Asignacion ok\n");}
 	|asignacionespecial {printf("Asignacion especial ok\n");}
-	|PUT sentenciaparentesis
-	|GET factorparentesis
+	|escritura
+	|lectura
 	;
-
+/*
 sentenciaparentesis:
 	ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS{
 		indiceIdentificador = buscarPosicionTablaSimbolos($2);
@@ -176,7 +176,7 @@ factorparentesis:
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
 		indiceAsignacion = crear_terceto(GET, NOOP, indiceAsignacion);}
 	;
-
+*/
 sentenciawhile:
 	ABRIRPARENTESIS {
 		contadorWhile++;banderaWhileAnd[contadorWhile]=0;banderaWhileOr[contadorWhile]=0;
@@ -405,6 +405,19 @@ factor:
 		buscarFactor=$1;		
 		}
 	;
+
+		lectura:
+		GET IDENTIFICADOR	{
+	//	crear_terceto(GET, NOOP, indiceIdentificador);
+
+		}
+	;
+
+	escritura:
+		PUT IDENTIFICADOR {
+		crear_terceto(PUT, NOOP, indiceIdentificador);
+		}
+	;	
 
 %%
 
