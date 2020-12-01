@@ -412,20 +412,19 @@ void agregarTipoDatosVariable (char *token, int tipo){
 int cambiarComparador (int comp){
     switch(comp){
     case MAYOR:
-        return JNBE;
-    case MENOR:
-        return JNAE;
-    case MAYORIGUAL:
-        return JNB;
-    case MENORIGUAL:
         return JNA;
+    case MENOR:
+        return JNB;
+    case MAYORIGUAL:
+        return JNAE;
+    case MENORIGUAL:
+        return JNBE;
     case IGUAL:
         return JNE;
     case DISTINTO:
         return JE;
     }
 }
-
 
 /** Modifica el terceto con el indice indicado en la posicion indicada. El indice debe ser sin el OFFSET
 y la posicion debe ser OP1, OP2 u OPERADOR. Si el terceto no existe, aborta la compilacion. */

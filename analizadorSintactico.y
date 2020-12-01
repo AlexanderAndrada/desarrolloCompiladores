@@ -183,7 +183,7 @@ sentenciawhile:
 		indiceWhileCondicion[contadorWhile]=crear_terceto(WHILE, NOOP, NOOP);
 		printf("numero de While: %d ",contadorWhile);}
 	sentenciacomparacionwhile CERRARPARENTESIS sentenciainicialwhile{
-		indiceWhileFin[contadorWhile]=crear_terceto(ENDSENTENCE, NOOP, NOOP);
+		indiceWhileFin[contadorWhile]=crear_terceto(ENDWHILE, NOOP, NOOP);
 		modificarTerceto(indiceWhileAux[contadorWhile],OP2,indiceWhileFin[contadorWhile]);
 		contadorWhile--;}
 	;
@@ -191,6 +191,7 @@ sentenciawhile:
 sentenciacomparacionwhile:
 	expresioncomparacionwhile {
 		printf("Sentencia comparacion WHILE ok\n");
+		
 		indiceWhileAux[contadorWhile]=crear_terceto(cambiarComparador(indiceComparador), NOOP, NOOP);}
 	|expresioncomparacionwhile {
 		indiceWhileAuxAnd[contadorWhile]=crear_terceto(cambiarComparador(indiceComparador), NOOP, NOOP);}

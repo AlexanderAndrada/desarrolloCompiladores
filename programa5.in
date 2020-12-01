@@ -1,0 +1,8 @@
+MAIN{
+	DECLARE INT menor mayor num numero resultado STRING mensaje;
+	WHILE(mayor > menor)
+	{
+		numero = mayor + menor;
+		PUT numero;
+	};
+}
