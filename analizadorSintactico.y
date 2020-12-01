@@ -77,7 +77,7 @@ int ultimoTerceto;
 %token DOUBLE BOOLEAN
 %token ASIGESPMAS ASIGESPMENOS ASIGESPMULTIPLICACION ASIGESPDIVISION
 %token <var> STRING
-%token JNA
+%token JNA JNAE JNB JNBE JE JNE
 %token ENDIF TRUE ENDSENTENCE ENDWHILE
 
 %type <var> identificadorintermedio
@@ -89,6 +89,7 @@ programa:
 		printf("Main OK\n");
 		escribirTablaSimbolos();
 		guardarArchivoTercetos();
+
 		generarAssembler(devolverTercetos(),devolverCantidadTercetos(),devolverTercetoResultado(),devolverCantidadSimbolos());
 		}
 	|MAIN ABRIRLLAVE sentencias CERRARLLAVE {
@@ -143,7 +144,7 @@ identificadorintermedio:
 	
 sentencias:
 	sentencia PUNTOYCOMA {printf("Sentencia ok\n");}
-	|sentencias sentencia
+	|sentencias sentencia PUNTOYCOMA
 	;
 
 sentencia:
@@ -152,31 +153,30 @@ sentencia:
 	|expresion {printf("Expresion ok\n");}
 	|asignacion {printf("Asignacion ok\n");}
 	|asignacionespecial {printf("Asignacion especial ok\n");}
-	|lectura
-	|escritura
+	|PUT sentenciaparentesis
+	|GET factorparentesis
 	;
-/*
+
 sentenciaparentesis:
 	ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS{
 		indiceIdentificador = buscarPosicionTablaSimbolos($2);
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
-		crear_terceto(PUT, NOOP, indiceAsignacion);}
+		indiceAsignacion = crear_terceto(PUT, NOOP, indiceAsignacion);}
 	|ABRIRPARENTESIS STRING CERRARPARENTESIS{
 		indiceString = agregarTipoTablaDeSimbolos(STRING);
 		indiceString = agregarNombreTablaDeSimbolos(indiceString,$2);
 		indiceString = crear_terceto(NOOP, NOOP, indiceString);
 		indiceString = crear_terceto(PUT, NOOP, indiceString);
-	}
+		printf("\n%s\n",$2);}
 	;
 
 factorparentesis:
 	ABRIRPARENTESIS IDENTIFICADOR CERRARPARENTESIS{
 		indiceIdentificador = buscarPosicionTablaSimbolos($2);
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
-		crear_terceto(GET, NOOP, indiceAsignacion);
-		}
+		indiceAsignacion = crear_terceto(GET, NOOP, indiceAsignacion);}
 	;
-*/
+
 sentenciawhile:
 	ABRIRPARENTESIS {
 		contadorWhile++;banderaWhileAnd[contadorWhile]=0;banderaWhileOr[contadorWhile]=0;
@@ -191,16 +191,16 @@ sentenciawhile:
 sentenciacomparacionwhile:
 	expresioncomparacionwhile {
 		printf("Sentencia comparacion WHILE ok\n");
-		indiceWhileAux[contadorWhile]=crear_terceto(JNA, NOOP, NOOP);}
+		indiceWhileAux[contadorWhile]=crear_terceto(cambiarComparador(indiceComparador), NOOP, NOOP);}
 	|expresioncomparacionwhile {
-		indiceWhileAuxAnd[contadorWhile]=crear_terceto(JNA, NOOP, NOOP);}
+		indiceWhileAuxAnd[contadorWhile]=crear_terceto(cambiarComparador(indiceComparador), NOOP, NOOP);}
 	AND expresioncomparacionwhile {
 		banderaWhileAnd[contadorIf]=1;printf("Sentencia AND comparacion WHILE ok\n");
-		indiceWhileAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);}
+		indiceWhileAux[contadorIf]=crear_terceto(cambiarComparador(indiceComparador), NOOP, NOOP);}
 	|expresioncomparacionwhile {
 		indiceWhileAuxOr[contadorIf]=crear_terceto(JMP, NOOP, NOOP);} 
 	OR expresioncomparacionwhile{
-		banderaWhileOr[contadorIf]=1;indiceWhileAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);
+		banderaWhileOr[contadorIf]=1;indiceWhileAux[contadorIf]=crear_terceto(cambiarComparador(indiceComparador), NOOP, NOOP);
 		printf("Sentencia OR comparacion WHILE ok\n");}
 	;
 
@@ -232,15 +232,16 @@ sentenciaif:
 
 sentenciacomparacionif:
 	expresioncomparacionif {
-		printf("Sentencia comparacion IF ok\n");indiceIfAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);}
+		printf("Sentencia comparacion IF ok\n");
+		indiceIfAux[contadorIf]=crear_terceto(cambiarComparador(indiceComparador), NOOP, NOOP);}
 	|expresioncomparacionif {
-		indiceIfAuxAnd[contadorIf]=crear_terceto(JNA, NOOP, NOOP);} 
+		indiceIfAuxAnd[contadorIf]=crear_terceto(cambiarComparador(indiceComparador), NOOP, NOOP);} 
 	AND expresioncomparacionif {
-		banderaIfAnd[contadorIf]=1;printf("Sentencia AND comparacion IF ok\n");indiceIfAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);}
+		banderaIfAnd[contadorIf]=1;printf("Sentencia AND comparacion IF ok\n");indiceIfAux[contadorIf]=crear_terceto(cambiarComparador(indiceComparador), NOOP, NOOP);}
 	|expresioncomparacionif {
 		indiceIfAuxOr[contadorIf]=crear_terceto(JMP, NOOP, NOOP);} 
 	OR expresioncomparacionif {
-		banderaIfOr[contadorIf]=1;indiceIfAux[contadorIf]=crear_terceto(JNA, NOOP, NOOP);
+		banderaIfOr[contadorIf]=1;indiceIfAux[contadorIf]=crear_terceto(cambiarComparador(indiceComparador), NOOP, NOOP);
 		printf("Sentencia OR comparacion IF ok\n");}
 	;
 
@@ -277,8 +278,9 @@ sentenciaelse:
 
 asignacion:
 	IDENTIFICADOR ASIG expresion {
-		compararTipoVariable($1,buscarExpresion);
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
+		validarExistenciaVariable(indiceIdentificador,$1);		
+		compararTipoVariable($1,buscarExpresion);
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
 		crear_terceto(ASIG, indiceExpresion, indiceAsignacion);
 		printf("Var: %s Asignacion ok\n",$1);
@@ -387,7 +389,8 @@ factor:
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
 		validarExistenciaVariable(indiceIdentificador,$1);
 		indiceFactor = buscar_terceto(indiceIdentificador,contadorVariables);
-		buscarFactor=$1;			
+		buscarFactor=$1;		
+		printf("\nLa variable es: %d\n", indiceFactor);		
 		}
 	|INT {
 		indiceConstante = agregarTipoTablaDeSimbolos(INT);
@@ -402,19 +405,6 @@ factor:
 		buscarFactor=$1;		
 		}
 	;
-
-	lectura:
-		GET IDENTIFICADOR	{
-	//	crear_terceto(GET, NOOP, indiceIdentificador);
-
-		}
-	;
-
-	escritura:
-		PUT IDENTIFICADOR {
-		crear_terceto(PUT, NOOP, indiceIdentificador);
-		}
-	;	
 
 %%
 

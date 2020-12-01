@@ -409,20 +409,20 @@ void agregarTipoDatosVariable (char *token, int tipo){
 	}
 }
 
-int invertirComparador (int comp){
+int cambiarComparador (int comp){
     switch(comp){
     case MAYOR:
-        return MENORIGUAL;
+        return JNBE;
     case MENOR:
-        return MAYORIGUAL;
+        return JNAE;
     case MAYORIGUAL:
-        return MENOR;
+        return JNB;
     case MENORIGUAL:
-        return MAYOR;
+        return JNA;
     case IGUAL:
-        return DISTINTO;
+        return JNE;
     case DISTINTO:
-        return IGUAL;
+        return JE;
     }
 }
 
@@ -607,6 +607,21 @@ void guardarArchivoTercetos(){
 			break;
         case JNA: //jump not above
 			fprintf(arch, "JNA");
+			break;
+		case JNBE: //jump not below or equal
+			fprintf(arch, "JNBE");
+			break;
+		case JNAE: //jump not above or equal
+			fprintf(arch, "JNAE");
+			break;
+		case JNE: //jump not equal
+			fprintf(arch, "JNE");
+			break;
+		case JE: //jump equal
+			fprintf(arch, "JE");
+			break;
+		case JNB: //jump not below
+			fprintf(arch, "JNB");
 			break;
 		case INL:
 			fprintf(arch, "INL");

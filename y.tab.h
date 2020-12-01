@@ -81,10 +81,15 @@
      ASIGESPDIVISION = 297,
      STRING = 298,
      JNA = 299,
-     ENDIF = 300,
-     TRUE = 301,
-     ENDSENTENCE = 302,
-     ENDWHILE = 303
+     JNAE = 300,
+     JNB = 301,
+     JNBE = 302,
+     JE = 303,
+     JNE = 304,
+     ENDIF = 305,
+     TRUE = 306,
+     ENDSENTENCE = 307,
+     ENDWHILE = 308
    };
 #endif
 /* Tokens.  */
@@ -130,10 +135,15 @@
 #define ASIGESPDIVISION 297
 #define STRING 298
 #define JNA 299
-#define ENDIF 300
-#define TRUE 301
-#define ENDSENTENCE 302
-#define ENDWHILE 303
+#define JNAE 300
+#define JNB 301
+#define JNBE 302
+#define JE 303
+#define JNE 304
+#define ENDIF 305
+#define TRUE 306
+#define ENDSENTENCE 307
+#define ENDWHILE 308
 
 
 
@@ -151,7 +161,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 155 "y.tab.h"
+#line 165 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
