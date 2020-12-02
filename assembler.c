@@ -480,13 +480,15 @@ void asignacion(FILE* arch, int ind){
 void write(FILE* arch, int terceto){
 
 	int ind = lista_terceto[terceto].op2; //Indice de entrada a tabla de simbolos del mensaje a mostrar
-    
+    char nombreSinEspacios[20];
+
 	switch(tabla_simbolo[ind].tipoToken){
 	case INT:
 		fprintf(arch, "DisplayInteger %s\n", tabla_simbolo[ind].nombre);
 		break;
 	case FLOAT:
-		fprintf(arch, "DisplayFloat %s,2\n", tabla_simbolo[ind].nombre);
+        eliminarEspaciosEnBlanco(ind, nombreSinEspacios);
+        fprintf(arch, "DisplayFloat %s,2\n", nombreSinEspacios);
 		break;
 	case STRING:
 		fprintf(arch, "MOV EBX, %s\ndisplayString [EBX]\n", tabla_simbolo[ind].nombre);
@@ -618,3 +620,19 @@ void levantarEnPilaInvertida(FILE* arch, const int ind){
             numeroFloat = atof(valorDevInt);
         }
 	}
+
+    void eliminarEspaciosEnBlanco(int indice, char *cadenaResultado){
+        int e = 0;
+        char caracter;
+
+        for(e = 0; e < 20; e++){
+            caracter = tabla_simbolo[indice].nombre[e];
+            if(caracter != ' '){
+                cadenaResultado[e]=caracter;
+            }
+            else{
+                cadenaResultado[e]= '\0';
+                break;
+            }
+        }
+    }
