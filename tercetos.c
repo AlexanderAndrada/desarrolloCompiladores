@@ -196,8 +196,11 @@ int crear_terceto(int operador, int op1, int op2){
 	    registroTabla[79] = '\0';
 
            for(indiceRegistro=0; indiceRegistro<strlen(tablaSimbolos[i].nombre); indiceRegistro++){
-
-                registroTabla[posCero]= tablaSimbolos[i].nombre[indiceRegistro];
+				if(tablaSimbolos[i].nombre[indiceRegistro] == '.'){
+					registroTabla[posCero]= 'p';
+				}else{
+					registroTabla[posCero]= tablaSimbolos[i].nombre[indiceRegistro];
+				}
                 posCero++;
            }
 

@@ -562,11 +562,25 @@ void levantarEnPilaInvertida(FILE* arch, const int ind){
 
 
     int posicionTablaSimbolosAssembler(char const *cadena){
-        int i,x;
+        int i,x,e;
         char auxiliar[80]={0};
         int contadorNombreAuxiliar=0;
 
-        strcat(auxiliar, cadena);
+      //  strcat(auxiliar, cadena);
+        
+        for(e=0;e<20;e++){
+            if(cadena[e] != ' '){
+                if(cadena[e] == '.'){
+                    auxiliar[e] = 'p';
+                }else{
+                    auxiliar[e] = cadena[e];
+                }
+            }else{
+                break;
+            }
+        }
+
+
 
          for(i=0; i<contadorDeSimbolos; i++){
 
@@ -575,12 +589,16 @@ void levantarEnPilaInvertida(FILE* arch, const int ind){
              for(x=0; x< strlen(tabla_simbolo[i].nombre);x++){
 
                 if(tabla_simbolo[i].nombre[x] != ' '){
+                    
                     nombreAuxiliar[contadorNombreAuxiliar] = tabla_simbolo[i].nombre[x];
+
+
                     contadorNombreAuxiliar++;
                 }
              }
              contadorNombreAuxiliar=0;
-
+                printf("El auxiliar tiene: %s\n",auxiliar);
+                printf("El nombre auxiliar tiene: %s\n",nombreAuxiliar);
              if(strcmp(auxiliar, nombreAuxiliar)==0){
                  return i;
              }
@@ -603,9 +621,9 @@ void levantarEnPilaInvertida(FILE* arch, const int ind){
                 valorDevInt[x] = identificadorNombre[i];
                 x++;
             }else{
-                if(identificadorNombre[i] == '.' && contadorPunto <1){
+                if(identificadorNombre[i] == 'p' && contadorPunto <1){
                     contadorPunto++;
-                    valorDevInt[x] = identificadorNombre[i];
+                    valorDevInt[x] = '.';
                     x++;
                 }else{
                     break;
@@ -617,6 +635,7 @@ void levantarEnPilaInvertida(FILE* arch, const int ind){
             numeroFloat = 0.00;
         }
         else{
+            printf("Convierte esto: %s\n", valorDevInt);
             numeroFloat = atof(valorDevInt);
         }
 	}
