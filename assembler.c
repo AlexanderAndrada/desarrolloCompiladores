@@ -294,7 +294,7 @@ void generarTabla(FILE *arch){
             break;
         case FLOAT:
             devolverValorFloat(tabla_simbolo[i].nombre);
-			fprintf(arch, "dd %f\n", numeroFloat);
+			fprintf(arch, "dd %.2f\n", numeroFloat);
             break;
         case STRING:
             //fprintf(arch, "db \"%s\", '$'\n", tabla_simbolo[i].valor);
