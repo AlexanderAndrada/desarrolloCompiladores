@@ -36,6 +36,7 @@ struct terceto *lista_terceto;
 struct tercetoResultado *listaTercetosResultado;
 
 int contadorDeSimbolos=0;
+float numeroFloat;
 
     void lecturaArchivoDeSimbolos(){
         char lineaSimbolo[80]={0};
@@ -275,6 +276,7 @@ void escribirFinal(FILE *arch){
 
 void generarTabla(FILE *arch){
     fprintf(arch, ".DATA\n");
+    
     int i;
 
     fprintf(arch,"_integrantes        db 13,10,'Grupo 3: Andrada Alexander - Pirovano Pablo',13,10,'$'\n");
@@ -291,8 +293,8 @@ void generarTabla(FILE *arch){
 			fprintf(arch, "dd %d\n", devolverValorEntero(tabla_simbolo[i].nombre)); //Cambiar tipo
             break;
         case FLOAT:
-            //fprintf(arch, "dd %f\n", tabla_simbolo[i].valor);
-			fprintf(arch, "dd %s\n", "5");
+            devolverValorFloat(tabla_simbolo[i].nombre);
+			fprintf(arch, "dd %f\n", numeroFloat);
             break;
         case STRING:
             //fprintf(arch, "db \"%s\", '$'\n", tabla_simbolo[i].valor);
@@ -583,3 +585,36 @@ void levantarEnPilaInvertida(FILE* arch, const int ind){
          }
         return -1;
     }
+
+
+    void devolverValorFloat(char* identificadorNombre){
+
+        char valorDevInt[20]={0};
+        int i;
+        int x = 0;
+        char vacio = '  ';
+        int limiteCantidadPunto = 1;
+        int contadorPunto=0;
+
+        for(i=1; i< 19;i++){
+            if(isdigit(identificadorNombre[i]) != 0){ // si es 0  no es un numero
+                valorDevInt[x] = identificadorNombre[i];
+                x++;
+            }else{
+                if(identificadorNombre[i] == '.' && contadorPunto <1){
+                    contadorPunto++;
+                    valorDevInt[x] = identificadorNombre[i];
+                    x++;
+                }else{
+                    break;
+                }
+                
+            }
+        }
+        if(strlen(valorDevInt) < 1){
+            numeroFloat = 0.00;
+        }
+        else{
+            numeroFloat = atof(valorDevInt);
+        }
+	}
