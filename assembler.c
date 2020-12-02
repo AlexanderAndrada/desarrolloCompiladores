@@ -5,10 +5,9 @@
 #include "tercetos.h"
 #include <ctype.h>
 
-
-
 int ultimo_terceto;
 int fin_tabla;
+int hayOperacionAnterior=0;
 FILE *fileSimbolos;
 
 struct tercetoResultado{
@@ -68,7 +67,6 @@ float numeroFloat;
                 indiceLineaSimbolo++;
             }
             else{
-               // contadorDeSimbolos++;
 
                 for(x=0; x < 20; x++){
                     if(strlen(nombre)<19){
@@ -127,28 +125,21 @@ float numeroFloat;
                 contadorDeSimbolos++;
                 indiceLineaSimbolo=0;
 
-            for(borrar=0; borrar < 80; borrar++){
-                lineaSimbolo[borrar]='\0';
-            }
-            for(borrar=0; borrar < 20; borrar++){
-                nombre[borrar]='\0';
-                tipo[borrar]='\0';
-                valor[borrar]='\0';
-                cadenaSeparada[borrar]='\0';
+                for(borrar=0; borrar < 80; borrar++){
+                    lineaSimbolo[borrar]='\0';
+                }
+                for(borrar=0; borrar < 20; borrar++){
+                    nombre[borrar]='\0';
+                    tipo[borrar]='\0';
+                    valor[borrar]='\0';
+                    cadenaSeparada[borrar]='\0';
 
+                }
             }
-            }
-
         }
 	close(fileSimbolos);
 	}
     }
-
-
-
-
-
-
 
 void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct tercetoResultado *tercetoResult, int finTabla)
 {
@@ -178,9 +169,6 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
       case ASIG:
 	  	asignacion(arch, i);
         break;
-    //  case CMP:
-	//	comparacion(arch, i);
-      //  break;
 	  case MAYOR:
 	  	comparacion(arch, i);
 		break;
@@ -190,8 +178,6 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
 	  case IGUAL:
 	  	comparacion(arch, i);
 		break;
-
-
       case JNA:
         escribirSalto(arch, "JNA", lista_terceto[i].op2);
         break;
@@ -219,16 +205,13 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
         break;
       case ENDIF:
         escribirEtiqueta(arch, "endif", i);
-        //armarFinSeccion(arch,lista_terceto[i].op1);
         break;
-
       case WHILE:
         escribirEtiqueta(arch, "while", i);
         break;
       case ENDWHILE:
         escribirEtiqueta(arch, "endwhile", i);
         break;
-
       case SUMA:
 		suma(arch,i);
         break;
@@ -271,7 +254,6 @@ void escribirInicioInformacionMateria(FILE* arch){
 
 void escribirFinal(FILE *arch){
     fprintf(arch, "\nMOV AH, 1\nINT 21h\nMOV AX, 4C00h\nINT 21h\n\nEND MAIN\n");
-	// TODO: Preguntar por flags y escribir subrutinas
 }
 
 void generarTabla(FILE *arch){
@@ -289,8 +271,7 @@ void generarTabla(FILE *arch){
 
         switch(tabla_simbolo[i].tipoToken){
         case INT:
-            //fprintf(arch, "db %d\n", tabla_simbolo[i].valor);
-			fprintf(arch, "dd %d\n", devolverValorEntero(tabla_simbolo[i].nombre)); //Cambiar tipo
+			fprintf(arch, "dd %d\n", devolverValorEntero(tabla_simbolo[i].nombre));
             break;
         case FLOAT:
             devolverValorFloat(tabla_simbolo[i].nombre);
@@ -300,8 +281,7 @@ void generarTabla(FILE *arch){
             //fprintf(arch, "db \"%s\", '$'\n", tabla_simbolo[i].valor);
 			fprintf(arch, "db \"%s\", '$'\n", "es igual");
             break;
-        default: //Es una variable int, float o puntero a string
-            //fprintf(arch, "dd ?\n");
+        default:
 			printf("");
         }
     }
@@ -315,13 +295,6 @@ void escribirEtiqueta(FILE* arch, char* etiqueta, int n){
 
 void escribirSalto(FILE* arch, char* salto, int tercetoDestino){
     fprintf(arch, "%s ", salto);
-
-    //Por si nos olvidamos de rellenar un salto
-    if(tercetoDestino == NOOP){
-   //     printf("Ups. Parece que me olvide de rellenar un salto en los tercetos y ahora no se como seguir.\n");
-   //     system("Pause");
-   //     exit(10);
-    }
 
     switch( lista_terceto[tercetoDestino].operador ){
 
@@ -345,6 +318,7 @@ void escribirSalto(FILE* arch, char* salto, int tercetoDestino){
 void suma(FILE* arch, int ind){
     levantarEnPila(arch, ind);
     fprintf(arch, "FADD\n");
+    hayOperacionAnterior = 1;
 }
 
 
@@ -372,12 +346,15 @@ void resta(FILE* arch, int ind){
 	fprintf(arch,"mov ah, 2\n");
  	fprintf(arch,"int 21h\n");
 
+
+    hayOperacionAnterior = 1;
 }
 
 void multiplicacion(FILE* arch, int ind){
 
     levantarEnPila(arch, ind);
     fprintf(arch, "FMUL\n");
+    hayOperacionAnterior = 1;
 
 }
 
@@ -385,7 +362,7 @@ void division(FILE* arch, int ind){
 
     levantarEnPila(arch, ind);
     fprintf(arch, "FDIV\n");
-
+    hayOperacionAnterior = 1;
 }
 
 int devolverNumeroTipo(char const *tipo){
@@ -416,28 +393,24 @@ void levantarEnPila(FILE* arch, const int ind){
 	if(elemIzq < maximoTercetos){
 		switch(tabla_simbolo[elemIzq].tipoToken){
 		case INT:
-			//FILD n; Donde n es el numero integer en memoria
 			fprintf(arch, "FILD %s\n", tabla_simbolo[elemIzq].nombre);
 			break;
 		case FLOAT:
-			//FLD n; Donde n es el numero float en memoria
 			fprintf(arch, "FLD %s\n", tabla_simbolo[elemIzq].nombre);
 			break;
 		}
-		izqLevantado=1;
+		izqLevantado = 1;
 	}
 	if(elemDer < maximoTercetos){
 		switch(tabla_simbolo[elemDer].tipoToken){
 		case INT:
-			//FILD n; Donde n es el numero integer en memoria
 			fprintf(arch, "FILD %s\n", tabla_simbolo[elemDer].nombre);
 			break;
 		case FLOAT:
-			//FLD n; Donde n es el numero float en memoria
 			fprintf(arch, "FLD %s\n", tabla_simbolo[elemDer].nombre);
 			break;
 		}
-		izqLevantado=0;
+		izqLevantado = 0;
 	}
 	if(izqLevantado){
 		fprintf(arch, "FXCH\n");
@@ -446,29 +419,28 @@ void levantarEnPila(FILE* arch, const int ind){
 
 
 /** Levanta, da vuelta los elementos y compara */
-void comparacion(FILE* arch, int ind){
-	
+void comparacion(FILE* arch, int ind){	
     levantarEnPilaInvertida(arch, ind);
 	fprintf(arch, "FXCH\nFCOMP\nFSTSW AX\nSAHF\n");
-   // fprintf(arch, "\ntrue:\n");
-
 }
 
 void asignacion(FILE* arch, int ind){
-	int origen = lista_terceto[ind].op1;
+	int origen = lista_terceto[ind].op2;
 	int destino = lista_terceto[ind].op2;
 
-	//Ver tipo de dato
 	switch(tabla_simbolo[destino].tipoToken){
 	case INT:
-		//fprintf(arch, "FILD %s\n", tabla_simbolo[destino].nombre);
+        if(hayOperacionAnterior == 0)
+		    fprintf(arch, "FILD %s\n", tabla_simbolo[origen].nombre);
+
         fprintf(arch, "FISTP %s\n", tabla_simbolo[destino].nombre);
+        hayOperacionAnterior = 0;
 		break;
 	case FLOAT:
-		if(origen < maximoTercetos)
-			fprintf(arch, "FLD %s\n", tabla_simbolo[origen].nombre);
-
+        if(hayOperacionAnterior == 0)
+		    fprintf(arch, "FLD %s\n", tabla_simbolo[origen].nombre);
 		fprintf(arch, "FISTP %s", tabla_simbolo[destino].nombre);
+        hayOperacionAnterior = 0;
 		break;
 	case STRING:
 		fprintf(arch, "LEA EAX, %s\nMOV %s, EAX", tabla_simbolo[origen].nombre, tabla_simbolo[destino].nombre);
