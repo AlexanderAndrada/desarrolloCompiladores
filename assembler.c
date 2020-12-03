@@ -46,7 +46,7 @@ float numeroFloat;
         char tipo[20]={0};
         char valor[20]={0};
         char cadenaSeparada[20]={0};
-        int i;
+        int i,e;
         int borrar;
         int x,y,z,c;
         int indiceCopiar=0 ;
@@ -121,6 +121,8 @@ float numeroFloat;
                 strncpy(tabla_simbolo[contadorDeSimbolos].nombre, nombre, 19);
                 strncpy(tabla_simbolo[contadorDeSimbolos].tipo, tipo, 19);
                 strncpy(tabla_simbolo[contadorDeSimbolos].valor, valor, 19);
+
+
 
                 contadorDeSimbolos++;
                 indiceLineaSimbolo=0;
@@ -224,9 +226,9 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
       case DIVISION:
 		division(arch,i);
         break;
-
-      //case GET: read(arch,i);
-       // break;
+      case GET: 
+        read(arch,i);
+        break;
       case PUT:
 	  	write(arch, i);
         break;
@@ -278,8 +280,7 @@ void generarTabla(FILE *arch){
 			fprintf(arch, "dd %.2f\n", numeroFloat);
             break;
         case STRING:
-            //fprintf(arch, "db \"%s\", '$'\n", tabla_simbolo[i].valor);
-			fprintf(arch, "db \"%s\", '$'\n", "es igual");
+            fprintf(arch, "db 13,10,\"%s\",13,10, '$'\n", tabla_simbolo[i].valor);
             break;
         default:
 			printf("");
@@ -463,7 +464,7 @@ void write(FILE* arch, int terceto){
         fprintf(arch, "DisplayFloat %s,2\n", nombreSinEspacios);
 		break;
 	case STRING:
-		fprintf(arch, "MOV EBX, %s\ndisplayString [EBX]\n", tabla_simbolo[ind].nombre);
+		fprintf(arch, "displayString %s\n", tabla_simbolo[ind].nombre);
 		break;
 	}
 	fprintf(arch, "\n");
@@ -626,4 +627,21 @@ void levantarEnPilaInvertida(FILE* arch, const int ind){
                 break;
             }
         }
+    }
+
+    void read(FILE* arch, int terceto){
+	int ind = lista_terceto[terceto].op2;
+
+	switch(tabla_simbolo[ind].tipoToken){
+	case INT:
+		fprintf(arch, "getInteger %s\n", tabla_simbolo[ind].nombre);
+		break;
+	case FLOAT:
+		fprintf(arch, "getFloat %s\n", tabla_simbolo[ind].nombre);
+        fprintf(arch, "DisplayFloat %s,2\n", tabla_simbolo[ind].nombre);
+		break;
+	case STRING:
+		fprintf(arch, "getString %s\n", tabla_simbolo[ind].nombre);
+	}
+	fprintf(arch, "\n");
     }

@@ -153,7 +153,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 60 "analizadorSintactico.y"
+#line 61 "analizadorSintactico.y"
 
 	char var[20];
 	int valor;

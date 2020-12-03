@@ -49,7 +49,8 @@ int buscarFactor;
 int buscarTermino;
 int buscarExpresion;
 int buscarAsignacion;
-int buscarPut;
+int indicePut;
+int indiceGet;
 int tipoVariable;
 
 
@@ -409,14 +410,17 @@ factor:
 
 		lectura:
 		GET IDENTIFICADOR	{
-	//	crear_terceto(GET, NOOP, indiceIdentificador);
-
+			indiceGet = buscarPosicionTablaSimbolos($2);
+			validarExistenciaVariable(indiceGet,$2);	
+			crear_terceto(GET, NOOP, indiceGet);
 		}
 	;
 
 	escritura:
 		PUT IDENTIFICADOR {
-		crear_terceto(PUT, NOOP, indiceIdentificador);
+		indicePut = buscarPosicionTablaSimbolos($2);
+		validarExistenciaVariable(indicePut,$2);	
+		crear_terceto(PUT, NOOP, indicePut);
 		}
 	;	
 
