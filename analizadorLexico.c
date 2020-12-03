@@ -524,7 +524,9 @@ extern FILE *yyin;
     void f22(){
         if(contadorComillas==0)
             contadorComillas++;
-            else string[strlen(string)]=caracter;
+            else {
+                string[strlen(string)]=caracter;
+                }
     };
 
     //Guarda el comparador <
@@ -745,7 +747,7 @@ extern FILE *yyin;
 /*19*/   f42,f42,f43,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42, f0, f0,f41,f43, f0,f42,
 /*20*/   f42,f42,f43,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42, f0, f0,f41,f43, f0,f42,
 /*21*/   f21,f21,f21,f21,f21,f21,f21,f21,f21,f21,f21,f21,f21,f21,f41,f21,f21,f21,f21,f21,f21,f21, f0, f0,f43,f21, f0,f21,
-/*22*/   f22,f22,f22,f22,f22,f22,f22,f22,f22,f22,f22,f22,f22,f22,f22,f41,f22,f22,f22,f22,f22,f22, f0, f0,f43,f22, f0,f22,
+/*22*/   f22,f22,f22,f22,f22,f22,f22,f22,f22,f22,f22,f22,f22,f22,f22,f41,f22,f22,f22,f22,f22,f22, f0, f22,f43,f22, f0,f22,
 /*23*/   f42,f42,f43,f42,f42,f42,f42,f26,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42, f0, f0,f41,f43, f0,f42,
 /*24*/   f42,f42,f43,f42,f42,f42,f42,f27,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42, f0, f0,f41,f43, f0,f42,
 /*25*/   f42,f42,f43,f42,f42,f42,f42,f28,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42,f42, f0, f0,f41,f43, f0,f42,

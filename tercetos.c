@@ -272,69 +272,6 @@ int crear_terceto(int operador, int op1, int op2){
         return -1;
     }
 
-//Agregar una variable a la tabla de simbolos
-
-void agregarVariableATablaDeSimbolos(char* nombre, int token){
-
- //Se consulta si esta llena la tabla de simbolos
- if(cantidadDeSimbolos >= maxTabla - 1){
-	 printf("Sin espacio en tabla de simbolos.\n");
-	 system("Pause");
-	 exit(2);
- }
-
- // La funcion buscar devuelve -1 si no existe otro registor con
- // ese nombre
- if(buscarPosicionTablaSimbolos(nombre) == -1){
-	 //Agregar a tabla
-	 cantidadDeSimbolos++;
-		//printf("Cantidad de simbolos: %d", cantidadDeSimbolos);
-
-	 //se empieza a ingresar los datos en la tabla de simbolos
-	 switch (token)
-	 {
-	 case IDENTIFICADOR:
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-		  strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "IDENTIFICADOR");
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-		 break;
-
-	case INT:
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-		  strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "INT");
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-		 break;
-
-	case FLOAT:
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-		  strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "FLOAT");
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-		 break;
-
-	case STRING:
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-		  strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "STRING");
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-		 break;
-
-	case DOUBLE:
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-		  strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "DOUBLE");
-		  strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-		 break;
-
-	 default:
-	 	printf("Error en tipo de variable");
-		 break;
-	 }
-
- }
-}
 
 void verificarLargoString (char *token, char *token2){
     if(strlen(token)+strlen(token2)>20){
@@ -659,8 +596,7 @@ void guardarArchivoTercetos(){
 				}
 			}
 			indiceLimpioSimbolo=0;
-			//fprintf(arch, "%s", &(tablaSimbolos[op].nombre) );
-			//fprintf(arch, "%s", nombreCopiar );			int i = 247593;
+	
 			char str[3];
 
      		sprintf(str, "%d", op);
@@ -734,75 +670,6 @@ void guardarArchivoTercetos(){
 	fclose(arch);
 }
 
-void agregarConstanteTablaDeSimbolos(char* const nombre, int token){
-
-	int posicion;
-	//Se consulta si esta llena la tabla de simbolos
-	if(cantidadDeSimbolos >= maxTabla - 1){
-		printf("Sin espacio en tabla de simbolos.\n");
-		system("Pause");
-		exit(2);
-	}
-
-	posicion = buscarPosicionTablaSimbolos(nombre);
-
-	if(posicion == -1){
-
-		cantidadDeSimbolos++;
-
-		strcpy(tablaSimbolos[cantidadDeSimbolos-1].nombre, "_");
-		strcat(tablaSimbolos[cantidadDeSimbolos-1].nombre, nombre);
-
-	switch (token)
-	{
-		case INT:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "INT");
-			tablaSimbolos[cantidadDeSimbolos - 1].tipoToken = token;
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			break;
-
-		case CONSTANTE:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "CONSTANTE");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			tablaSimbolos[cantidadDeSimbolos - 1].tipoToken = token;
-			break;
-
-		case REAL:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "REAL");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			tablaSimbolos[cantidadDeSimbolos - 1].tipoToken = token;
-			break;
-
-		case DOUBLE:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "DOUBLE");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			tablaSimbolos[cantidadDeSimbolos - 1].tipoToken = token;
-			break;
-
-		case FLOAT:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "FLOAT");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			tablaSimbolos[cantidadDeSimbolos - 1].tipoToken = token;
-			break;
-
-		case STRING:
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].tipo, "STRING");
-			strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
-			tablaSimbolos[cantidadDeSimbolos - 1].tipoToken = token;
-			break;
-
-		default:
-			printf("Error en tipo de variable");
-			break;
-	}
-
-	}
-	else{
-		printf("La variable ya existe");
-		exit(1);
-	}
-}
-
 /*
 Descripcion:
 			Funcion para agregar el nombre a una variable, previamente
@@ -823,13 +690,9 @@ int agregarNombreTablaDeSimbolos(int posicionEscritura, char* nombre){
 		exit(2);
 	}
 
-
-
 	posicion = buscarPosicionTablaSimbolos(nombre);
 
 	if(posicion == -1){
-
-		//cantidadDeSimbolos++;
 
 		strcpy(tablaSimbolos[posicionEscritura].nombre, "_");
 		strcat(tablaSimbolos[posicionEscritura].nombre, nombre);
@@ -929,6 +792,23 @@ void validarExistenciaVariable(int status, char const *variable){
 		exit(1);
 	}
 	return status;
+}
+
+/*
+Descripcion:
+			Funcion para agregar el valor a una variable.
+
+Parametros:
+			* PosicionEscritura: contiene la posicion de la variable en
+			  la tabla de simbolos.
+			* Nombre: contiene la variable o constante a introducir a la
+			  tabla de simbolos.
+*/
+
+void agregarValorTablaDeSimbolos(int posicionEscritura, char* nombre){
+
+	strcpy(tablaSimbolos[posicionEscritura].valor, nombre);
+
 }
 
 int devolverCantidadTercetos(){

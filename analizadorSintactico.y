@@ -11,6 +11,7 @@ int yystopparser=0;
 FILE  *yyin;
 char *yyltext;
 char *yytext;
+char *stringConstante;
 int indiceString;
 int indiceStringAux;
 int indiceIdentificador;
@@ -285,15 +286,16 @@ asignacion:
 		compararTipoVariable($1,buscarExpresion);
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
 		crear_terceto(ASIG, indiceExpresion, indiceAsignacion);
-		printf("Var: %s Asignacion ok\n",$1);
+		printf("Asignacion ok\n",$1);
 		}
 	|IDENTIFICADOR ASIG expresionstrings {
-		compararTipoVariable($1,buscarString);
-		agregarVariableATablaDeSimbolos($1, IDENTIFICADOR);
+		//compararTipoVariable($1,buscarString); //alex
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
+		agregarValorTablaDeSimbolos(indiceIdentificador, stringConstante);
+
 		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
 		crear_terceto(ASIG, indiceString, indiceAsignacion);
-		printf("Var: %s Asignacion ok\n",$1);
+		printf("Asignacion string ok\n",$1);
 		}
 	;
 
@@ -317,11 +319,11 @@ asignadorespecial:
 expresionstrings:
 	expresionconcat
 	|STRING {
-		indiceString = agregarTipoTablaDeSimbolos(STRING);
-		indiceString = agregarNombreTablaDeSimbolos(indiceString,$1);
-		indiceString = crear_terceto(NOOP, NOOP, indiceString);
-		buscarString = $1;
-		printf("El string es: %s ",$1);
+		stringConstante = $1;
+		//indiceString = agregarTipoTablaDeSimbolos(STRING);
+		//indiceString = agregarNombreTablaDeSimbolos(indiceString,$1);
+		//indiceString = crear_terceto(NOOP, NOOP, indiceString);
+		//buscarString = $1;
 		}
 	;
 	
