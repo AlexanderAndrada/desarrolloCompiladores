@@ -51,15 +51,7 @@ int buscar_terceto(int var, int tope){
     }
 }
 
-/** Agrega un terceto a la lista de tercetos. Si se quiere guardar solo una constante o variable, mandar NOOP en
-el campo de operador y op2. Para los operadores pasar el token literal, para los operandos pasar la posicion en
-tablaSimbolos de simbolos o el indice de otro terceto. */
 int crear_terceto(int operador, int op1, int op2){
-
-	//printf("\nEl operador es: %d\n", operador);
-	//printf("\nEl op1 es: %d\n", op1);
-	//printf("\nEl op2 es: %d\n", op2);
-
 
 	ultimoTerceto++;
 	if(ultimoTerceto >= maxTercetos){
@@ -700,8 +692,7 @@ Parametros:
 void agregarValorTablaDeSimbolos(int posicionEscritura, char* nombre){
 
 	if(tablaSimbolos[posicionEscritura].tipoToken == STRING){
-	   printf("llegan los strings: %s\n", nombre);
-	   printf("Su tamanio es: %d\n", strlen(nombre));
+
        strcpy(tablaSimbolos[posicionEscritura].valor, nombre); 
     }else{
 		printf("--------------------------------------------------------------------");

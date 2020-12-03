@@ -395,7 +395,7 @@ factor:
 		validarExistenciaVariable(indiceIdentificador,$1);
 		indiceFactor = buscar_terceto(indiceIdentificador,contadorVariables);
 		buscarFactor=$1;		
-		printf("\nLa variable es: %d\n", indiceFactor);		
+		//printf("\nLa variable es: %d\n", indiceFactor);		
 		}
 	|INT {
 		indiceConstante = agregarTipoTablaDeSimbolos(INT);

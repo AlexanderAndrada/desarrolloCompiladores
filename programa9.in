@@ -1,7 +1,0 @@
-MAIN{
-	DECLARE FLOAT numero resultado STRING mensaje;
-	numero = 5.0;
-	mensaje = "El numero asignado es: ";
-	PUT mensaje;
-	PUT numero;
-}

@@ -183,6 +183,9 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
 	  case IGUAL:
 	  	comparacion(arch, i);
 		break;
+      case DISTINTO:
+	  	comparacion(arch, i);
+		break;
       case JNA:
         escribirSalto(arch, "JNA", lista_terceto[i].op2);
         break;

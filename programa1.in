@@ -1,0 +1,11 @@
+MAIN{
+DECLARE INT numero INT num INT resultado STRING titulo respuesta palabra pedido;
+    titulo = "Test 1 - Input Output";
+    pedido = "Ingrese una palabra";
+    respuesta = "Ingresaste lo siguiente";
+    PUT titulo;
+    PUT pedido;
+    GET palabra;
+    PUT respuesta;
+    PUT palabra;
+}

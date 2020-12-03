@@ -1,3 +1,23 @@
-MAIN{DECLARE CHAR l mn INT f j ls ;
-IF(1<j||f<j){IF(mn>2&&l==mn){f=0;}
-ELSE{l=3;};};}
+MAIN{
+	DECLARE INT mayor menor otroMenor otroMayor resultado STRING mensaje tituloTest tresultado otroResultado;
+	mensaje = "Ingrese un numero";
+	tituloTest = "Test 2 - PUT GET IF";
+	tresultado = "Entra al else y el resultado es:";
+	otroResultado = "Entra al y el resultado es:";
+	PUT tituloTest;
+	IF(otroMenor == otroMayor)
+	{
+		IF(menor != mayor)
+		{
+			resultado = 1000;
+			PUT otroResultado;
+			PUT resultado;
+		}
+		ELSE{
+			PUT mensaje;
+			GET resultado;
+			PUT tresultado;
+			PUT resultado;
+		};
+	};
+}

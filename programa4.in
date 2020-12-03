@@ -1,8 +1,16 @@
 MAIN{
-	DECLARE INT loro sonic num numero resultado STRING mensaje FLOAT michi;
-	IF(sonic < loro)
+	DECLARE INT loro sonic num numero STRING mensaje FLOAT tituloTest mensaje resultado;
+	
+	tituloTest = "Test 4 - Asignacion especial POR";
+	mensaje = "Entra al if y la multiplicacion es:";
+	resultado = "Entra al else, no pusimos nada :(";
+
+	IF(sonic == loro)
 	{
-		numero = 5;;
+		numero *= loro;
 		PUT numero;
 	};
+	ELSE{
+		PUT resultado;
+	}
 }

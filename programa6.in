@@ -1,0 +1,28 @@
+MAIN{
+	DECLARE INT loro sonic num numero resultado STRING mensaje tituloTest msjresultado error peticion;
+
+	tituloTest = "Test 6 - If Else Get Put";
+	mensaje = "Entra al elseAdentro del while, ingresa un numero:";
+	msjresultado = "Entra a if y el resultado es:";
+	error = "Entra else if y el mensaje es:";
+	peticion = "Si sonic es 1, entonces Loro...";
+
+	sonic = 1;
+
+	PUT peticion;
+	GET loro;
+	
+	IF(sonic == loro)
+	{
+		num = 2;
+		numero = 3;
+		resultado = num*numero;
+		PUT msjresultado;
+		PUT resultado;
+	}ELSE{
+		IF( numero == num){
+		mensaje="Fuimos al else if :(";
+		PUT error;
+		PUT mensaje;};
+	};
+}

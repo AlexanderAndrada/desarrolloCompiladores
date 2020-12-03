@@ -1,9 +1,20 @@
 MAIN{
-	DECLARE INT gato perro seis tres STRING mensaje;
-	IF(perro > gato)
+	DECLARE INT menor mayor num numero STRING mensaje tituloTest resultado;
+	tituloTest = "Test 3 - Asignacion especial MAS";
+	mensaje = "Entra al if y la suma es:";
+	resultado = "Entra al else y la asignacion especial:";
+
+	num = 5;
+	numero = 7;
+
+	IF(mayor > menor)
 	{
-		seis+tres;
+		numero = mayor + menor;
+		PUT mensaje;
+		PUT numero;
 	}ELSE{
-		seis-tres;
+		num += numero;
+		PUT resultado;
+		PUT num;
 	};
 }

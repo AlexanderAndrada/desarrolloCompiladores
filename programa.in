@@ -1,4 +1,0 @@
-MAIN{
-DECLARE INT numero INT num INT resultado;
-numero+num;
-}

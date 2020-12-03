@@ -1,8 +1,17 @@
 MAIN{
-	DECLARE INT menor mayor num numero resultado STRING mensaje;
-	WHILE(mayor > menor)
+	DECLARE FLOAT menor mayor numero STRING mensaje tituloTest resultado;
+
+	tituloTest = "Test 5 - While Put Get";
+	mensaje = "Adentro del while, ingresa un numero:";
+	resultado = "While terminado, el valor de mayor es:";
+
+	WHILE(mayor < 6.00)
 	{
-		numero = mayor + menor;
-		PUT numero;
+		PUT mensaje;
+		GET menor;
+		mayor += menor;
+		PUT mayor;
 	};
+		PUT resultado;
+		PUT mayor;
 }
