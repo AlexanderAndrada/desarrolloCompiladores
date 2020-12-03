@@ -444,7 +444,8 @@ void asignacion(FILE* arch, int ind){
         hayOperacionAnterior = 0;
 		break;
 	case STRING:
-		fprintf(arch, "LEA EAX, %s\nMOV %s, EAX", tabla_simbolo[origen].nombre, tabla_simbolo[destino].nombre);
+		//fprintf(arch, "LEA EAX, %s\nMOV %s, EAX", tabla_simbolo[origen].nombre, tabla_simbolo[destino].nombre);
+        printf("");
 	}
 
 	fprintf(arch, "\n");

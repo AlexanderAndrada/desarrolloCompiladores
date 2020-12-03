@@ -807,7 +807,15 @@ Parametros:
 
 void agregarValorTablaDeSimbolos(int posicionEscritura, char* nombre){
 
-	strcpy(tablaSimbolos[posicionEscritura].valor, nombre);
+	if(tablaSimbolos[posicionEscritura].tipoToken == STRING){
+       strcpy(tablaSimbolos[posicionEscritura].valor, nombre); 
+    }else{
+		printf("--------------------------------------------------------------------");
+		printf("\n- Error, tipo de dato incorrecto en la variable %s\n", tablaSimbolos[posicionEscritura].nombre);
+		printf("--------------------------------------------------------------------\n");
+		exit(3);
+	}
+
 
 }
 
