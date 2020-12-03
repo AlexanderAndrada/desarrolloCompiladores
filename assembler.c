@@ -90,15 +90,6 @@ float numeroFloat;
 				}
                 indiceCopiar=0;
 
-                 for(z=40; z < 80; z++){
-                     if(strlen(valor)<39){
-                         valor[indiceCopiar]=lineaSimbolo[z];
-                         indiceCopiar++;
-                     }
-                }
-
-                indiceCopiar=0;
-
                  for(c=80; c < 100; c++){
                     cadenaSeparada[indiceCopiar] = lineaSimbolo[c];
                     indiceCopiar++;
@@ -115,12 +106,21 @@ float numeroFloat;
                     indiceCopiar = 0;
                 }
 
+                for(z=40; z < 80; z++){
+                    if(strlen(valor)<tabla_simbolo[contadorDeSimbolos].longitud){
+                        valor[indiceCopiar]=lineaSimbolo[z];
+                        indiceCopiar++;
+                    }
+                }
+
+                indiceCopiar=0;
+
 
 				char nombreCopiar[20]={0};
-
+                
                 strncpy(tabla_simbolo[contadorDeSimbolos].nombre, nombre, 19);
                 strncpy(tabla_simbolo[contadorDeSimbolos].tipo, tipo, 19);
-                strncpy(tabla_simbolo[contadorDeSimbolos].valor, valor, 39);
+                strncpy(tabla_simbolo[contadorDeSimbolos].valor, valor, tabla_simbolo[contadorDeSimbolos].longitud);
 
 
 

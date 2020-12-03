@@ -60,7 +60,7 @@ int ultimoTerceto;
 %}
 
 %union{
-	char var[20];
+	char var[40];
 	int valor;
 }
 

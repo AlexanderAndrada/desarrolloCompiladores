@@ -33,113 +33,6 @@ struct terceto{
   } tablaSimbolos[100]={0};
 
 
-    void lecturaArchivo(){
-        char lineaSimbolo[100]={0};
-        char indiceLineaSimbolo=0;
-        char caracter;
-        int contadorNombre=0;
-        char nombre[20]={0};
-        char tipo[20]={0};
-        char valor[40]={0};
-        char cadenaSeparada[20]={0};
-        int i;
-        int borrar;
-        int x,y,z,c;
-        int indiceCopiar=0 ;
-		int contadorDeSimbolos=0;
-
-
-		archivoSimbolos = fopen("tablaSimboloss.txt","r");
-
-		if (archivoSimbolos == NULL)
-        {
-            printf("\nError de apertura del archivo. \n\n");
-        }else{
-		//	printf("Es distinto de null");
-		}
-
-
-
-        while((caracter = fgetc(archivoSimbolos)) != EOF){
-
-            if(caracter!='\n'){
-                lineaSimbolo[indiceLineaSimbolo]=caracter;
-                indiceLineaSimbolo++;
-            }
-            else{
-               // contadorDeSimbolos++;
-
-                for(x=0; x < 20; x++){
-                    if(strlen(nombre)<19){
-                        nombre[x]=lineaSimbolo[x];
-                    }
-                }
-
-                indiceCopiar=0;
-
-
-                 for(y=20; y < 40; y++){
-                        if(strlen(tipo)<19){
-                            tipo[indiceCopiar]=lineaSimbolo[y];
-                            indiceCopiar++;
-                        }
-                }
-
-
-                indiceCopiar=0;
-
-                 for(z=40; z < 80; z++){
-                     if(strlen(valor)<39){
-                         valor[indiceCopiar]=lineaSimbolo[z];
-                         indiceCopiar++;
-                     }
-                }
-
-                indiceCopiar=0;
-
-                 for(c=80; c < 100; c++){
-                    cadenaSeparada[indiceCopiar] = lineaSimbolo[c];
-                    indiceCopiar++;
-                }
-
-                if(c == 100){
-
-                    if(strcmp(cadenaSeparada,"                   ")==0){
-
-						tablaSimbolos[contadorDeSimbolos].longitud = 0;
-                    }else{
-                        tablaSimbolos[contadorDeSimbolos].longitud = atoi(cadenaSeparada);
-                    }
-                    indiceCopiar = 0;
-                }
-
-
-				char nombreCopiar[20]={0};
-
-                strncpy(tablaSimbolos[contadorDeSimbolos].nombre, nombre, 19);
-                strncpy(tablaSimbolos[contadorDeSimbolos].tipo, tipo, 19);
-                strncpy(tablaSimbolos[contadorDeSimbolos].valor, valor, 39);
-
-                contadorDeSimbolos++;
-                indiceLineaSimbolo=0;
-
-				for(borrar=0; borrar < 80; borrar++){
-					lineaSimbolo[borrar]='\0';
-				}
-				for(borrar=0; borrar < 20; borrar++){
-					nombre[borrar]='\0';
-					tipo[borrar]='\0';
-					cadenaSeparada[borrar]='\0';
-				}
-				for(borrar=0; borrar < 40; borrar++){
-					valor[borrar]='\0';
-				}
-            }
-
-        }
-	close(archivoSimbolos);
-    }
-
 
 int buscar_terceto(int var, int tope){
     int i=0;
@@ -183,7 +76,7 @@ int crear_terceto(int operador, int op1, int op2){
 
 
 	void escribirTablaSimbolos(){
-	    int i,x, indiceRegistro,posCero=0, posVeinte=20, posCuarentena=60, posSesenta=80;
+	    int i,x, indiceRegistro,posCero=0, posVeinte=20, posCuarentena=40, posSesenta=80;
 	    char registroTabla[100]={0};
 	    char longitudChar[20]={0};
 
@@ -212,12 +105,11 @@ int crear_terceto(int operador, int op1, int op2){
            }
 
            for(indiceRegistro=0; indiceRegistro<strlen(tablaSimbolos[i].valor); indiceRegistro++){
-
                 registroTabla[posCuarentena]= tablaSimbolos[i].valor[indiceRegistro];
                 posCuarentena++;
            }
 
-           sprintf(longitudChar, "%d", tablaSimbolos[i].longitud);
+           sprintf(longitudChar, "%d", strlen(tablaSimbolos[i].valor));
 
            if(strcmp(longitudChar, "0")==0){
                 registroTabla[posSesenta]= ' ';
@@ -233,11 +125,16 @@ int crear_terceto(int operador, int op1, int op2){
            fprintf(archivoTablaSimbolos, registroTabla);
            fprintf(archivoTablaSimbolos, "\n");
 
-
            posCero=0;
            posVeinte=20;
            posCuarentena=40;
-           posSesenta=60;
+           posSesenta=80;
+
+		   for(x=0; x<100;x++){
+            registroTabla[x]=' ';
+	    }
+	    registroTabla[99] = '\0';
+		
 	    }
         close(archivoTablaSimbolos);
 	}
@@ -275,7 +172,7 @@ int crear_terceto(int operador, int op1, int op2){
 
 
 void verificarLargoString (char *token, char *token2){
-    if(strlen(token)+strlen(token2)>20){
+    if(strlen(token)+strlen(token2)>40){
         printf("\nError: Concatenacion de cadenas muy extensas\n");
         system("Pause");
         exit(2);
@@ -803,6 +700,8 @@ Parametros:
 void agregarValorTablaDeSimbolos(int posicionEscritura, char* nombre){
 
 	if(tablaSimbolos[posicionEscritura].tipoToken == STRING){
+	   printf("llegan los strings: %s\n", nombre);
+	   printf("Su tamanio es: %d\n", strlen(nombre));
        strcpy(tablaSimbolos[posicionEscritura].valor, nombre); 
     }else{
 		printf("--------------------------------------------------------------------");
