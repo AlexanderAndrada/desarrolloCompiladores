@@ -2,5 +2,6 @@ MAIN{
 	DECLARE FLOAT menor mayor num numero resultado STRING mensaje otroMensaje nuevo;
 	mensaje = "Buen ";
 	otroMensaje = "dia";
+	nuevo = mensaje ? otroMensaje;
 	PUT mensaje;
 }

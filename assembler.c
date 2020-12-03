@@ -342,7 +342,7 @@ void resta(FILE* arch, int ind){
 
 	fprintf(arch,"mov ah, 9\n");
 	fprintf(arch, "mov dl,");
-	//fprintf(arch, listaTercetosResultado[indiceOp1].op2);
+	
     fprintf(arch, "al");
 	fprintf(arch, "\n");
 
@@ -388,7 +388,7 @@ int armarFinSeccion(FILE* arch, int ind){
 
 }
 
-/** Asegura que el elemento de la izquierda esté en st1, y el de la derecha en st0 */
+
 void levantarEnPila(FILE* arch, const int ind){
 	int elemIzq = lista_terceto[ind].op1;
 	int elemDer = lista_terceto[ind].op2;
@@ -429,20 +429,21 @@ void comparacion(FILE* arch, int ind){
 }
 
 void asignacion(FILE* arch, int ind){
-	int origen = lista_terceto[ind].op2;
+	int origen = lista_terceto[ind].op1;
 	int destino = lista_terceto[ind].op2;
 
 	switch(tabla_simbolo[destino].tipoToken){
 	case INT:
         if(hayOperacionAnterior == 0)
-		    fprintf(arch, "FILD %s\n", tabla_simbolo[origen].nombre);
-
+		    fprintf(arch, "FILD %s\n", tabla_simbolo[posicionTablaSimbolosAssembler(listaTercetosResultado[lista_terceto[ind].op1].op2)].nombre);
+       
         fprintf(arch, "FISTP %s\n", tabla_simbolo[destino].nombre);
         hayOperacionAnterior = 0;
 		break;
 	case FLOAT:
         if(hayOperacionAnterior == 0)
-		    fprintf(arch, "FLD %s\n", tabla_simbolo[origen].nombre);
+		    fprintf(arch, "FLD %s\n", tabla_simbolo[posicionTablaSimbolosAssembler(listaTercetosResultado[lista_terceto[ind].op1].op2)].nombre);
+
 		fprintf(arch, "FSTP %s", tabla_simbolo[destino].nombre);
         hayOperacionAnterior = 0;
 		break;
@@ -470,6 +471,7 @@ void write(FILE* arch, int terceto){
         fprintf(arch, "DisplayFloat %s,2\n", nombreSinEspacios);
 		break;
 	case STRING:
+        fprintf(arch, "newLine\n");
 		fprintf(arch, "displayString %s\n", tabla_simbolo[ind].nombre);
 		break;
 	}
@@ -544,8 +546,6 @@ void levantarEnPilaInvertida(FILE* arch, const int ind){
         int i,x,e;
         char auxiliar[80]={0};
         int contadorNombreAuxiliar=0;
-
-      //  strcat(auxiliar, cadena);
         
         for(e=0;e<20;e++){
             if(cadena[e] != ' '){

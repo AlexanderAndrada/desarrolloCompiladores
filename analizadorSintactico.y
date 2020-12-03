@@ -293,8 +293,8 @@ asignacion:
 		indiceIdentificador = buscarPosicionTablaSimbolos($1);
 		agregarValorTablaDeSimbolos(indiceIdentificador, stringConstante);
 
-		indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
-		crear_terceto(ASIG, indiceString, indiceAsignacion);
+		//indiceAsignacion = buscar_terceto(indiceIdentificador,contadorVariables);
+		//crear_terceto(ASIG, indiceString, indiceAsignacion);
 		printf("Asignacion string ok\n",$1);
 		}
 	;

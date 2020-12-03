@@ -1,0 +1,18 @@
+MAIN{
+	DECLARE FLOAT loro sonic num numero resultado STRING mensaje otroMensaje;
+	mensaje = "Ingrese el valor de loro";
+	sonic = 6.0;
+	PUT mensaje;
+	GET loro;
+	IF(sonic == loro)
+	{
+		num = 2.5;
+		numero = 3.1;
+		resultado = num*numero;
+		PUT resultado;
+	}ELSE{
+		IF( numero<num){
+		otroMensaje="Numero es menor";
+		PUT otroMensaje;};
+	};
+}
