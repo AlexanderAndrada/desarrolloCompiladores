@@ -27,20 +27,20 @@ struct terceto{
   {
       char nombre[20];
       char tipo[20];
-      char valor[20];
+      char valor[40];
       int longitud;
 	  int tipoToken;
   } tablaSimbolos[100]={0};
 
 
     void lecturaArchivo(){
-        char lineaSimbolo[80]={0};
+        char lineaSimbolo[100]={0};
         char indiceLineaSimbolo=0;
         char caracter;
         int contadorNombre=0;
         char nombre[20]={0};
         char tipo[20]={0};
-        char valor[20]={0};
+        char valor[40]={0};
         char cadenaSeparada[20]={0};
         int i;
         int borrar;
@@ -88,8 +88,8 @@ struct terceto{
 
                 indiceCopiar=0;
 
-                 for(z=40; z < 60; z++){
-                     if(strlen(valor)<19){
+                 for(z=40; z < 80; z++){
+                     if(strlen(valor)<39){
                          valor[indiceCopiar]=lineaSimbolo[z];
                          indiceCopiar++;
                      }
@@ -97,12 +97,12 @@ struct terceto{
 
                 indiceCopiar=0;
 
-                 for(c=60; c < 80; c++){
+                 for(c=80; c < 100; c++){
                     cadenaSeparada[indiceCopiar] = lineaSimbolo[c];
                     indiceCopiar++;
                 }
 
-                if(c == 80){
+                if(c == 100){
 
                     if(strcmp(cadenaSeparada,"                   ")==0){
 
@@ -118,21 +118,22 @@ struct terceto{
 
                 strncpy(tablaSimbolos[contadorDeSimbolos].nombre, nombre, 19);
                 strncpy(tablaSimbolos[contadorDeSimbolos].tipo, tipo, 19);
-                strncpy(tablaSimbolos[contadorDeSimbolos].valor, valor, 19);
+                strncpy(tablaSimbolos[contadorDeSimbolos].valor, valor, 39);
 
                 contadorDeSimbolos++;
                 indiceLineaSimbolo=0;
 
-            for(borrar=0; borrar < 80; borrar++){
-                lineaSimbolo[borrar]='\0';
-            }
-            for(borrar=0; borrar < 20; borrar++){
-                nombre[borrar]='\0';
-                tipo[borrar]='\0';
-                valor[borrar]='\0';
-                cadenaSeparada[borrar]='\0';
-
-            }
+				for(borrar=0; borrar < 80; borrar++){
+					lineaSimbolo[borrar]='\0';
+				}
+				for(borrar=0; borrar < 20; borrar++){
+					nombre[borrar]='\0';
+					tipo[borrar]='\0';
+					cadenaSeparada[borrar]='\0';
+				}
+				for(borrar=0; borrar < 40; borrar++){
+					valor[borrar]='\0';
+				}
             }
 
         }
@@ -182,18 +183,18 @@ int crear_terceto(int operador, int op1, int op2){
 
 
 	void escribirTablaSimbolos(){
-	    int i,x, indiceRegistro,posCero=0, posVeinte=20, posCuarentena=40, posSesenta=60;
-	    char registroTabla[80]={0};
+	    int i,x, indiceRegistro,posCero=0, posVeinte=20, posCuarentena=60, posSesenta=80;
+	    char registroTabla[100]={0};
 	    char longitudChar[20]={0};
 
         FILE* archivoTablaSimbolos = fopen("tablaSimbolos.txt", "w+");
 
 	    for(i=0; i<cantidadDeSimbolos; i++){
 
-	    for(x=0; x<80;x++){
+	    for(x=0; x<100;x++){
             registroTabla[x]=' ';
 	    }
-	    registroTabla[79] = '\0';
+	    registroTabla[99] = '\0';
 
            for(indiceRegistro=0; indiceRegistro<strlen(tablaSimbolos[i].nombre); indiceRegistro++){
 				if(tablaSimbolos[i].nombre[indiceRegistro] == '.'){
@@ -730,42 +731,36 @@ int agregarTipoTablaDeSimbolos(int token){
 			strcpy(tablaSimbolos[cantidadDeSimbolos].tipo, "INT");
 			tablaSimbolos[cantidadDeSimbolos].tipoToken = token;
 			cantidadDeSimbolos++;
-			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case CONSTANTE:
 			strcpy(tablaSimbolos[cantidadDeSimbolos].tipo, "CONSTANTE");
 			tablaSimbolos[cantidadDeSimbolos].tipoToken = token;
 			cantidadDeSimbolos++;
-			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case REAL:
 			strcpy(tablaSimbolos[cantidadDeSimbolos].tipo, "REAL");
 			tablaSimbolos[cantidadDeSimbolos].tipoToken = token;
 			cantidadDeSimbolos++;
-			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case DOUBLE:
 			strcpy(tablaSimbolos[cantidadDeSimbolos].tipo, "DOUBLE");
 			tablaSimbolos[cantidadDeSimbolos].tipoToken = token;
 			cantidadDeSimbolos++;
-			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case FLOAT:
 			strcpy(tablaSimbolos[cantidadDeSimbolos].tipo, "FLOAT");
 			tablaSimbolos[cantidadDeSimbolos].tipoToken = token;
 			cantidadDeSimbolos++;
-			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		case STRING:
 			strcpy(tablaSimbolos[cantidadDeSimbolos].tipo, "STRING");
 			tablaSimbolos[cantidadDeSimbolos].tipoToken = token;
 			cantidadDeSimbolos++;
-			//strcpy(tablaSimbolos[cantidadDeSimbolos-1].valor, nombre);
 			break;
 
 		default:

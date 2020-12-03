@@ -27,7 +27,7 @@ struct terceto{
       char nombre[20];
       char tipo[20];
 	  int tipoToken;
-      char valor[20];
+      char valor[40];
       int longitud;
   } tabla_simbolo[100]={0};
 
@@ -38,13 +38,13 @@ int contadorDeSimbolos=0;
 float numeroFloat;
 
     void lecturaArchivoDeSimbolos(){
-        char lineaSimbolo[80]={0};
+        char lineaSimbolo[100]={0};
         char indiceLineaSimbolo=0;
         char caracter;
         int contadorNombre=0;
         char nombre[20]={0};
         char tipo[20]={0};
-        char valor[20]={0};
+        char valor[40]={0};
         char cadenaSeparada[20]={0};
         int i,e;
         int borrar;
@@ -90,8 +90,8 @@ float numeroFloat;
 				}
                 indiceCopiar=0;
 
-                 for(z=40; z < 60; z++){
-                     if(strlen(valor)<19){
+                 for(z=40; z < 80; z++){
+                     if(strlen(valor)<39){
                          valor[indiceCopiar]=lineaSimbolo[z];
                          indiceCopiar++;
                      }
@@ -99,12 +99,12 @@ float numeroFloat;
 
                 indiceCopiar=0;
 
-                 for(c=60; c < 80; c++){
+                 for(c=80; c < 100; c++){
                     cadenaSeparada[indiceCopiar] = lineaSimbolo[c];
                     indiceCopiar++;
                 }
 
-                if(c == 80){
+                if(c == 100){
 
                     if(strcmp(cadenaSeparada,"                   ")==0){
 
@@ -120,22 +120,25 @@ float numeroFloat;
 
                 strncpy(tabla_simbolo[contadorDeSimbolos].nombre, nombre, 19);
                 strncpy(tabla_simbolo[contadorDeSimbolos].tipo, tipo, 19);
-                strncpy(tabla_simbolo[contadorDeSimbolos].valor, valor, 19);
+                strncpy(tabla_simbolo[contadorDeSimbolos].valor, valor, 39);
 
 
 
                 contadorDeSimbolos++;
                 indiceLineaSimbolo=0;
 
-                for(borrar=0; borrar < 80; borrar++){
+                for(borrar=0; borrar < 100; borrar++){
                     lineaSimbolo[borrar]='\0';
                 }
                 for(borrar=0; borrar < 20; borrar++){
                     nombre[borrar]='\0';
                     tipo[borrar]='\0';
-                    valor[borrar]='\0';
                     cadenaSeparada[borrar]='\0';
 
+                }
+
+                for(borrar=0; borrar < 40; borrar++){
+                    valor[borrar]='\0';
                 }
             }
         }
