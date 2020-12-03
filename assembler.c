@@ -571,8 +571,7 @@ void levantarEnPilaInvertida(FILE* arch, const int ind){
                 }
              }
              contadorNombreAuxiliar=0;
-                printf("El auxiliar tiene: %s\n",auxiliar);
-                printf("El nombre auxiliar tiene: %s\n",nombreAuxiliar);
+
              if(strcmp(auxiliar, nombreAuxiliar)==0){
                  return i;
              }
@@ -639,7 +638,6 @@ void levantarEnPilaInvertida(FILE* arch, const int ind){
 		break;
 	case FLOAT:
 		fprintf(arch, "getFloat %s\n", tabla_simbolo[ind].nombre);
-        fprintf(arch, "DisplayFloat %s,2\n", tabla_simbolo[ind].nombre);
 		break;
 	case STRING:
 		fprintf(arch, "getString %s\n", tabla_simbolo[ind].nombre);
