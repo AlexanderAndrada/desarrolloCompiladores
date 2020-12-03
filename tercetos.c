@@ -66,7 +66,6 @@ int crear_terceto(int operador, int op1, int op2){
 	return ultimoTerceto -1;
 }
 
-
 	void escribirTablaSimbolos(){
 	    int i,x, indiceRegistro,posCero=0, posVeinte=20, posCuarentena=40, posSesenta=80;
 	    char registroTabla[100]={0};
@@ -386,9 +385,6 @@ void guardarArchivoTercetos(){
 		case OR:
 			fprintf(arch, "o");
 			break;
-//		case NOT:
-//			fprintf(arch, "no");
-//			break;
 		case MENOR:
 			fprintf(arch, "<");
 			break;
@@ -451,15 +447,6 @@ void guardarArchivoTercetos(){
 			break;
 		case JNB: //jump not below
 			fprintf(arch, "JNB");
-			break;
-		case INL:
-			fprintf(arch, "INL");
-			break;
-		case INOK:
-			fprintf(arch, "INOK");
-			break;
-		case IOK:
-			fprintf(arch, "IOK");
 			break;
 		default:
 			fprintf(arch, "algo esta mal");
