@@ -244,7 +244,7 @@ void generarAssembler(struct terceto *listaTerceto,int ultimoTerceto, struct ter
 }
 
 void escribirInicio(FILE *arch){
-  fprintf(arch, "include macros2.asm\ninclude number.asm\n\n.MODEL SMALL\n.386\n.STACK 200h\n\n");
+  fprintf(arch, "include macros2.asm\ninclude copiado.asm\ninclude number.asm\n\n.MODEL SMALL\n.386\n.STACK 200h\n\n");
 }
 
 void escribirInicioCodigo(FILE* arch){
@@ -443,7 +443,7 @@ void asignacion(FILE* arch, int ind){
 	case FLOAT:
         if(hayOperacionAnterior == 0)
 		    fprintf(arch, "FLD %s\n", tabla_simbolo[origen].nombre);
-		fprintf(arch, "FISTP %s", tabla_simbolo[destino].nombre);
+		fprintf(arch, "FSTP %s", tabla_simbolo[destino].nombre);
         hayOperacionAnterior = 0;
 		break;
 	case STRING:
@@ -461,9 +461,11 @@ void write(FILE* arch, int terceto){
 
 	switch(tabla_simbolo[ind].tipoToken){
 	case INT:
+        fprintf(arch, "newLine\n");
 		fprintf(arch, "DisplayInteger %s\n", tabla_simbolo[ind].nombre);
 		break;
 	case FLOAT:
+        fprintf(arch, "newLine\n");
         eliminarEspaciosEnBlanco(ind, nombreSinEspacios);
         fprintf(arch, "DisplayFloat %s,2\n", nombreSinEspacios);
 		break;

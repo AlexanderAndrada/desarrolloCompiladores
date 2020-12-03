@@ -329,6 +329,7 @@ expresionstrings:
 	
 expresionconcat:
 	STRING CONCAT STRING {
+		printf("Entra aca, a concatenacion \n");
 		verificarLargoString($1,$3);
 		indiceString = agregarTipoTablaDeSimbolos(STRING);
 		indiceString = agregarNombreTablaDeSimbolos(indiceString,$1);
