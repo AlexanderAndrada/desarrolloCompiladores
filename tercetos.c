@@ -71,6 +71,8 @@ int crear_terceto(int operador, int op1, int op2){
 	    char registroTabla[100]={0};
 	    char longitudChar[20]={0};
 
+		printf("Se empieza a escribir la tabla de simbolos \n");
+
         FILE* archivoTablaSimbolos = fopen("tablaSimbolos.txt", "w+");
 
 	    for(i=0; i<cantidadDeSimbolos; i++){

@@ -1,0 +1,5 @@
+MAIN{
+	DECLARE INT mensaje;
+
+	mensaje = 1;
+}

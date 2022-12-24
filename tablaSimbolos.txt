@@ -1,3 +1,2 @@
-_numero             INT                                                        
-_num                INT                                                        
-_resultado          INT                                                        
+_mensaje            INT                                                                            
+_1                  INT                                                                            

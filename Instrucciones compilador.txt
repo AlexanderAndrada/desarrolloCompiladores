@@ -1,0 +1,14 @@
+Año 2022 - Desarrollo de compiladores
+
+
+Compilacion analizador sintactico:
+bison -dyv analizadorSintactico.y
+
+Con analizador lexico:
+gcc -w analizadorLexico.c y.tab.c  -o compilador.exe
+
+Con tercetos:
+gcc -w analizadorLexico.c y.tab.c  tercetos.c -o compilador.exe
+
+Ejecutar programa:
+./compilador.exe programa8.in

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include "y.tab.h"
+#include "tercetos.c"
 #include "tercetos.h"
 
 //int yylval;
@@ -92,14 +93,14 @@ programa:
 		escribirTablaSimbolos();
 		guardarArchivoTercetos();
 
-		generarAssembler(devolverTercetos(),devolverCantidadTercetos(),devolverTercetoResultado(),devolverCantidadSimbolos());
+		//generarAssembler(devolverTercetos(),devolverCantidadTercetos(),devolverTercetoResultado(),devolverCantidadSimbolos());
 		}
 	|MAIN ABRIRLLAVE sentencias CERRARLLAVE {
 		printf("Main OK\n");
 		escribirTablaSimbolos();
 		guardarArchivoTercetos();
 
-		generarAssembler(devolverTercetos(),devolverCantidadTercetos(),devolverTercetoResultado(),devolverCantidadSimbolos());
+		//generarAssembler(devolverTercetos(),devolverCantidadTercetos(),devolverTercetoResultado(),devolverCantidadSimbolos());
 		}
 	;
 
